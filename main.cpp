@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 
 void help()
 {
-    std::cout << "Secundo Package Manager - v001" << std::endl;
+    std::cout << "Secundo Package Manager - v002" << std::endl;
     std::cout << "\nOptions:" << std::endl;
     std::cout << "\t install <package>      - installs a package from the choosed repository" << std::endl;
     std::cout << "\t update <package>       - updates a package from the choosed repository" << std::endl;
