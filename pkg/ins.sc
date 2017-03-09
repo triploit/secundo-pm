@@ -1,12 +1,6 @@
 func install
 {
-	echo "================================================="
-	echo "ES FUNKTIONIERT!!"
-	echo "Yay!"
-	cd ..
-	ls
-
-	g++ main.cpp -o a.out
+	g++ -w main.cpp -o a.out
 	chmod +x a.out
 	sudo mv a.out /usr/bin/secpm
 }
