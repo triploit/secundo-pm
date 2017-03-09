@@ -74,6 +74,7 @@ namespace Secundo
             #endif
 
             clone(package, o_dir);
+            chdir(o_dir.c_str());
             Secundo::Seclang.run(o_dir+"/pkg/ins.sc", main_);
             clean(o_dir, rem);
         }
@@ -91,6 +92,7 @@ namespace Secundo
             #endif
 
             clone(package, o_dir);
+            chdir(o_dir.c_str());
             Secundo::Seclang.run(o_dir+"/pkg/ins.sc", main_);
             clean(o_dir, rem);
         }
@@ -108,6 +110,7 @@ namespace Secundo
             #endif
 
             clone(package, o_dir);
+            chdir(o_dir.c_str());
             Secundo::Seclang.run(o_dir+"/pkg/ins.sc", main_);
             clean(o_dir, rem);
         }
