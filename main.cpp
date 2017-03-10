@@ -6,6 +6,8 @@ void help();
 
 int main(int argc, char* argv[])
 {
+    // Secundo::Seclang.run(argv[argc-1], "main");
+
     for (int i = 1; i < argc; i++)
     {
         std::string arg = argv[i];

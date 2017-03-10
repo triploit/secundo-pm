@@ -11,6 +11,7 @@ namespace Secundo
     {
     public:
         int LineNumber = 1;
+        int Index = 1;
         bool Main = false;
         bool Verbose = true;
 
@@ -21,6 +22,7 @@ namespace Secundo
         std::string M_Code;
 
         std::vector<Token> Tokens;
+        std::vector<std::string> DeletingFiles;
     } Runtime;
 }
 

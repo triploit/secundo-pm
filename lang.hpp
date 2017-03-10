@@ -42,6 +42,10 @@ namespace Secundo
             Executor.execute(Secundo::Tokenizer.tokenize(Runtime.M_Code));
 
             Functions.runFunction(Runtime.MainFunction);
+            for (int i = 0; i < Runtime.DeletingFiles.size(); i++)
+            {
+                remove(Runtime.DeletingFiles[i].c_str());
+            }
         }
     } Seclang;
 }

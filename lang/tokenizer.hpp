@@ -121,6 +121,24 @@ namespace Secundo
 
             for (int i = 0; i < code.size(); i++)
             {
+                if (code[i] == '[' && !str)
+                {
+                    // std::cout << "FUNCTIONBEGIN" << std::endl;
+                    scope = true;
+                    continue;
+                }
+                else if (code[i] == ']')
+                {
+                    // std::cout << "FUNCTIONEND" << std::endl;
+                    scope = false;
+
+                    if (tmp != "")
+                        toks.push_back("~"+tmp);
+
+                    tmp = "";
+                    continue;
+                }
+
                 if (!str && !scope)
                 {
                     if (code[i] == '\n')

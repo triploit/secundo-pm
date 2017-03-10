@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "obj/function.hpp"
 #include "runtime.hpp"
 #include "../tstring.hpp"
@@ -50,9 +51,19 @@ namespace Secundo
 
                 std::string f = tmp.cxs().substr(1, tmp.length()-1);
 
-                if (tmp.at(0) != '&')
-                    system(v[i].c_str());
-                else runFunction(f);
+                if (tmp.at(0) == '&')
+                {
+                    runFunction(f);
+                }
+                else if (tmp.at(0) == '~')
+                {
+                    std::string fname = func+"_"+std::to_string(Secundo::Runtime.Index)+".sh";
+                    std::ofstream file_(fname);
+                    file_ << f << std::endl;
+                    system(std::string("chmod +x ./"+fname+"; bash ./"+fname).c_str());
+                    Runtime.DeletingFiles.push_back(fname);
+                }
+                else system(v[i].c_str());
             }
         }
 
