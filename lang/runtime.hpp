@@ -23,6 +23,14 @@ namespace Secundo
 
         std::vector<Token> Tokens;
         std::vector<std::string> DeletingFiles;
+        std::string AppData = "";
+
+        void initLV()
+        {
+            #ifdef _WIN32 || _WIN64
+            AppData = std::string(getenv("appdata"));
+            #endif
+        }
     } Runtime;
 }
 

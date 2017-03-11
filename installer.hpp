@@ -26,7 +26,7 @@ namespace Secundo
         {
             if (system(std::string("git clone https://github.com/"+user+"/"+package+".git "+o_dir).c_str()) != 0)
             {
-                std::cout << "Error! Check this out:" << std::endl;
+                std::cout << "ERROR AT: git clone https://github.com/"+user+"/"+package+".git "+o_dir << std::endl << std::endl << "Error! Check this out:" << std::endl;
                 std::cout << "\t- is git installed?" << std::endl;
                 std::cout << "\t- does the repository exist?" << std::endl;
                 std::cout << "\t- does the github-user exist?" << std::endl;
@@ -53,7 +53,7 @@ namespace Secundo
         void init()
         {
             #ifdef _WIN32 || _WIN64
-                mkdir("%appdata%\\secundo");
+                mkdir(std::string("\""+Runtime.AppData+"\\secundo\"").c_str());
             #else
                 mkdir("/usr/share/secundo", 755);
             #endif
@@ -66,16 +66,18 @@ namespace Secundo
             std::string o_dir = "/usr/share/secundo/"+package;
             std::string rem = "rm -rf";
             std::string main_ = "install";
+            std::string script_file = o_dir+"/pkg/ins.sc";
 
             #ifdef _WIN32 || _WIN64
-                o_dir = "%appdata%\\"+package_name;
-                rem = "del";
+                o_dir = "\""+Runtime.AppData+"\\"+package+"\"";
+                rem = "rmdir /s";
                 main_ = "install_win";
+                script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
             #endif
 
             clone(package, o_dir);
             chdir(o_dir.c_str());
-            Secundo::Seclang.run(o_dir+"/pkg/ins.sc", main_);
+            Secundo::Seclang.run(script_file, main_);
             clean(o_dir, rem);
         }
 
@@ -84,16 +86,18 @@ namespace Secundo
             std::string o_dir = "/usr/share/secundo/"+package;
             std::string rem = "rm -rf";
             std::string main_ = "update";
+            std::string script_file = o_dir+"/pkg/ins.sc";
 
             #ifdef _WIN32 || _WIN64
-                o_dir = "%appdata%\\"+package_name;
-                rem = "del";
+                o_dir = "\""+Runtime.AppData+"\\"+package+"\"";
+                rem = "rmdir /s";
                 main_ = "update_win";
+                script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
             #endif
 
             clone(package, o_dir);
             chdir(o_dir.c_str());
-            Secundo::Seclang.run(o_dir+"/pkg/ins.sc", main_);
+            Secundo::Seclang.run(script_file, main_);
             clean(o_dir, rem);
         }
 
@@ -102,16 +106,18 @@ namespace Secundo
             std::string o_dir = "/usr/share/secundo/"+package;
             std::string rem = "rm -rf";
             std::string main_ = "remove";
+            std::string script_file = o_dir+"/pkg/ins.sc";
 
             #ifdef _WIN32 || _WIN64
-                o_dir = "%appdata%\\"+package_name;
-                rem = "del";
+                o_dir = "\""+Runtime.AppData+"\\"+package+"\"";
+                rem = "rmdir /s";
                 main_ = "remove_win";
+                script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
             #endif
 
             clone(package, o_dir);
             chdir(o_dir.c_str());
-            Secundo::Seclang.run(o_dir+"/pkg/ins.sc", main_);
+            Secundo::Seclang.run(script_file, main_);
             clean(o_dir, rem);
         }
     } Installer;

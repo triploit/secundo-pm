@@ -58,9 +58,20 @@ namespace Secundo
                 else if (tmp.at(0) == '~')
                 {
                     std::string fname = func+"_"+std::to_string(Secundo::Runtime.Index)+".sh";
+
+                    #ifdef _WIN32 || _WIN64
+                        fname = func+"_"+std::to_string(Secundo::Runtime.Index)+".bat";
+                    #endif
+
                     std::ofstream file_(fname);
                     file_ << f << std::endl;
-                    system(std::string("chmod +x ./"+fname+"; bash ./"+fname).c_str());
+                    std::string command = std::string("chmod +x ./"+fname+"; bash ./"+fname);
+
+                    #ifdef _WIN32 || _WIN64
+                        command = fname;
+                    #endif
+
+                    system(command.c_str());
                     Runtime.DeletingFiles.push_back(fname);
                 }
                 else system(v[i].c_str());

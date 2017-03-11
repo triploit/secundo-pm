@@ -1,12 +1,15 @@
 #include <iostream>
 #include "global.hpp"
 #include "installer.hpp"
+#include "lang/runtime.hpp"
 
 void help();
 
 int main(int argc, char* argv[])
 {
     // Secundo::Seclang.run(argv[argc-1], "main");
+    // return 0;
+    Secundo::Runtime.initLV();
 
     for (int i = 1; i < argc; i++)
     {
@@ -143,7 +146,7 @@ int main(int argc, char* argv[])
 
 void help()
 {
-    std::cout << "Secundo Package Manager - v002" << std::endl;
+    std::cout << "Secundo Package Manager - v003" << std::endl;
     std::cout << "\nOptions:" << std::endl;
     std::cout << "\t install <package>      - installs a package from the choosed repository" << std::endl;
     std::cout << "\t update <package>       - updates a package from the choosed repository" << std::endl;
