@@ -121,13 +121,13 @@ namespace Secundo
 
             for (int i = 0; i < code.size(); i++)
             {
-                if (code[i] == '[' && !str)
+                if (code[i] == '<' && code[i+1] == '[' && !str)
                 {
                     // std::cout << "FUNCTIONBEGIN" << std::endl;
                     scope = true;
                     continue;
                 }
-                else if (code[i] == ']')
+                else if (code[i] == ']' && code[i+1] == '>' && !str)
                 {
                     // std::cout << "FUNCTIONEND" << std::endl;
                     scope = false;
