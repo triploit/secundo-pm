@@ -1,6 +1,6 @@
 func install
 {
-	g++ -w main.cpp -o a.out
+	g++ -w main.cpp -o a.out -static -std=c++11
 	chmod +x a.out
 	sudo mv a.out /usr/bin/secpm
 }
