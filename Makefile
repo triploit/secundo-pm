@@ -6,7 +6,7 @@ compile: $(OBJ)
 	@$(CC) -fpermissive -static -W -o secpm secpm.o
 	@echo [CPP] Finished!
 	@echo "–––––––––––––––––––––––––––"
-	@rm sht2.o
+	@rm secpm.o
 
 sht2.o:
 	@echo [CPP] Compile SECPM...
