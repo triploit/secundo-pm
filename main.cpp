@@ -26,7 +26,8 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "update" &&
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us")
+                    std::string(argv[i+1]) != "us" &&
+                    std::string(argv[i+1]) != "local")
                 {
                     Secundo::Global.addInstallingPackage(std::string(argv[i+1]));
                 }
@@ -55,7 +56,8 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "update" &&
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us")
+                    std::string(argv[i+1]) != "us" &&
+                    std::string(argv[i+1]) != "local")
                 {
                     Secundo::Global.addRemovingPackage(std::string(argv[i+1]));
                 }
@@ -84,9 +86,40 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "update" &&
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us")
+                    std::string(argv[i+1]) != "us" &&
+                    std::string(argv[i+1]) != "local")
                 {
                     Secundo::Global.addUpdatingPackage(std::string(argv[i+1]));
+                }
+                else
+                {
+                    std::cout << "Syntax error!\n" << std::endl;
+                    help();
+                }
+
+                i++;
+            }
+            else
+            {
+                std::cout << "Syntax error!\n" << std::endl;
+                help();
+            }
+        }
+        else if (arg == "local")
+        {
+            if ((i+1) < argc)
+            {
+                if (std::string(argv[i+1]) != "ins" &&
+                    std::string(argv[i+1]) != "install" &&
+                    std::string(argv[i+1]) != "remove" &&
+                    std::string(argv[i+1]) != "rem" &&
+                    std::string(argv[i+1]) != "update" &&
+                    std::string(argv[i+1]) != "up" &&
+                    std::string(argv[i+1]) != "user" &&
+                    std::string(argv[i+1]) != "us" &&
+                    std::string(argv[i+1]) != "local")
+                {
+                    Secundo::Global.addInstallLocalPackage(std::string(argv[i+1]));
                 }
                 else
                 {
@@ -120,6 +153,28 @@ int main(int argc, char* argv[])
     }
 
     Secundo::Installer.init();
+    std::string ans = "";
+    std::cout << "Are you sure to install this packages? [y/n] ";
+
+    while (ans != "y" && ans != "Y")
+    {
+        if (ans != "")
+            std::cout << "Pleasye type 'y' or 'n'!";
+        std::cin >> ans;
+
+        if (ans == "n" || ans == "N")
+        {
+            std::cout << "Ok. Quit." << std::endl;
+            exit(0);
+        }
+    }
+
+    for (int i = 0; i < Secundo::Global.getInstallLocalPackages().size(); i++)
+    {
+        std::cout << ">> Installing Local Directory " << Secundo::Global.getInstallLocalPackages()[i] << "..." << std::endl;
+        Secundo::Installer.install_local(Secundo::Global.getInstallLocalPackages()[i]);
+        std::cout << ">> Finished!" << std::endl;
+    }
 
     for (int i = 0; i < Secundo::Global.getInstallingPackages().size(); i++)
     {
@@ -152,5 +207,6 @@ void help()
     std::cout << "\t update <package>       - updates a package from the choosed repository" << std::endl;
     std::cout << "\t remove <package>       - removes a package from the choosed repository" << std::endl;
     std::cout << "\t user <github-username> - change the current repository" << std::endl;
+    std::cout << "\t local <path>           - install directory with installer script (pkg/ins.sc)" << std::endl;
     exit(1);
 }

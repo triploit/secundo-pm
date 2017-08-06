@@ -12,12 +12,23 @@ namespace Secundo
         std::string user = "Triploit-Org";
         std::vector<std::string> removing_packages;
         std::vector<std::string> installing_packages;
+        std::vector<std::string> local_packages;
         std::vector<std::string> updating_packages;
 
     public:
         void addInstallingPackage(std::string name)
         {
             installing_packages.push_back(name);
+        }
+
+        void addInstallLocalPackage(std::string path)
+        {
+            local_packages.push_back(path);
+        }
+
+        std::vector<std::string> getInstallLocalPackages()
+        {
+            return local_packages;
         }
 
         std::vector<std::string> getInstallingPackages()

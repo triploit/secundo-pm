@@ -54,11 +54,26 @@ namespace Secundo
         {
             #ifdef _WIN32 || _WIN64
                 mkdir(std::string("\""+Runtime.AppData+"\\secundo\"").c_str());
+                mkdir(std::string("C:\\Program Files (x86)\\Triploit Software").c_str());
             #else
                 mkdir("/usr/share/secundo", 755);
             #endif
 
             user = Secundo::Global.getUser();
+        }
+
+        void install_local(std::string path)
+        {
+            chdir(path.c_str());
+            std::string main_ = "install";
+            std::string script_file = path+"/pkg/ins.sc";
+
+            #ifdef _WIN32 || _WIN64
+                main_ = "install_win";
+                script_file = path+"\\pkg\\ins.sc";
+            #endif
+
+            Secundo::Seclang.run(script_file, main_);
         }
 
         void install(std::string package)
