@@ -9,7 +9,7 @@ namespace Secundo
     class Global
     {
     private:
-        std::string user = "Triploit-Org";
+        std::string user = "triploit";
         std::vector<std::string> removing_packages;
         std::vector<std::string> installing_packages;
         std::vector<std::string> local_packages;

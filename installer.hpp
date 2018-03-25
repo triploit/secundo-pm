@@ -22,17 +22,67 @@ namespace Secundo
     private:
         std::string user;
 
-        void clone(std::string package, std::string o_dir)
+		bool security(std::string script_file)
+		{
+			std::string ans = "";
+			std::cout << "Do you want to see the build file? [y/n] ";
+
+			while (ans != "y" && ans != "Y" && ans != "n" && ans != "N")
+			{
+				if (ans != "")
+					std::cout << "Pleasye type 'y' or 'n'!";
+				std::getline(std::cin, ans);
+
+				if (ans == "n" || ans == "N")
+				{
+					std::cout << "Ok." << std::endl;
+					break;
+				}
+			}
+
+			if (ans == "y" || ans == "Y")
+			{
+				std::ifstream t(script_file);
+				std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+
+				std::cout << "=============================================================" << std::endl;
+				std::cout << str << std::endl;
+				std::cout << "=============================================================" << std::endl;
+			}
+
+			ans = "";
+			std::cout << "Are you sure to install this packages? [y/n] ";
+
+			while (ans != "y" && ans != "Y")
+			{
+				if (ans != "")
+					std::cout << "Pleasye type 'y' or 'n'!";
+				std::getline(std::cin, ans);
+
+				if (ans == "n" || ans == "N")
+				{
+					std::cout << "Ok. Abort." << std::endl;
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+        void clone(std::string package, std::string o_dir, bool local)
         {
-            if (system(std::string("git clone https://github.com/"+user+"/"+package+".git "+o_dir).c_str()) != 0)
-            {
-                std::cout << "ERROR AT: git clone https://github.com/"+user+"/"+package+".git "+o_dir << std::endl << std::endl << "Error! Check this out:" << std::endl;
-                std::cout << "\t- is git installed?" << std::endl;
-                std::cout << "\t- does the repository exist?" << std::endl;
-                std::cout << "\t- does the github-user exist?" << std::endl;
-                std::cout << "\t- are you root?" << std::endl;
-                exit(1);
-            }
+            if (!local)
+			{
+				if (system(std::string("git clone https://github.com/"+user+"/"+package+".git "+o_dir).c_str()) != 0)
+	            {
+	                std::cout << "ERROR AT: git clone https://github.com/"+user+"/"+package+".git "+o_dir << std::endl << std::endl << "Error! Check this out:" << std::endl;
+	                std::cout << "\t- is git installed?" << std::endl;
+	                std::cout << "\t- does the repository exist?" << std::endl;
+	                std::cout << "\t- does the github-user exist?" << std::endl;
+	                std::cout << "\t- are you root?" << std::endl;
+	                exit(1);
+	            }
+			}
         }
 
         void clean(std::string o_dir, std::string rem)
@@ -54,7 +104,7 @@ namespace Secundo
         {
             #ifdef _WIN32 || _WIN64
                 mkdir(std::string("\""+Runtime.AppData+"\\secundo\"").c_str());
-                mkdir(std::string("C:\\Program Files (x86)\\Triploit Software").c_str());
+                mkdir(std::string("C:\\Program Files (x86)\\Secundo Software").c_str());
             #else
                 mkdir("/usr/share/secundo", 755);
             #endif
@@ -73,7 +123,7 @@ namespace Secundo
                 script_file = path+"\\pkg\\ins.sc";
             #endif
 
-            Secundo::Seclang.run(script_file, main_);
+			if (security(script_file)) Secundo::Seclang.run(script_file, main_);
         }
 
         void install(std::string package)
@@ -90,9 +140,10 @@ namespace Secundo
                 script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
             #endif
 
-            clone(package, o_dir);
+            clone(package, o_dir, false);
             chdir(o_dir.c_str());
-            Secundo::Seclang.run(script_file, main_);
+
+			if (security(script_file)) Secundo::Seclang.run(script_file, main_);
             clean(o_dir, rem);
         }
 
@@ -110,7 +161,7 @@ namespace Secundo
                 script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
             #endif
 
-            clone(package, o_dir);
+            clone(package, o_dir, false);
             chdir(o_dir.c_str());
             Secundo::Seclang.run(script_file, main_);
             clean(o_dir, rem);
@@ -130,7 +181,7 @@ namespace Secundo
                 script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
             #endif
 
-            clone(package, o_dir);
+            clone(package, o_dir, false);
             chdir(o_dir.c_str());
             Secundo::Seclang.run(script_file, main_);
             clean(o_dir, rem);

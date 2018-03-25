@@ -4,11 +4,10 @@
 #include "lang/runtime.hpp"
 
 void help();
+std::string _VERSION = "0.1.1";
 
 int main(int argc, char* argv[])
 {
-    // Secundo::Seclang.run(argv[argc-1], "main");
-    // return 0;
     Secundo::Runtime.initLV();
 
     for (int i = 1; i < argc; i++)
@@ -44,6 +43,10 @@ int main(int argc, char* argv[])
                 std::cout << "Syntax error!\n" << std::endl;
                 help();
             }
+        }
+		else if (arg == "version" || arg == "-v" || arg == "--version" || arg == "ver")
+        {
+            std::cout << _VERSION << std::endl;
         }
         else if (arg == "remove" || arg == "rem")
         {
@@ -138,7 +141,10 @@ int main(int argc, char* argv[])
         else if (arg == "user" || arg == "us")
         {
             if ((i+1) < argc)
-                Secundo::Global.setUser(std::string(argv[i+1]));
+            {
+				Secundo::Global.setUser(std::string(argv[i+1]));
+				i++;
+			}
             else
             {
                 std::cout << "Syntax error!\n" << std::endl;
@@ -153,21 +159,6 @@ int main(int argc, char* argv[])
     }
 
     Secundo::Installer.init();
-    std::string ans = "";
-    std::cout << "Are you sure to install this packages? [y/n] ";
-
-    while (ans != "y" && ans != "Y")
-    {
-        if (ans != "")
-            std::cout << "Pleasye type 'y' or 'n'!";
-        std::cin >> ans;
-
-        if (ans == "n" || ans == "N")
-        {
-            std::cout << "Ok. Quit." << std::endl;
-            exit(0);
-        }
-    }
 
     for (int i = 0; i < Secundo::Global.getInstallLocalPackages().size(); i++)
     {
@@ -201,7 +192,7 @@ int main(int argc, char* argv[])
 
 void help()
 {
-    std::cout << "Secundo Package Manager - v003" << std::endl;
+    std::cout << "Secundo Package Manager - v" << _VERSION << std::endl;
     std::cout << "\nOptions:" << std::endl;
     std::cout << "\t install <package>      - installs a package from the choosed repository" << std::endl;
     std::cout << "\t update <package>       - updates a package from the choosed repository" << std::endl;
