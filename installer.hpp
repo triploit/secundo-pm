@@ -51,7 +51,7 @@ namespace Secundo
 			}
 
 			ans = "";
-			std::cout << "Are you sure to install this packages? [y/n] ";
+			std::cout << "Are you sure to install this package? [y/n] ";
 
 			while (ans != "y" && ans != "Y")
 			{

@@ -4,7 +4,7 @@
 #include "lang/runtime.hpp"
 
 void help();
-std::string _VERSION = "0.1.1";
+std::string _VERSION = "0.1.2";
 
 int main(int argc, char* argv[])
 {
@@ -26,7 +26,8 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
                     std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local")
+                    std::string(argv[i+1]) != "local" &&
+                    std::string(argv[i+1]) != "trust")
                 {
                     Secundo::Global.addInstallingPackage(std::string(argv[i+1]));
                 }
@@ -60,7 +61,8 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
                     std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local")
+                    std::string(argv[i+1]) != "local" &&
+                    std::string(argv[i+1]) != "trust")
                 {
                     Secundo::Global.addRemovingPackage(std::string(argv[i+1]));
                 }
@@ -90,9 +92,41 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
                     std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local")
+                    std::string(argv[i+1]) != "local" &&
+                    std::string(argv[i+1]) != "trust")
                 {
                     Secundo::Global.addUpdatingPackage(std::string(argv[i+1]));
+                }
+                else
+                {
+                    std::cout << "Syntax error!\n" << std::endl;
+                    help();
+                }
+
+                i++;
+            }
+            else
+            {
+                std::cout << "Syntax error!\n" << std::endl;
+                help();
+            }
+        }
+        else if (arg == "trust")
+        {
+            if ((i+1) < argc)
+            {
+                if (std::string(argv[i+1]) != "ins" &&
+                    std::string(argv[i+1]) != "install" &&
+                    std::string(argv[i+1]) != "remove" &&
+                    std::string(argv[i+1]) != "rem" &&
+                    std::string(argv[i+1]) != "update" &&
+                    std::string(argv[i+1]) != "up" &&
+                    std::string(argv[i+1]) != "user" &&
+                    std::string(argv[i+1]) != "us" &&
+                    std::string(argv[i+1]) != "local" &&
+                    std::string(argv[i+1]) != "trust")
+                {
+                    Secundo::Runtime.addTrusters(argv[i+1]);
                 }
                 else
                 {
@@ -120,7 +154,8 @@ int main(int argc, char* argv[])
                     std::string(argv[i+1]) != "up" &&
                     std::string(argv[i+1]) != "user" &&
                     std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local")
+                    std::string(argv[i+1]) != "local" &&
+                    std::string(argv[i+1]) != "trust")
                 {
                     Secundo::Global.addInstallLocalPackage(std::string(argv[i+1]));
                 }
@@ -188,6 +223,7 @@ int main(int argc, char* argv[])
         std::cout << ">> Finished!" << std::endl;
     }
 
+	Secundo::Runtime.saveTrusters();
 }
 
 void help()
@@ -199,5 +235,9 @@ void help()
     std::cout << "\t remove <package>       - removes a package from the choosed repository" << std::endl;
     std::cout << "\t user <github-username> - change the current repository" << std::endl;
     std::cout << "\t local <path>           - install directory with installer script (pkg/ins.sc)" << std::endl;
+	std::cout << "\t trust <user>			- you will not get questions (such as *1 or *2) about projects" << std::endl;
+	std::cout << "\t                          from this user, only do it if you are really sure!" << std::endl << std::endl;
+	std::cout << "\t *1 Are you sure to install this package?" << std::endl;
+	std::cout << "\t *2 Do you want to see the build file?" << std::endl;
     exit(1);
 }
