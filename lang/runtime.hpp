@@ -63,6 +63,14 @@ namespace Secundo
 			if (!isTruster(t)) trusted.push_back(t);
 		}
 
+		void removeTrusters(const std::string& t)
+		{
+			for (int i = 0; i < trusted.size(); i++)
+			{
+				if (trusted[i] == t) trusted.erase(trusted.begin()+i);
+			}
+		}
+
 		void saveTrusters()
 		{
 			std::ofstream afile(TrustFile);

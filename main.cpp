@@ -4,6 +4,7 @@
 #include "lang/runtime.hpp"
 
 void help();
+bool is_argument(const std::string& arg);
 std::string _VERSION = "0.1.2";
 
 int main(int argc, char* argv[])
@@ -18,16 +19,7 @@ int main(int argc, char* argv[])
         {
             if ((i+1) < argc)
             {
-                if (std::string(argv[i+1]) != "ins" &&
-                    std::string(argv[i+1]) != "install" &&
-                    std::string(argv[i+1]) != "remove" &&
-                    std::string(argv[i+1]) != "rem" &&
-                    std::string(argv[i+1]) != "update" &&
-                    std::string(argv[i+1]) != "up" &&
-                    std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local" &&
-                    std::string(argv[i+1]) != "trust")
+                if (!is_argument(argv[i+1]))
                 {
                     Secundo::Global.addInstallingPackage(std::string(argv[i+1]));
                 }
@@ -53,16 +45,7 @@ int main(int argc, char* argv[])
         {
             if ((i+1) < argc)
             {
-                if (std::string(argv[i+1]) != "ins" &&
-                    std::string(argv[i+1]) != "install" &&
-                    std::string(argv[i+1]) != "remove" &&
-                    std::string(argv[i+1]) != "rem" &&
-                    std::string(argv[i+1]) != "update" &&
-                    std::string(argv[i+1]) != "up" &&
-                    std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local" &&
-                    std::string(argv[i+1]) != "trust")
+                if (!is_argument(argv[i+1]))
                 {
                     Secundo::Global.addRemovingPackage(std::string(argv[i+1]));
                 }
@@ -84,16 +67,7 @@ int main(int argc, char* argv[])
         {
             if ((i+1) < argc)
             {
-                if (std::string(argv[i+1]) != "ins" &&
-                    std::string(argv[i+1]) != "install" &&
-                    std::string(argv[i+1]) != "remove" &&
-                    std::string(argv[i+1]) != "rem" &&
-                    std::string(argv[i+1]) != "update" &&
-                    std::string(argv[i+1]) != "up" &&
-                    std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local" &&
-                    std::string(argv[i+1]) != "trust")
+                if (!is_argument(argv[i+1]))
                 {
                     Secundo::Global.addUpdatingPackage(std::string(argv[i+1]));
                 }
@@ -115,16 +89,7 @@ int main(int argc, char* argv[])
         {
             if ((i+1) < argc)
             {
-                if (std::string(argv[i+1]) != "ins" &&
-                    std::string(argv[i+1]) != "install" &&
-                    std::string(argv[i+1]) != "remove" &&
-                    std::string(argv[i+1]) != "rem" &&
-                    std::string(argv[i+1]) != "update" &&
-                    std::string(argv[i+1]) != "up" &&
-                    std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local" &&
-                    std::string(argv[i+1]) != "trust")
+                if (!is_argument(argv[i+1]))
                 {
                     Secundo::Runtime.addTrusters(argv[i+1]);
                 }
@@ -142,20 +107,42 @@ int main(int argc, char* argv[])
                 help();
             }
         }
+        else if (arg == "untrust")
+        {
+            if ((i+1) < argc)
+            {
+                if (!is_argument(argv[i+1]))
+                {
+                    Secundo::Runtime.removeTrusters(argv[i+1]);
+                }
+                else
+                {
+                    std::cout << "Syntax error!\n" << std::endl;
+                    help();
+                }
+
+                i++;
+            }
+            else
+            {
+                std::cout << "Syntax error!\n" << std::endl;
+                help();
+            }
+        }
+        else if (arg == "showtrust")
+        {
+			std::cout << "Trusting:" << std::endl;
+
+			for (std::string s : Secundo::Runtime.trusted)
+			{
+				std::cout << "  - " << s << std::endl;
+			}
+        }
         else if (arg == "local")
         {
             if ((i+1) < argc)
             {
-                if (std::string(argv[i+1]) != "ins" &&
-                    std::string(argv[i+1]) != "install" &&
-                    std::string(argv[i+1]) != "remove" &&
-                    std::string(argv[i+1]) != "rem" &&
-                    std::string(argv[i+1]) != "update" &&
-                    std::string(argv[i+1]) != "up" &&
-                    std::string(argv[i+1]) != "user" &&
-                    std::string(argv[i+1]) != "us" &&
-                    std::string(argv[i+1]) != "local" &&
-                    std::string(argv[i+1]) != "trust")
+                if (!is_argument(argv[i+1]))
                 {
                     Secundo::Global.addInstallLocalPackage(std::string(argv[i+1]));
                 }
@@ -226,6 +213,24 @@ int main(int argc, char* argv[])
 	Secundo::Runtime.saveTrusters();
 }
 
+bool is_argument(const std::string& arg)
+{
+	if (std::string(arg) == "ins" &&
+		std::string(arg) == "install" &&
+		std::string(arg) == "remove" &&
+		std::string(arg) == "rem" &&
+		std::string(arg) == "update" &&
+		std::string(arg) == "up" &&
+		std::string(arg) == "user" &&
+		std::string(arg) == "us" &&
+		std::string(arg) == "local" &&
+		std::string(arg) == "trust" &&
+		std::string(arg) == "untrust" &&
+		std::string(arg) == "showtrust")
+		return true;
+	return false;
+}
+
 void help()
 {
     std::cout << "Secundo Package Manager - v" << _VERSION << std::endl;
@@ -235,8 +240,10 @@ void help()
     std::cout << "\t remove <package>       - removes a package from the choosed repository" << std::endl;
     std::cout << "\t user <github-username> - change the current repository" << std::endl;
     std::cout << "\t local <path>           - install directory with installer script (pkg/ins.sc)" << std::endl;
-	std::cout << "\t trust <user>           - you will not get questions (such as *1 or *2) about projects" << std::endl;
-	std::cout << "\t                          from this user, only do it if you are really sure!" << std::endl << std::endl;
+	std::cout << "\t trust <user>           - you will not get questions (like *1 or *2) about projects" << std::endl;
+	std::cout << "\t                          from this user, only do it if you are really sure!" << std::endl;
+	std::cout << "\t untrust <user>         - remove user from trusted users" << std::endl;
+	std::cout << std::endl;
 	std::cout << "\t *1 Are you sure to install this package?" << std::endl;
 	std::cout << "\t *2 Do you want to see the build file?" << std::endl;
     exit(1);
