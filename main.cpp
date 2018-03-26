@@ -235,7 +235,7 @@ void help()
     std::cout << "\t remove <package>       - removes a package from the choosed repository" << std::endl;
     std::cout << "\t user <github-username> - change the current repository" << std::endl;
     std::cout << "\t local <path>           - install directory with installer script (pkg/ins.sc)" << std::endl;
-	std::cout << "\t trust <user>			- you will not get questions (such as *1 or *2) about projects" << std::endl;
+	std::cout << "\t trust <user>           - you will not get questions (such as *1 or *2) about projects" << std::endl;
 	std::cout << "\t                          from this user, only do it if you are really sure!" << std::endl << std::endl;
 	std::cout << "\t *1 Are you sure to install this package?" << std::endl;
 	std::cout << "\t *2 Do you want to see the build file?" << std::endl;
