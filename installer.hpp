@@ -85,7 +85,7 @@ namespace Secundo
 			}
         }
 
-        void clean(std::string o_dir, std::string rem)
+        void clean(const std::string& o_dir, const std::string& rem)
         {
             std::cout << ">> Cleaning " << o_dir << "..." << std::endl;
             if (system(std::string(rem+" "+o_dir).c_str()) != 0)
@@ -112,7 +112,7 @@ namespace Secundo
             user = Secundo::Global.getUser();
         }
 
-        void install_local(std::string path)
+        void install_local(const std::string& path)
         {
             chdir(path.c_str());
             std::string main_ = "install";
@@ -126,7 +126,7 @@ namespace Secundo
 			if (security(script_file)) Secundo::Seclang.run(script_file, main_);
         }
 
-        void install(std::string package)
+        void install(const std::string& package)
         {
             std::string o_dir = "/usr/share/secundo/"+package;
             std::string rem = "rm -rf";
@@ -147,7 +147,7 @@ namespace Secundo
             clean(o_dir, rem);
         }
 
-        void update(std::string package)
+        void update(const std::string& package)
         {
             std::string o_dir = "/usr/share/secundo/"+package;
             std::string rem = "rm -rf";
@@ -167,7 +167,7 @@ namespace Secundo
             clean(o_dir, rem);
         }
 
-        void remove(std::string package)
+        void remove(const std::string& package)
         {
             std::string o_dir = "/usr/share/secundo/"+package;
             std::string rem = "rm -rf";

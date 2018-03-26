@@ -55,11 +55,10 @@ namespace Secundo
         }
     public:
 
-        void execute(std::vector<Token> v)
+        void execute(const std::vector<Token>& v)
         {
             Tokens = v;
             putTogether();
-
         }
     } Executor;
 }

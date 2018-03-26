@@ -23,7 +23,7 @@ namespace Secundo
         std::string TYPE_OTHER = "oth";
         std::string TYPE_FUNCTION = "func";
 
-        Token(std::string val, std::string typ, std::string v = "")
+        Token(const std::string& val, const std::string& typ, const std::string& v = "")
         {
             value = val;
 
@@ -55,7 +55,7 @@ namespace Secundo
             return type;
         }
 
-        void setUValue(std::string v)
+        void setUValue(const std::string& v)
         {
             uvalue = v;
         }

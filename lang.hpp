@@ -35,7 +35,7 @@ namespace Secundo
         }
 
     public:
-        void run(std::string script, std::string main_function)
+        void run(const std::string& script, const std::string& main_function)
         {
             Secundo::Runtime.MainFunction = main_function;
             fileRead(script);

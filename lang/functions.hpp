@@ -16,13 +16,13 @@ namespace Secundo
         std::vector<Function> functions;
 
     public:
-        void addFunction(Function f)
+        void addFunction(const Function& f)
         {
             // std::cout << "ADD FUNCTION!!! " << f.getName() << std::endl;
             functions.push_back(f);
         }
 
-        bool existsFunction(std::string func)
+        bool existsFunction(const std::string& func)
         {
             for (int i = 0; i < functions.size(); i++)
             {

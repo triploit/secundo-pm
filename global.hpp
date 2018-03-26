@@ -16,12 +16,12 @@ namespace Secundo
         std::vector<std::string> updating_packages;
 
     public:
-        void addInstallingPackage(std::string name)
+        void addInstallingPackage(const std::string& name)
         {
             installing_packages.push_back(name);
         }
 
-        void addInstallLocalPackage(std::string path)
+        void addInstallLocalPackage(const std::string& path)
         {
             local_packages.push_back(path);
         }
@@ -36,7 +36,7 @@ namespace Secundo
             return installing_packages;
         }
 
-        void addRemovingPackage(std::string name)
+        void addRemovingPackage(const std::string& name)
         {
             removing_packages.push_back(name);
         }
@@ -46,7 +46,7 @@ namespace Secundo
             return removing_packages;
         }
 
-        void addUpdatingPackage(std::string name)
+        void addUpdatingPackage(const std::string& name)
         {
             updating_packages.push_back(name);
         }
@@ -56,7 +56,7 @@ namespace Secundo
             return updating_packages;
         }
 
-        void setUser(std::string name)
+        void setUser(const std::string& name)
         {
             user = name;
         }

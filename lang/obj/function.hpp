@@ -12,7 +12,7 @@ namespace Secundo
         std::vector<std::string> code;
         std::string name;
     public:
-        void addCodeLine(std::string line)
+        void addCodeLine(const std::string& line)
         {
             code.push_back(line);
         }
@@ -22,7 +22,7 @@ namespace Secundo
             return name;
         }
 
-        void setCode(std::vector<std::string> _c)
+        void setCode(const std::vector<std::string>& _c)
         {
             code = _c;
         }
@@ -32,7 +32,7 @@ namespace Secundo
             return code;
         }
 
-        Function(std::string _name)
+        Function(const std::string& _name)
         {
             name = _name;
         }
