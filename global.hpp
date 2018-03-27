@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "package.hpp"
 
 namespace Secundo
 {
@@ -10,15 +11,15 @@ namespace Secundo
     {
     private:
         std::string user = "triploit";
-        std::vector<std::string> removing_packages;
-        std::vector<std::string> installing_packages;
+        std::vector<Package> removing_packages;
+        std::vector<Package> installing_packages;
         std::vector<std::string> local_packages;
-        std::vector<std::string> updating_packages;
+        std::vector<Package> updating_packages;
 
     public:
-        void addInstallingPackage(const std::string& name)
+        void addInstallingPackage(const Package& p)
         {
-            installing_packages.push_back(name);
+            installing_packages.push_back(p);
         }
 
         void addInstallLocalPackage(const std::string& path)
@@ -31,27 +32,27 @@ namespace Secundo
             return local_packages;
         }
 
-        std::vector<std::string> getInstallingPackages()
+        std::vector<Package> getInstallingPackages()
         {
             return installing_packages;
         }
 
-        void addRemovingPackage(const std::string& name)
+        void addRemovingPackage(const Package& p)
         {
-            removing_packages.push_back(name);
+            removing_packages.push_back(p);
         }
 
-        std::vector<std::string> getRemovingPackages()
+        std::vector<Package> getRemovingPackages()
         {
             return removing_packages;
         }
 
-        void addUpdatingPackage(const std::string& name)
+        void addUpdatingPackage(const Package& p)
         {
-            updating_packages.push_back(name);
+            updating_packages.push_back(p);
         }
 
-        std::vector<std::string> getUpdatingPackages()
+        std::vector<Package> getUpdatingPackages()
         {
             return updating_packages;
         }

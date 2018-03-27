@@ -1,6 +1,6 @@
-func main
-{
+func install {
 	echo "START!"
+
 	<[
 		#!/bin/bash
 		echo "Hallo Welt!"
@@ -8,5 +8,6 @@ func main
 		read a;
 		echo "Du hast \"$a\" gesagt!"
 	]>
+
 	echo "ENDE!"
 }

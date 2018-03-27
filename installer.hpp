@@ -22,8 +22,11 @@ namespace Secundo
     private:
         std::string user;
 
-		bool security(std::string script_file)
+		bool security(std::string script_file, const Package& p)
 		{
+			if (Runtime.isTruster(p.user))
+				return true;
+
 			std::string ans = "";
 			std::cout << "Do you want to see the build file? [y/n] ";
 
@@ -51,7 +54,7 @@ namespace Secundo
 			}
 
 			ans = "";
-			std::cout << "Are you sure to install this package? [y/n] ";
+			std::cout << "Are you really sure? [y/n] ";
 
 			while (ans != "y" && ans != "Y")
 			{
@@ -69,13 +72,14 @@ namespace Secundo
 			return true;
 		}
 
-        void clone(std::string package, std::string o_dir, bool local)
+        void clone(const Package& package, std::string o_dir, bool local)
         {
             if (!local)
 			{
-				if (system(std::string("git clone https://github.com/"+user+"/"+package+".git "+o_dir).c_str()) != 0)
+				if (system(std::string("git clone https://github.com/"+package.user+"/"+package.name+".git "+o_dir).c_str()) != 0)
 	            {
-	                std::cout << "ERROR AT: git clone https://github.com/"+user+"/"+package+".git "+o_dir << std::endl << std::endl << "Error! Check this out:" << std::endl;
+	                std::cout << "ERROR AT: git clone https://github.com/"+package.user+"/"+package.name+".git "+o_dir <<
+					std::endl << std::endl << "Error! Check this out:" << std::endl;
 	                std::cout << "\t- is git installed?" << std::endl;
 	                std::cout << "\t- does the repository exist?" << std::endl;
 	                std::cout << "\t- does the github-user exist?" << std::endl;
@@ -98,6 +102,14 @@ namespace Secundo
                 exit(1);
             }
         }
+
+		void saveInstallFile(std::string from, std::string to)
+		{
+			std::ifstream src(from, std::ios::binary);
+			std::ofstream dst(to,   std::ios::binary);
+
+			dst << src.rdbuf();
+		}
 
     public:
         void init()
@@ -123,68 +135,93 @@ namespace Secundo
                 script_file = path+"\\pkg\\ins.sc";
             #endif
 
-			if (security(script_file)) Secundo::Seclang.run(script_file, main_);
+			if (security(script_file, Package("", ""))) Secundo::Seclang.run(script_file, main_);
         }
 
-        void install(const std::string& package)
+        void install(const Package& package)
         {
-            std::string o_dir = "/usr/share/secundo/"+package;
+            std::string o_dir = "/usr/share/secundo/"+package.name;
             std::string rem = "rm -rf";
             std::string main_ = "install";
             std::string script_file = o_dir+"/pkg/ins.sc";
 
             #ifdef _WIN32 || _WIN64
-                o_dir = "\""+Runtime.AppData+"\\"+package+"\"";
+                o_dir = "\""+Runtime.AppData+"\\"+package.name+"\"";
                 rem = "rmdir /s";
                 main_ = "install_win";
-                script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
+                script_file = Runtime.AppData+"\\"+package.name+"\\pkg\\ins.sc";
             #endif
 
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
+			if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
 
-			if (security(script_file)) Secundo::Seclang.run(script_file, main_);
+			std::cout << "Save installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
+			saveInstallFile(script_file, Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc");
+			std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
         }
 
-        void update(const std::string& package)
+        void update(const Package& package)
         {
-            std::string o_dir = "/usr/share/secundo/"+package;
+            std::string o_dir = "/usr/share/secundo/"+package.name;
             std::string rem = "rm -rf";
             std::string main_ = "update";
             std::string script_file = o_dir+"/pkg/ins.sc";
 
             #ifdef _WIN32 || _WIN64
-                o_dir = "\""+Runtime.AppData+"\\"+package+"\"";
+                o_dir = "\""+Runtime.AppData+"\\"+package.name+"\"";
                 rem = "rmdir /s";
                 main_ = "update_win";
-                script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
+                script_file = Runtime.AppData+"\\"+package.name+"\\pkg\\ins.sc";
             #endif
 
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
-            Secundo::Seclang.run(script_file, main_);
+            if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
+
+			std::cout << "Save installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
+			saveInstallFile(script_file, Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc");
+			std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
         }
 
-        void remove(const std::string& package)
+        void remove(const Package& package)
         {
-            std::string o_dir = "/usr/share/secundo/"+package;
+            std::string o_dir = "/usr/share/secundo/"+package.name;
             std::string rem = "rm -rf";
             std::string main_ = "remove";
             std::string script_file = o_dir+"/pkg/ins.sc";
 
             #ifdef _WIN32 || _WIN64
-                o_dir = "\""+Runtime.AppData+"\\"+package+"\"";
+                o_dir = "\""+Runtime.AppData+"\\"+package.name+"\"";
                 rem = "rmdir /s";
                 main_ = "remove_win";
-                script_file = Runtime.AppData+"\\"+package+"\\pkg\\ins.sc";
+                script_file = Runtime.AppData+"\\"+package.name+"\\pkg\\ins.sc";
             #endif
 
-            clone(package, o_dir, false);
-            chdir(o_dir.c_str());
-            Secundo::Seclang.run(script_file, main_);
-            clean(o_dir, rem);
+			std::string sc_script = Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc";
+			std::ifstream f(sc_script, std::ios::in);
+
+			std::cout << "Search for existing package file ... " << sc_script << std::endl;
+
+			if (f.is_open())
+			{
+				std::cout << "Found ... running script." << std::endl << std::endl;
+	            if (security(script_file, package)) Secundo::Seclang.run(sc_script, main_);
+			}
+			else
+			{
+				std::cout << "Not found... cloning repository." << std::endl << std::endl;
+	            clone(package, o_dir, false);
+	            chdir(o_dir.c_str());
+	            if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
+
+				std::cout << "Save installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
+				saveInstallFile(script_file, Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc");
+				std::cout << "Finished" << std::endl;
+	            clean(o_dir, rem);
+			}
         }
     } Installer;
 }

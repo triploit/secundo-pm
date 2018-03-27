@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <regex>
 #include "obj/token.hpp"
 
 namespace Secundo
@@ -26,16 +27,19 @@ namespace Secundo
         std::vector<std::string> trusted;
 
         std::string AppData = "";
+        std::string PackageFileDirectory = "";
         std::string TrustFile = "";
 
         void initLV()
         {
 			TrustFile = "/usr/share/secundo/secpm_trustings.conf";
+			PackageFileDirectory = "/usr/share/secundo/pkg_files/";
 			std::string user = getenv("USER");
 
 			#ifdef _WIN32 || _WIN64
 			user = "none"
-			TrustFile = AppData+"\\"+"secpm_trustings.conf";
+			TrustFile = AppData+"\\secpm_trustings.conf";
+			TrustFile = AppData+"\\pkg_files\\";
             AppData = std::string(getenv("AppData"));
 			#else
 			if (user != "root")
@@ -69,6 +73,13 @@ namespace Secundo
 			{
 				if (trusted[i] == t) trusted.erase(trusted.begin()+i);
 			}
+		}
+
+
+		bool regex_match(const std::string& str, const std::string& pattern)
+		{
+			std::smatch matches;
+			return (std::regex_match(str, std::regex(pattern)));
 		}
 
 		void saveTrusters()

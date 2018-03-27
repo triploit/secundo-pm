@@ -21,7 +21,26 @@ int main(int argc, char* argv[])
             {
                 if (!is_argument(argv[i+1]))
                 {
-                    Secundo::Global.addInstallingPackage(std::string(argv[i+1]));
+					// Regex: ^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}:[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$
+
+					tri::string user = "";
+					tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
+					tri::string package = "";
+
+					if (Secundo::Runtime.regex_match(std::string(argv[i+1]), regex.cxs()))
+					{
+						user = tri::string(argv[i+1]).split(':')[0];
+						package = tri::string(argv[i+1]).split(':')[1];
+
+	                    Secundo::Global.addInstallingPackage(Package(user.cxs(), package.cxs()));
+					}
+					else
+					{
+						std::cout << "Wrong package name: " << argv[i+1] << std::endl;
+						std::cout << "\nThis is a package name:  user:package" << std::endl;
+						std::cout << "                         triploit:secpundo-pm" << std::endl;
+						exit(1);
+					}
                 }
                 else
                 {
@@ -47,7 +66,26 @@ int main(int argc, char* argv[])
             {
                 if (!is_argument(argv[i+1]))
                 {
-                    Secundo::Global.addRemovingPackage(std::string(argv[i+1]));
+					// Regex: ^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}:[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$
+
+					tri::string user = "";
+					tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
+					tri::string package = "";
+
+					if (Secundo::Runtime.regex_match(std::string(argv[i+1]), regex.cxs()))
+					{
+						user = tri::string(argv[i+1]).split(':')[0];
+						package = tri::string(argv[i+1]).split(':')[1];
+
+	                    Secundo::Global.addRemovingPackage(Package(user.cxs(), package.cxs()));
+					}
+					else
+					{
+						std::cout << "Wrong package name: " << argv[i+1] << std::endl;
+						std::cout << "This is a package name:  user:package" << std::endl;
+						std::cout << "                         triploit:secpundo-pm" << std::endl;
+						exit(1);
+					}
                 }
                 else
                 {
@@ -69,7 +107,26 @@ int main(int argc, char* argv[])
             {
                 if (!is_argument(argv[i+1]))
                 {
-                    Secundo::Global.addUpdatingPackage(std::string(argv[i+1]));
+					// Regex: ^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}:[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$
+
+					tri::string user = "";
+					tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
+					tri::string package = "";
+
+					if (Secundo::Runtime.regex_match(std::string(argv[i+1]), regex.cxs()))
+					{
+						user = tri::string(argv[i+1]).split(':')[0];
+						package = tri::string(argv[i+1]).split(':')[1];
+
+	                    Secundo::Global.addUpdatingPackage(Package(user.cxs(), package.cxs()));
+					}
+					else
+					{
+						std::cout << "Wrong package name: " << argv[i+1] << std::endl;
+						std::cout << "This is a package name:  user:package" << std::endl;
+						std::cout << "                         triploit:secpundo-pm" << std::endl;
+						exit(1);
+					}
                 }
                 else
                 {
@@ -160,19 +217,6 @@ int main(int argc, char* argv[])
                 help();
             }
         }
-        else if (arg == "user" || arg == "us")
-        {
-            if ((i+1) < argc)
-            {
-				Secundo::Global.setUser(std::string(argv[i+1]));
-				i++;
-			}
-            else
-            {
-                std::cout << "Syntax error!\n" << std::endl;
-                help();
-            }
-        }
         else
         {
             std::cout << "Option \"" << arg << "\" not found!" << std::endl;
@@ -191,21 +235,21 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < Secundo::Global.getInstallingPackages().size(); i++)
     {
-        std::cout << ">> Installing " << Secundo::Global.getInstallingPackages()[i] << "..." << std::endl;
+        std::cout << ">> Installing " << Secundo::Global.getInstallingPackages()[i].user << "'s " << Secundo::Global.getInstallingPackages()[i].name << "..." << std::endl;
         Secundo::Installer.install(Secundo::Global.getInstallingPackages()[i]);
         std::cout << ">> Finished!" << std::endl;
     }
 
     for (int i = 0; i < Secundo::Global.getRemovingPackages().size(); i++)
     {
-        std::cout << ">> Updating " << Secundo::Global.getRemovingPackages()[i] << "..." << std::endl;
+        std::cout << ">> Remove " << Secundo::Global.getRemovingPackages()[i].user << "'s " << Secundo::Global.getRemovingPackages()[i].name << "..." << std::endl;
         Secundo::Installer.remove(Secundo::Global.getRemovingPackages()[i]);
         std::cout << ">> Finished!" << std::endl;
     }
 
     for (int i = 0; i < Secundo::Global.getUpdatingPackages().size(); i++)
     {
-        std::cout << ">> Updating " << Secundo::Global.getUpdatingPackages()[i] << "..." << std::endl;
+        std::cout << ">> Updating " << Secundo::Global.getUpdatingPackages()[i].user << "'s " << Secundo::Global.getUpdatingPackages()[i].name << "..." << std::endl;
         Secundo::Installer.update(Secundo::Global.getUpdatingPackages()[i]);
         std::cout << ">> Finished!" << std::endl;
     }
@@ -235,16 +279,15 @@ void help()
 {
     std::cout << "Secundo Package Manager - v" << _VERSION << std::endl;
     std::cout << "\nOptions:" << std::endl;
-    std::cout << "\t install <package>      - installs a package from the choosed repository" << std::endl;
-    std::cout << "\t update <package>       - updates a package from the choosed repository" << std::endl;
-    std::cout << "\t remove <package>       - removes a package from the choosed repository" << std::endl;
-    std::cout << "\t user <github-username> - change the current repository" << std::endl;
-    std::cout << "\t local <path>           - install directory with installer script (pkg/ins.sc)" << std::endl;
-	std::cout << "\t trust <user>           - you will not get questions (like *1 or *2) about projects" << std::endl;
-	std::cout << "\t                          from this user, only do it if you are really sure!" << std::endl;
-	std::cout << "\t untrust <user>         - remove user from trusted users" << std::endl;
+    std::cout << "\t install <user>:<package> - installs a package from the choosed repository of a user" << std::endl;
+    std::cout << "\t update <user>:<package>  - updates a package from the choosed repository of a user" << std::endl;
+    std::cout << "\t remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
+    std::cout << "\t local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
+	std::cout << "\t trust <user>             - you will not get questions (like *1 or *2) about projects" << std::endl;
+	std::cout << "\t                            from this user, only do it if you are really sure!" << std::endl;
+	std::cout << "\t untrust <user>           - remove user from trusted users" << std::endl;
 	std::cout << std::endl;
-	std::cout << "\t *1 Are you sure to install this package?" << std::endl;
+	std::cout << "\t *1 Are you really?" << std::endl;
 	std::cout << "\t *2 Do you want to see the build file?" << std::endl;
     exit(1);
 }

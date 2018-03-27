@@ -4,6 +4,7 @@ func install {<[
 
 	if [ ! -d "/usr/share/secundo" ]; then
 		mkdir /usr/share/secundo
+		mkdir /usr/share/secundo/pkg_files
 	fi
 
 	sudo mv a.out /usr/bin/secpm
@@ -11,7 +12,7 @@ func install {<[
 
 func remove {
 	sudo rm /usr/bin/secpm
-	sudo rm -rf /usr/share/secundo
+	sudo rm -rf /usr/share/secundo/
 }
 
 func update {
