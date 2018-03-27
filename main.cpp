@@ -5,7 +5,7 @@
 
 void help();
 bool is_argument(const std::string& arg);
-std::string _VERSION = "0.1.2";
+std::string _VERSION = "0.1.3";
 
 int main(int argc, char* argv[])
 {

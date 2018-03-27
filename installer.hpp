@@ -156,7 +156,7 @@ namespace Secundo
             chdir(o_dir.c_str());
 			if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
 
-			std::cout << "Save installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
+			std::cout << "\nSave installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
 			saveInstallFile(script_file, Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc");
 			std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
@@ -180,7 +180,7 @@ namespace Secundo
             chdir(o_dir.c_str());
             if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
 
-			std::cout << "Save installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
+			std::cout << "\nSave installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
 			saveInstallFile(script_file, Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc");
 			std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
@@ -203,7 +203,7 @@ namespace Secundo
 			std::string sc_script = Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc";
 			std::ifstream f(sc_script, std::ios::in);
 
-			std::cout << "Search for existing package file ... " << sc_script << std::endl;
+			std::cout << "\nSearch for existing package file ... " << sc_script << std::endl;
 
 			if (f.is_open())
 			{
@@ -217,7 +217,7 @@ namespace Secundo
 	            chdir(o_dir.c_str());
 	            if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
 
-				std::cout << "Save installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
+				std::cout << "\nSave installer file to ... " << Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc" << std::endl;
 				saveInstallFile(script_file, Runtime.PackageFileDirectory+package.user+"_"+package.name+".sc");
 				std::cout << "Finished" << std::endl;
 	            clean(o_dir, rem);
