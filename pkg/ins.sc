@@ -12,7 +12,6 @@ func install {<[
 
 func remove {
 	sudo rm /usr/bin/secpm
-	sudo rm -rf /usr/share/secundo/
 }
 
 func update {
