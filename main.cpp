@@ -10,7 +10,8 @@ std::string _VERSION = "0.1.4";
 int main(int argc, char* argv[])
 {
 	Secundo::Installer.init();
-    Secundo::Runtime.initLV();
+	Secundo::Runtime.initLV();
+    chdir("/");
 
     for (int i = 1; i < argc; i++)
     {
@@ -57,6 +58,12 @@ int main(int argc, char* argv[])
                 help();
             }
         }
+		else if (arg == "quiet")
+		{
+			std::cout << ">> Quiet mode activated." << std::endl;
+			Secundo::Runtime.quiet = " > /dev/null";
+			Secundo::Runtime.git_quiet = " --quiet";
+		}
 		else if (arg == "version" || arg == "-v" || arg == "--version" || arg == "ver")
         {
             std::cout << _VERSION << std::endl;
@@ -233,30 +240,30 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < Secundo::Global.getInstallLocalPackages().size(); i++)
     {
-        std::cout << ">> Installing Local Directory " << Secundo::Global.getInstallLocalPackages()[i] << "..." << std::endl;
+        std::cout << "============================================\n>> Installing Local Directory " << Secundo::Global.getInstallLocalPackages()[i] << "..." << std::endl;
         Secundo::Installer.install_local(Secundo::Global.getInstallLocalPackages()[i]);
         std::cout << ">> Finished!" << std::endl;
     }
 
     for (int i = 0; i < Secundo::Global.getInstallingPackages().size(); i++)
     {
-        std::cout << ">> Installing " << Secundo::Global.getInstallingPackages()[i].user << "'s " << Secundo::Global.getInstallingPackages()[i].name << "..." << std::endl;
+        std::cout << "============================================\n>> Installing " << Secundo::Global.getInstallingPackages()[i].user << "'s " << Secundo::Global.getInstallingPackages()[i].name << "..." << std::endl;
         Secundo::Installer.install(Secundo::Global.getInstallingPackages()[i]);
-        std::cout << ">> Finished!" << std::endl;
+		std::cout << ">> Finished!" << std::endl << std::endl;
     }
 
     for (int i = 0; i < Secundo::Global.getRemovingPackages().size(); i++)
     {
-        std::cout << ">> Remove " << Secundo::Global.getRemovingPackages()[i].user << "'s " << Secundo::Global.getRemovingPackages()[i].name << "..." << std::endl;
+        std::cout << "============================================\n>> Remove " << Secundo::Global.getRemovingPackages()[i].user << "'s " << Secundo::Global.getRemovingPackages()[i].name << "..." << std::endl;
         Secundo::Installer.remove(Secundo::Global.getRemovingPackages()[i]);
-        std::cout << ">> Finished!" << std::endl;
+		std::cout << ">> Finished!" << std::endl << std::endl;
     }
 
     for (int i = 0; i < Secundo::Global.getUpdatingPackages().size(); i++)
     {
-        std::cout << ">> Updating " << Secundo::Global.getUpdatingPackages()[i].user << "'s " << Secundo::Global.getUpdatingPackages()[i].name << "..." << std::endl;
+        std::cout << "============================================\n>> Updating " << Secundo::Global.getUpdatingPackages()[i].user << "'s " << Secundo::Global.getUpdatingPackages()[i].name << "..." << std::endl;
         Secundo::Installer.update(Secundo::Global.getUpdatingPackages()[i]);
-        std::cout << ">> Finished!" << std::endl;
+		std::cout << ">> Finished!" << std::endl << std::endl;
     }
 
 	Secundo::Runtime.saveTrusters();
@@ -264,19 +271,21 @@ int main(int argc, char* argv[])
 
 bool is_argument(const std::string& arg)
 {
-	if (std::string(arg) == "ins" &&
-		std::string(arg) == "install" &&
-		std::string(arg) == "remove" &&
-		std::string(arg) == "rem" &&
-		std::string(arg) == "update" &&
-		std::string(arg) == "up" &&
-		std::string(arg) == "user" &&
-		std::string(arg) == "us" &&
-		std::string(arg) == "local" &&
-		std::string(arg) == "trust" &&
-		std::string(arg) == "untrust" &&
-		std::string(arg) == "showtrust")
+	if (std::string(arg) == "ins" ||
+		std::string(arg) == "install" ||
+		std::string(arg) == "remove" ||
+		std::string(arg) == "rem" ||
+		std::string(arg) == "update" ||
+		std::string(arg) == "up" ||
+		std::string(arg) == "user" ||
+		std::string(arg) == "us" ||
+		std::string(arg) == "local" ||
+		std::string(arg) == "trust" ||
+		std::string(arg) == "untrust" ||
+		std::string(arg) == "showtrust" ||
+		std::string(arg) == "quiet")
 		return true;
+
 	return false;
 }
 
