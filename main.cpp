@@ -292,20 +292,27 @@ bool is_argument(const std::string& arg)
 void help()
 {
     std::cout << "Secundo Package Manager - v" << _VERSION << std::endl;
+	
     std::cout << "\nOptions:" << std::endl;
-    std::cout << "\t install <user>:<package> - installs a package from the choosed repository of a user" << std::endl;
-    std::cout << "\t update <user>:<package>  - updates a package from the choosed repository of a user" << std::endl;
+    std::cout << "     install <user>:<package> - installs a package from the choosed repository of a user" << std::endl;
+    std::cout << "     update <user>:<package>  - updates a package from the choosed repository of a user" << std::endl;
 
-    std::cout << "\t update all               - updates all installed packages (only works for packages,\n"
-			  << "\t                            installed with version 0.1.4 or above)" << std::endl;
+    std::cout << "     update all               - updates all installed packages (only works for packages,\n"
+			  << "                                installed with version 0.1.4 or above)" << std::endl;
 
-    std::cout << "\t remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
-    std::cout << "\t local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
-	std::cout << "\t trust <user>             - you will not get questions (like *1 or *2) about projects" << std::endl;
-	std::cout << "\t                            from this user, only do it if you are really sure!" << std::endl;
-	std::cout << "\t untrust <user>           - remove user from trusted users" << std::endl;
+    std::cout << "     remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
+    std::cout << "     local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
+
+	std::cout << "     trust <user>             - you will not get questions (like *1 or *2) about projects" << std::endl;
+	std::cout << "                                from this user, only do it if you are really sure!" << std::endl;
+
+	std::cout << "     untrust <user>           - remove user from trusted users" << std::endl;
 	std::cout << std::endl;
-	std::cout << "\t *1 Are you really?" << std::endl;
-	std::cout << "\t *2 Do you want to see the build file?" << std::endl;
+
+	std::cout << "     > sudo secpm quiet [...] - there will be no output from the installer scripts" << std::endl;
+
+	std::cout << std::endl;
+	std::cout << " *1 - Are you really?" << std::endl;
+	std::cout << " *2 - Do you want to see the build file?" << std::endl;
     exit(1);
 }
