@@ -5,7 +5,7 @@
 
 void help();
 bool is_argument(const std::string& arg);
-std::string _VERSION = "0.1.3";
+std::string _VERSION = "0.1.4";
 
 int main(int argc, char* argv[])
 {
@@ -286,6 +286,10 @@ void help()
     std::cout << "\nOptions:" << std::endl;
     std::cout << "\t install <user>:<package> - installs a package from the choosed repository of a user" << std::endl;
     std::cout << "\t update <user>:<package>  - updates a package from the choosed repository of a user" << std::endl;
+
+    std::cout << "\t update all               - updates all installed packages (only works for packages,\n" <<
+			  << "\t                            installed with version 0.1.4 or above)" << std::endl;
+
     std::cout << "\t remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
     std::cout << "\t local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
 	std::cout << "\t trust <user>             - you will not get questions (like *1 or *2) about projects" << std::endl;
