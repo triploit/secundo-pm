@@ -287,7 +287,7 @@ void help()
     std::cout << "\t install <user>:<package> - installs a package from the choosed repository of a user" << std::endl;
     std::cout << "\t update <user>:<package>  - updates a package from the choosed repository of a user" << std::endl;
 
-    std::cout << "\t update all               - updates all installed packages (only works for packages,\n" <<
+    std::cout << "\t update all               - updates all installed packages (only works for packages,\n"
 			  << "\t                            installed with version 0.1.4 or above)" << std::endl;
 
     std::cout << "\t remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
