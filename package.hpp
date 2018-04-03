@@ -12,6 +12,8 @@ public:
 		this->user = user;
 		this->name = package;
 	}
+
+	Package() {}
 };
 
 #endif

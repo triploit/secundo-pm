@@ -37,16 +37,16 @@ namespace Secundo
 			std::string user = getenv("USER");
 
 			#ifdef _WIN32 || _WIN64
-			user = "none"
-			TrustFile = AppData+"\\secpm_trustings.conf";
-			TrustFile = AppData+"\\pkg_files\\";
-            AppData = std::string(getenv("AppData"));
+				user = "none"
+				TrustFile = AppData+"\\secpm_trustings.conf";
+				PackageFileDirectory = AppData+"\\pkg_files\\";
+	            AppData = std::string(getenv("AppData"));
 			#else
-			if (user != "root")
-			{
-				std::cout << "Error: You must be root to use this programm!" << std::endl;
-				exit(1);
-			}
+				if (user != "root")
+				{
+					std::cout << "Error: You must be root to use this programm!" << std::endl;
+					exit(1);
+				}
 			#endif
 
 			loadTrust();

@@ -14,6 +14,7 @@
 
 #include "global.hpp"
 #include "lang.hpp"
+#include "package.hpp"
 
 namespace Secundo
 {
@@ -119,6 +120,7 @@ namespace Secundo
                 mkdir(std::string("C:\\Program Files (x86)\\Secundo Software").c_str());
             #else
                 mkdir("/usr/share/secundo", 755);
+                mkdir("/usr/share/secundo/pkg_files", 755);
             #endif
 
             user = Secundo::Global.getUser();
@@ -161,6 +163,46 @@ namespace Secundo
 			std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
         }
+
+		void update_all()
+		{
+			std::vector<Package> packages;
+			std::string user;
+			std::string name;
+			std::string path = Secundo::Runtime.PackageFileDirectory;
+
+			DIR *dir;
+			struct dirent *ent;
+
+			if ((dir = opendir (Secundo::Runtime.PackageFileDirectory.c_str())) != NULL)
+			{
+				while ((ent = readdir (dir)) != NULL)
+				{
+					tri::string s = ent->d_name;
+
+					if (s.at(0) == '.')
+						continue;
+
+					user = s.split('_')[0].cxs();
+					name = s.cxs().substr(user.size()+1, s.cxs().size());
+					name = name.substr(0, name.size()-3);
+
+					packages.push_back(Package(user, name));
+				}
+
+				closedir (dir);
+			}
+			else
+			{
+				std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
+				return;
+			}
+
+			for (Package package : packages)
+			{
+				update(package);
+			}
+		}
 
         void update(const Package& package)
         {

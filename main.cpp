@@ -9,6 +9,7 @@ std::string _VERSION = "0.1.3";
 
 int main(int argc, char* argv[])
 {
+	Secundo::Installer.init();
     Secundo::Runtime.initLV();
 
     for (int i = 1; i < argc; i++)
@@ -119,6 +120,10 @@ int main(int argc, char* argv[])
 						package = tri::string(argv[i+1]).split(':')[1];
 
 	                    Secundo::Global.addUpdatingPackage(Package(user.cxs(), package.cxs()));
+					}
+					else if (std::string(argv[i+1]) == "all")
+					{
+						Secundo::Installer.update_all();
 					}
 					else
 					{
