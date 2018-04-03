@@ -57,6 +57,9 @@ namespace Secundo
 
         void execute(const std::vector<Token>& v)
         {
+			Tokens.clear();
+			RealTokens.clear();
+
             Tokens = v;
             putTogether();
         }

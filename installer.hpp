@@ -77,7 +77,7 @@ namespace Secundo
         {
             if (!local)
 			{
-				if (system(std::string("git clone https://github.com/"+package.user+"/"+package.name+".git "+o_dir).c_str()) != 0)
+				if (system(std::string("git clone https://github.com/"+package.user+"/"+package.name+".git "+o_dir+" "+Secundo::Runtime.git_quiet).c_str()) != 0)
 	            {
 	                std::cout << "ERROR AT: git clone https://github.com/"+package.user+"/"+package.name+".git "+o_dir <<
 					std::endl << std::endl << "Error! Check this out:" << std::endl;
@@ -200,7 +200,13 @@ namespace Secundo
 
 			for (Package package : packages)
 			{
+				std::cout << "============================================\n>> Updating " << package.user << "'s " << package.name << "..." << std::endl;
+		        init();
+				Secundo::Runtime.initLV();
+			    chdir("/");
+
 				update(package);
+		        std::cout << ">> Finished!" << std::endl << std::endl;
 			}
 		}
 

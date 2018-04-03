@@ -21,6 +21,8 @@ namespace Secundo
         std::string MainFunction = "install";
         std::string M_Line;
         std::string M_Code;
+		std::string quiet = "";
+		std::string git_quiet = "";
 
         std::vector<Token> Tokens;
         std::vector<std::string> DeletingFiles;

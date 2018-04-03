@@ -16,6 +16,7 @@ namespace Secundo
     private:
         void fileRead(std::string __file)
         {
+			Runtime.M_Code = "";
             std::ifstream _file(__file);
 
             if (_file.is_open())
@@ -37,15 +38,19 @@ namespace Secundo
     public:
         void run(const std::string& script, const std::string& main_function)
         {
+			Functions.clearFunctions();
             Secundo::Runtime.MainFunction = main_function;
             fileRead(script);
-            Executor.execute(Secundo::Tokenizer.tokenize(Runtime.M_Code));
 
+            Executor.execute(Secundo::Tokenizer.tokenize(Runtime.M_Code));
             Functions.runFunction(Runtime.MainFunction);
+
             for (int i = 0; i < Runtime.DeletingFiles.size(); i++)
             {
                 remove(Runtime.DeletingFiles[i].c_str());
             }
+
+			Functions.clearFunctions();
         }
     } Seclang;
 }

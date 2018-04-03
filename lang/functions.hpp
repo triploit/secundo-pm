@@ -71,12 +71,18 @@ namespace Secundo
                         command = fname;
                     #endif
 
-                    system(command.c_str());
+                    system(std::string(command+Secundo::Runtime.quiet).c_str());
                     Runtime.DeletingFiles.push_back(fname);
                 }
-                else system(v[i].c_str());
+                else system(std::string(v[i]+Secundo::Runtime.quiet).c_str());
             }
         }
+
+		void clearFunctions()
+		{
+			functions.clear();
+			functions = std::vector<Function>();
+		}
 
         Function getFunction(std::string func)
         {

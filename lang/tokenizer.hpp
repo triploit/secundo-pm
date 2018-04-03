@@ -19,6 +19,7 @@ namespace Secundo
         std::vector<Token> tokenize(std::string code)
         {
             code = tri::string(code).trim().cxs();
+			Tokens.clear();
 
             bool str = false;
             bool scope = false;
