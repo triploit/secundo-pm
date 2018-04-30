@@ -116,6 +116,33 @@ namespace Secundo
             dst << src.rdbuf();
         }
 
+        void check_secundo(const Package &pkg)
+        {
+           /* std::string _NULL = " > /dev/null";
+
+#ifdef _WIN32 || _WIN64
+            _NULL = "> NUL";
+#endif
+
+            if (system(std::string("curl --help"+_NULL).c_str()) != 0)
+            {
+                std::cout << "error: curl wasn't found on the system.\ntake a look at https://curl.haxx.se/, install curl and add it to the system path." << std::endl;
+                exit(1);
+            }
+
+            if (system(std::string("curl https://github.com/"+pkg.user+"/"+pkg.name+_NULL).c_str()) != 0)
+            {
+                std::cout << "error: repository not found: " << "https://github.com/"+pkg.user+"/"+pkg.name << std::endl;
+                exit(1);
+            }
+
+            if (system(std::string("curl https://github.com/"+pkg.user+"/"+pkg.name+"/raw/master/pkg/ins.sc"+_NULL).c_str()) != 0)
+            {
+                std::cout << "============================================\nerror while installing packages: the package is not a secundo package.\n(pkg/ins.sc missing)" << std::endl;
+                exit(1);
+            }*/
+        }
+
     public:
         void init()
         {
@@ -146,6 +173,10 @@ namespace Secundo
 
         void install(const Package &package)
         {
+            std::cout << ">> Checking if Secundo-Package." << std::endl;
+            check_secundo(package);
+            std::cout << ">> Finished. It is." << std::endl;
+
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
             std::string main_ = "install";
@@ -218,6 +249,10 @@ namespace Secundo
 
         void update(const Package &package)
         {
+            std::cout << ">> Checking if Secundo-Package." << std::endl;
+            check_secundo(package);
+            std::cout << ">> Finished. It is." << std::endl;
+
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
             std::string main_ = "update";
@@ -243,6 +278,10 @@ namespace Secundo
 
         void remove(const Package &package)
         {
+            std::cout << ">> Checking if Secundo-Package." << std::endl;
+            check_secundo(package);
+            std::cout << ">> Finished. It is." << std::endl;
+
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
             std::string main_ = "remove";
