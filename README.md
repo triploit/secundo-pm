@@ -13,8 +13,9 @@ Lasst uns ihn folgendermaßen auf Linux installieren:
 ```bash
 git clone https://github.com/triploit/secundo-pm
 cd secundo-pm
+cmake .
 make
-./secpm install secpm
+./secpm install secundo-pm
 cd ..
 rm -rf secundo-pm
 ```
@@ -183,8 +184,9 @@ Let's install it. This is the hardest part:
 ```bash
 git clone https://github.com/triploit/secundo-pm
 cd secundo-pm
+cmake .
 make
-./secpm install secpm
+./secpm install secundo-pm
 cd ..
 rm -rf secundo-pm
 ```
