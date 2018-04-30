@@ -15,7 +15,7 @@ git clone https://github.com/triploit/secundo-pm
 cd secundo-pm
 cmake .
 make
-./secpm install secundo-pm
+./secpm install triploit:secundo-pm
 cd ..
 rm -rf secundo-pm
 ```
@@ -186,7 +186,7 @@ git clone https://github.com/triploit/secundo-pm
 cd secundo-pm
 cmake .
 make
-./secpm install secundo-pm
+./secpm install triploit:secundo-pm
 cd ..
 rm -rf secundo-pm
 ```
