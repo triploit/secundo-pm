@@ -248,7 +248,7 @@ void help() {
     std::cout << "     > sudo secpm quiet [...] - there will be no output from the installer scripts" << std::endl;
 
     std::cout << std::endl;
-    std::cout << " *1 - Are you really?" << std::endl;
+    std::cout << " *1 - Are you really sure?" << std::endl;
     std::cout << " *2 - Do you want to see the build file?" << std::endl;
     exit(1);
 }
