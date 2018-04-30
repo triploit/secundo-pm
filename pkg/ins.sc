@@ -1,13 +1,14 @@
 func install {<[
-	g++ -w main.cpp -o a.out -static -std=c++11
-	chmod +x a.out
+    cmake .
+    make
+	chmod +x secundo_pm
 
 	if [ ! -d "/usr/share/secundo" ]; then
 		mkdir /usr/share/secundo
 		mkdir /usr/share/secundo/pkg_files
 	fi
 
-	sudo mv a.out /usr/bin/secpm
+	sudo mv secundo_pm /usr/bin/secpm
 ]>}
 
 func remove {

@@ -1,19 +1,16 @@
 #ifndef __PACKAGE_HPP
 #define __PACKAGE_HPP
 
-class Package
-{
+class Package {
 public:
-	std::string user;
-	std::string name;
+    std::string user{};
+    std::string name{};
 
-	Package(std::string user, std::string package)
-	{
-		this->user = user;
-		this->name = package;
-	}
+    Package(std::string p_user, std::string p_package) : user(p_user), name(p_package) {
+    }
 
-	Package() {}
+    Package() = default;
+
 };
 
 #endif
