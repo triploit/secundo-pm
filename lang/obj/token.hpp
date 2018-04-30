@@ -6,10 +6,8 @@
 #include "function.hpp"
 #include "../runtime.hpp"
 
-namespace Secundo
-{
-    class Token
-    {
+namespace Secundo {
+    class Token {
     private:
         std::string type;
         std::string value;
@@ -23,45 +21,37 @@ namespace Secundo
         std::string TYPE_OTHER = "oth";
         std::string TYPE_FUNCTION = "func";
 
-        Token(const std::string& val, const std::string& typ, const std::string& v = "")
-        {
+        Token(const std::string &val, const std::string &typ, const std::string &v = "") {
             value = val;
 
             if (typ != TYPE_STRING &&
                 typ != TYPE_INTEGER &&
                 typ != TYPE_COMMAND &&
                 typ != TYPE_SCOPE &&
-                typ != TYPE_OTHER&&
-                typ != TYPE_FUNCTION)
-            {
+                typ != TYPE_OTHER &&
+                typ != TYPE_FUNCTION) {
                 std::cout << "TOKEN: ERROR: FALSE_TYPE_ERROR: " << typ << std::endl;
                 exit(1);
-            }
-            else
-            {
+            } else {
                 type = typ;
             }
 
             uvalue = v;
         }
 
-        std::string getValue()
-        {
+        std::string getValue() {
             return value;
         }
 
-        std::string getType()
-        {
+        std::string getType() {
             return type;
         }
 
-        void setUValue(const std::string& v)
-        {
+        void setUValue(const std::string &v) {
             uvalue = v;
         }
 
-        std::string getUValue()
-        {
+        std::string getUValue() {
             return uvalue;
         }
 
