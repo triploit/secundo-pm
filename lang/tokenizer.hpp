@@ -8,13 +8,16 @@
 
 #include "runtime.hpp"
 
-namespace Secundo {
-    class Tokenizer {
+namespace Secundo
+{
+    class Tokenizer
+    {
     private:
         std::vector<Token> Tokens;
 
     public:
-        std::vector<Token> tokenize(std::string code) {
+        std::vector<Token> tokenize(std::string code)
+        {
             code = tri::string(code).trim().cxs();
             Tokens.clear();
 
@@ -23,10 +26,13 @@ namespace Secundo {
             std::string tmp;
             std::string type = "oth";
 
-            for (int i = 0; i < code.size(); i++) {
+            for (int i = 0; i < code.size(); i++)
+            {
                 // std::cout << ">> " << code[i] << std::endl;
-                if (code[i] == '\"' && !scope) {
-                    if (str) {
+                if (code[i] == '\"' && !scope)
+                {
+                    if (str)
+                    {
                         str = false;
 
                         if (tmp != "")
@@ -34,16 +40,22 @@ namespace Secundo {
 
                         tmp = "";
                         type = "oth";
-                    } else {
+                    }
+                    else
+                    {
                         type = TokenType.TYPE_STRING;
                         str = true;
                     }
-                } else if (code[i] == '{' && !str) {
+                }
+                else if (code[i] == '{' && !str)
+                {
                     // std::cout << "FUNCTIONBEGIN" << std::endl;
                     type = TokenType.TYPE_SCOPE;
                     scope = true;
                     continue;
-                } else if (code[i] == '}') {
+                }
+                else if (code[i] == '}')
+                {
                     // std::cout << "FUNCTIONEND" << std::endl;
                     scope = false;
 
@@ -55,9 +67,12 @@ namespace Secundo {
                     continue;
                 }
 
-                if (!str && !scope) {
-                    if (code[i] == ' ' || code[i] == '\n') {
-                        for (int j = i; j < code.size(); j++) {
+                if (!str && !scope)
+                {
+                    if (code[i] == ' ' || code[i] == '\n')
+                    {
+                        for (int j = i; j < code.size(); j++)
+                        {
                             if (code[(j + 1)] == ' ' || code[(j + 1)] == '\n')
                                 i = j + 1;
                             else
@@ -73,7 +88,9 @@ namespace Secundo {
                     }
 
                     tmp += code[i];
-                } else {
+                }
+                else
+                {
                     tmp += code[i];
                 }
             }
@@ -90,7 +107,8 @@ namespace Secundo {
             return Tokens;
         }
 
-        std::vector<std::string> scopeTokenizingToString(std::string code) {
+        std::vector<std::string> scopeTokenizingToString(std::string code)
+        {
             std::vector<std::string> toks;
             tri::string t = code;
             t = t.trim();
@@ -100,13 +118,17 @@ namespace Secundo {
             bool scope = false;
             std::string tmp;
 
-            for (int i = 0; i < code.size(); i++) {
-                if (code[i] == '<' && code[i + 1] == '[' && !str) {
+            for (int i = 0; i < code.size(); i++)
+            {
+                if (code[i] == '<' && code[i + 1] == '[' && !str)
+                {
                     i++;
                     // std::cout << "FUNCTIONBEGIN" << std::endl;
                     scope = true;
                     continue;
-                } else if (code[i] == ']' && code[i + 1] == '>' && !str) {
+                }
+                else if (code[i] == ']' && code[i + 1] == '>' && !str)
+                {
                     i++;
                     // std::cout << "FUNCTIONEND" << std::endl;
                     scope = false;
@@ -118,9 +140,12 @@ namespace Secundo {
                     continue;
                 }
 
-                if (!str && !scope) {
-                    if (code[i] == '\n') {
-                        for (int j = i; j < code.size(); j++) {
+                if (!str && !scope)
+                {
+                    if (code[i] == '\n')
+                    {
+                        for (int j = i; j < code.size(); j++)
+                        {
                             if (code[(j + 1)] == '\n')
                                 i = j + 1;
                             else
@@ -135,7 +160,9 @@ namespace Secundo {
                     }
 
                     tmp += code[i];
-                } else {
+                }
+                else
+                {
                     tmp += code[i];
                 }
             }

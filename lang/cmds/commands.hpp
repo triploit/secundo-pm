@@ -6,8 +6,10 @@
 #include "../obj/function.hpp"
 #include "../runtime.hpp"
 
-namespace Secundo {
-    class Commands {
+namespace Secundo
+{
+    class Commands
+    {
     } Commands;
 }
 

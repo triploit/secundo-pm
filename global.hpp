@@ -5,8 +5,10 @@
 #include <vector>
 #include "package.hpp"
 
-namespace Secundo {
-    class Global {
+namespace Secundo
+{
+    class Global
+    {
     private:
         std::string user = "triploit";
         std::vector<Package> removing_packages;
@@ -15,43 +17,53 @@ namespace Secundo {
         std::vector<Package> updating_packages;
 
     public:
-        void addInstallingPackage(const Package &p) {
+        void addInstallingPackage(const Package &p)
+        {
             installing_packages.push_back(p);
         }
 
-        void addInstallLocalPackage(const std::string &path) {
+        void addInstallLocalPackage(const std::string &path)
+        {
             local_packages.push_back(path);
         }
 
-        std::vector<std::string> getInstallLocalPackages() {
+        std::vector<std::string> getInstallLocalPackages()
+        {
             return local_packages;
         }
 
-        std::vector<Package> getInstallingPackages() {
+        std::vector<Package> getInstallingPackages()
+        {
             return installing_packages;
         }
 
-        void addRemovingPackage(const Package &p) {
+        void addRemovingPackage(const Package &p)
+        {
             removing_packages.push_back(p);
         }
 
-        std::vector<Package> getRemovingPackages() {
+        std::vector<Package> getRemovingPackages()
+        {
             return removing_packages;
         }
 
-        void addUpdatingPackage(const Package &p) {
+        void addUpdatingPackage(const Package &p)
+        {
             updating_packages.push_back(p);
         }
 
-        std::vector<Package> getUpdatingPackages() {
+        std::vector<Package> getUpdatingPackages()
+        {
             return updating_packages;
         }
 
-        void setUser(const std::string &name) {
+        void setUser(const std::string &name)
+        {
             user = name;
         }
 
-        std::string getUser() {
+        std::string getUser()
+        {
             return user;
         }
 

@@ -7,8 +7,10 @@
 #include "obj/token.hpp"
 #include "../exec.hpp"
 
-namespace Secundo {
-    class Runtime {
+namespace Secundo
+{
+    class Runtime
+    {
     public:
         int LineNumber = 1;
         int Index = 1;
@@ -31,10 +33,11 @@ namespace Secundo {
         std::string PackageFileDirectory = "";
         std::string TrustFile = "";
 
-        void initLV() {
+        void initLV()
+        {
             TrustFile = "/usr/share/secundo/secpm_trustings.conf";
             PackageFileDirectory = "/usr/share/secundo/pkg_files/";
-            std::string user = getenv("USER");
+            std::string user = exec("whoami");
 
 
 #ifdef _WIN32 || _WIN64
@@ -45,7 +48,8 @@ namespace Secundo {
 #else
             user = exec("whoami");
             user = user.substr(0, user.length() - 1);
-            if (user != "root") {
+            if (user != "root")
+            {
                 std::cout << "Error: You must be root to use this programm!" << std::endl;
                 exit(1);
             }
@@ -54,49 +58,62 @@ namespace Secundo {
             loadTrust();
         }
 
-        bool isTruster(const std::string &user) {
-            for (std::string t : trusted) {
+        bool isTruster(const std::string &user)
+        {
+            for (std::string t : trusted)
+            {
                 if (t == user) return true;
             }
 
             return false;
         }
 
-        void addTrusters(const std::string &t) {
+        void addTrusters(const std::string &t)
+        {
             if (!isTruster(t)) trusted.push_back(t);
         }
 
-        void removeTrusters(const std::string &t) {
-            for (int i = 0; i < trusted.size(); i++) {
+        void removeTrusters(const std::string &t)
+        {
+            for (int i = 0; i < trusted.size(); i++)
+            {
                 if (trusted[i] == t) trusted.erase(trusted.begin() + i);
             }
         }
 
 
-        bool regex_match(const std::string &str, const std::string &pattern) {
+        bool regex_match(const std::string &str, const std::string &pattern)
+        {
             std::smatch matches;
             return (std::regex_match(str, std::regex(pattern)));
         }
 
-        void saveTrusters() {
+        void saveTrusters()
+        {
             std::ofstream afile(TrustFile);
 
-            for (std::string t : trusted) {
+            for (std::string t : trusted)
+            {
                 afile << t << std::endl;
             }
             afile.close();
         }
 
-        void loadTrust() {
+        void loadTrust()
+        {
             std::ifstream afile(TrustFile, std::ios::in);
 
-            if (afile.is_open()) {
+            if (afile.is_open())
+            {
                 std::string line;
-                while (std::getline(afile, line)) {
+                while (std::getline(afile, line))
+                {
                     trusted.push_back(line);
                 }
                 afile.close();
-            } else {
+            }
+            else
+            {
                 std::cout << "Warning: Unable to open trust-file.\n";
             }
         }

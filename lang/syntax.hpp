@@ -8,8 +8,10 @@
 
 #include "runtime.hpp"
 
-namespace Secundo {
-    class SyntaxCheck {
+namespace Secundo
+{
+    class SyntaxCheck
+    {
     private:
         std::vector<std::vector<std::regex>> COMMANDS =
                 {
@@ -28,25 +30,32 @@ namespace Secundo {
                 };
 
     public:
-        int isValidLine(tri::string command) {
+        int isValidLine(tri::string command)
+        {
             int nice = 0;
             std::smatch matches;
             std::string cmd = command.cxs();
 
-            for (int i = 0; i < COMMANDS.size(); i++) {
-                if (std::regex_match(cmd, matches, COMMANDS[i][0])) {
+            for (int i = 0; i < COMMANDS.size(); i++)
+            {
+                if (std::regex_match(cmd, matches, COMMANDS[i][0]))
+                {
                     nice++;
 
-                    for (int j = 1; j < COMMANDS[i].size(); j++) {
-                        if (std::regex_match(cmd, matches, COMMANDS[i][j])) {
+                    for (int j = 1; j < COMMANDS[i].size(); j++)
+                    {
+                        if (std::regex_match(cmd, matches, COMMANDS[i][j]))
+                        {
                             Secundo::Runtime.CommandType = COMMAND_NAME[i];
                             nice++;
                             return 0;
                         }
                     }
 
-                    if (COMMANDS[i].size() == 1) {
-                        if (std::regex_match(cmd, matches, COMMANDS[i][0])) {
+                    if (COMMANDS[i].size() == 1)
+                    {
+                        if (std::regex_match(cmd, matches, COMMANDS[i][0]))
+                        {
                             Secundo::Runtime.CommandType = COMMAND_NAME[i];
                             nice++;
                             return 0;
@@ -54,7 +63,9 @@ namespace Secundo {
                     }
 
                     return 1;
-                } else {
+                }
+                else
+                {
                     // std::cout << "\"" << cmd << "\" != \"" << matches.str() << "\"" << std::endl;
                 }
             }

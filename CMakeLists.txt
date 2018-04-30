@@ -4,7 +4,7 @@ project(secundo_pm)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(
-        secundo_pm
+        secpm
         lang/cmds/commands.hpp
         lang/obj/command.hpp
         lang/obj/function.hpp

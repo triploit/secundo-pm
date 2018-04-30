@@ -16,30 +16,36 @@
 #include "lang.hpp"
 #include "package.hpp"
 
-namespace Secundo {
-    class Installer {
+namespace Secundo
+{
+    class Installer
+    {
     private:
         std::string user;
 
-        bool security(std::string script_file, const Package &p) {
+        bool security(std::string script_file, const Package &p)
+        {
             if (Runtime.isTruster(p.user))
                 return true;
 
             std::string ans = "";
             std::cout << "Do you want to see the build file? [y/n] ";
 
-            while (ans != "y" && ans != "Y" && ans != "n" && ans != "N") {
+            while (ans != "y" && ans != "Y" && ans != "n" && ans != "N")
+            {
                 if (ans != "")
                     std::cout << "Pleasye type 'y' or 'n'!";
                 std::getline(std::cin, ans);
 
-                if (ans == "n" || ans == "N") {
+                if (ans == "n" || ans == "N")
+                {
                     std::cout << "Ok." << std::endl;
                     break;
                 }
             }
 
-            if (ans == "y" || ans == "Y") {
+            if (ans == "y" || ans == "Y")
+            {
                 std::ifstream t(script_file);
                 std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 
@@ -51,12 +57,14 @@ namespace Secundo {
             ans = "";
             std::cout << "Are you really sure? [y/n] ";
 
-            while (ans != "y" && ans != "Y") {
+            while (ans != "y" && ans != "Y")
+            {
                 if (ans != "")
                     std::cout << "Pleasye type 'y' or 'n'!";
                 std::getline(std::cin, ans);
 
-                if (ans == "n" || ans == "N") {
+                if (ans == "n" || ans == "N")
+                {
                     std::cout << "Ok. Abort." << std::endl;
                     return false;
                 }
@@ -65,11 +73,14 @@ namespace Secundo {
             return true;
         }
 
-        void clone(const Package &package, std::string o_dir, bool local) {
-            if (!local) {
+        void clone(const Package &package, std::string o_dir, bool local)
+        {
+            if (!local)
+            {
                 if (system(std::string(
                         "git clone https://github.com/" + package.user + "/" + package.name + ".git " + o_dir + " " +
-                        Secundo::Runtime.git_quiet).c_str()) != 0) {
+                        Secundo::Runtime.git_quiet).c_str()) != 0)
+                {
                     std::cout
                             << "ERROR AT: git clone https://github.com/" + package.user + "/" + package.name + ".git " +
                                o_dir <<
@@ -83,9 +94,11 @@ namespace Secundo {
             }
         }
 
-        void clean(const std::string &o_dir, const std::string &rem) {
+        void clean(const std::string &o_dir, const std::string &rem)
+        {
             std::cout << ">> Cleaning " << o_dir << "..." << std::endl;
-            if (system(std::string(rem + " " + o_dir).c_str()) != 0) {
+            if (system(std::string(rem + " " + o_dir).c_str()) != 0)
+            {
                 std::cout << "Error! Check this out:" << std::endl;
                 std::cout << "\t- is git installed?" << std::endl;
                 std::cout << "\t- does the repository exist?" << std::endl;
@@ -95,7 +108,8 @@ namespace Secundo {
             }
         }
 
-        void saveInstallFile(std::string from, std::string to) {
+        void saveInstallFile(std::string from, std::string to)
+        {
             std::ifstream src(from, std::ios::binary);
             std::ofstream dst(to, std::ios::binary);
 
@@ -103,7 +117,8 @@ namespace Secundo {
         }
 
     public:
-        void init() {
+        void init()
+        {
 #ifdef _WIN32 || _WIN64
             mkdir(std::string("\""+Runtime.AppData+"\\secundo\"").c_str());
             mkdir(std::string("C:\\Program Files (x86)\\Secundo Software").c_str());
@@ -115,7 +130,8 @@ namespace Secundo {
             user = Secundo::Global.getUser();
         }
 
-        void install_local(const std::string &path) {
+        void install_local(const std::string &path)
+        {
             chdir(path.c_str());
             std::string main_ = "install";
             std::string script_file = path + "/pkg/ins.sc";
@@ -128,7 +144,8 @@ namespace Secundo {
             if (security(script_file, Package("", ""))) Secundo::Seclang.run(script_file, main_);
         }
 
-        void install(const Package &package) {
+        void install(const Package &package)
+        {
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
             std::string main_ = "install";
@@ -152,7 +169,8 @@ namespace Secundo {
             clean(o_dir, rem);
         }
 
-        void update_all() {
+        void update_all()
+        {
             std::vector<Package> packages;
             std::string user;
             std::string name;
@@ -161,8 +179,10 @@ namespace Secundo {
             DIR *dir;
             struct dirent *ent;
 
-            if ((dir = opendir(Secundo::Runtime.PackageFileDirectory.c_str())) != NULL) {
-                while ((ent = readdir(dir)) != NULL) {
+            if ((dir = opendir(Secundo::Runtime.PackageFileDirectory.c_str())) != NULL)
+            {
+                while ((ent = readdir(dir)) != NULL)
+                {
                     tri::string s = ent->d_name;
 
                     if (s.at(0) == '.')
@@ -176,12 +196,15 @@ namespace Secundo {
                 }
 
                 closedir(dir);
-            } else {
+            }
+            else
+            {
                 std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
                 return;
             }
 
-            for (Package package : packages) {
+            for (Package package : packages)
+            {
                 std::cout << "============================================\n>> Updating " << package.user << "'s "
                           << package.name << "..." << std::endl;
                 init();
@@ -193,7 +216,8 @@ namespace Secundo {
             }
         }
 
-        void update(const Package &package) {
+        void update(const Package &package)
+        {
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
             std::string main_ = "update";
@@ -217,7 +241,8 @@ namespace Secundo {
             clean(o_dir, rem);
         }
 
-        void remove(const Package &package) {
+        void remove(const Package &package)
+        {
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
             std::string main_ = "remove";
@@ -235,10 +260,13 @@ namespace Secundo {
 
             std::cout << "\nSearch for existing package file ... " << sc_script << std::endl;
 
-            if (f.is_open()) {
+            if (f.is_open())
+            {
                 std::cout << "Found ... running script." << std::endl << std::endl;
                 if (security(script_file, package)) Secundo::Seclang.run(sc_script, main_);
-            } else {
+            }
+            else
+            {
                 std::cout << "Not found... cloning repository." << std::endl << std::endl;
                 clone(package, o_dir, false);
                 chdir(o_dir.c_str());
