@@ -105,6 +105,22 @@ func install {<[
 ]>}
 ```
 
+Außerdem ist es möglich Abhängikeiten zu definieren. Beispielsweise benötigt das Projekt aml_server das Paket aml, um zu funktionieren. Da aml und aml_server beides SecPM-Pakete sind, können wir einfach folgendes machen: Wir schreiben am Anfang der Installer-Datei folgendes:
+
+```
+dep triploit:aml
+```
+
+`dep` steht für "Dependency", was "Abhängigkeit" bedeutet. Wie bei der Nutzung von SecPM gilt bei den Paketnamen: user:projekt. 
+aml_server ist daher von aml Abhängig. Ist das Programm aml dann nicht installiert, installiert SecPM dieses. Wenn man mehrere Abhängigkeiten hat, kann man folgendes machen:
+
+```
+dep user:projekt1
+dep user:projekt_abc
+dep user_b:projekt5e
+...
+```
+
 ## Pakete installieren, entfernen, ...
 
 ### Installation
@@ -274,6 +290,22 @@ func install {<[
     i="Hallo Welt!";
     echo $i;
 ]>}
+```
+
+Also it's possible to define dependencies. For example: The project aml_server needs the package aml to work. Because both are SecPM packages, it's possible to add this at the top of the installer file:
+
+```
+dep triploit:aml
+```
+
+`dep` means "dependency". Like down below, the rule is: user:project.
+Is the program aml not installed, SecPM will install it. When you have more than one dependencies, you can write this:
+
+```
+dep user:project1
+dep user:project_abc
+dep user_b:project5e
+...
 ```
 
 ## Installing, updating and removing packages

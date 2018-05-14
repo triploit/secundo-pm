@@ -8,6 +8,7 @@ secpm
 .idea
 .nohup
 .fuse*
+.vscode
 
 
 cmake_install.cmake
