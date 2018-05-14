@@ -159,9 +159,10 @@ namespace Secundo
 
         void install_local(const std::string &path)
         {
-            chdir(path.c_str());
+            chdir(std::string(Runtime.cPath+"/"+path).c_str());
+
             std::string main_ = "install";
-            std::string script_file = path + "/pkg/ins.sc";
+            std::string script_file = "./pkg/ins.sc";
 
 #ifdef _WIN32 || _WIN64
             main_ = "install_win";
@@ -169,6 +170,7 @@ namespace Secundo
 #endif
 
             if (security(script_file, Package("", ""))) Secundo::Seclang.run(script_file, main_);
+            chdir("/");
         }
 
         void install(const Package &package)

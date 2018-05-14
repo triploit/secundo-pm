@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "tstring.hpp"
 #include "lang/functions.hpp"
 #include "lang/tokenizer.hpp"
 #include "lang/syntax.hpp"
@@ -30,7 +31,7 @@ namespace Secundo
             }
             else
             {
-                std::cout << "ERROR: FATAL_ERROR: INSTALL-FILE(" << __file << ") NOT FOUND!" << std::endl;
+                std::cout << "ERROR: FATAL_ERROR: INSTALL-FILE (" << __file << ") NOT FOUND!" << std::endl;
                 exit(1);
             }
         }
@@ -41,8 +42,51 @@ namespace Secundo
             Functions.clearFunctions();
             Secundo::Runtime.MainFunction = main_function;
             fileRead(script);
+            bool found = false;
 
             Executor.execute(Secundo::Tokenizer.tokenize(Runtime.M_Code));
+
+            if (Runtime.MainFunction != "remove" || Runtime.MainFunction != "remove_win")
+            {
+                for (std::string dep : Runtime.Dependencies)
+                {
+                    std::string user = tri::string(dep).split(':')[0].cxs();
+                    std::string pkgn = tri::string(dep).split(':')[1].cxs();
+
+                    DIR *dir;
+                    struct dirent *ent;
+
+                    if ((dir = opendir(Secundo::Runtime.PackageFileDirectory.c_str())) != NULL)
+                    {
+                        while ((ent = readdir(dir)) != NULL)
+                        {
+                            tri::string s = ent->d_name;
+
+                            if (s.at(0) == '.')
+                                continue;
+
+                            if ((user+"_"+pkgn+".sc") == s.cxs())
+                            {
+                                found = true;
+                            }
+                        }
+
+                        closedir(dir);
+                    }
+                    else
+                    {
+                        std::cout << ">> There was an error! Directory for the package-files (/usr/share/secundo/pkg_files) not found!" << std::endl;
+                        exit(1);
+                    }
+
+                    if (!found)
+                    {
+                        std::cout << ">>>>>>>>>>>>>>>>> Installing dependency: " << user << ":" << pkgn << std::endl;
+                        Secundo::Global.addInstallingPackage(Package(user, pkgn));
+                    }                    
+                }
+            }
+
             Functions.runFunction(Runtime.MainFunction);
 
             for (int i = 0; i < Runtime.DeletingFiles.size(); i++)

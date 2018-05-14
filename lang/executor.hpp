@@ -37,6 +37,21 @@ namespace Secundo
                     }
                     i += 2;
                 }
+                else if (value == "dep" && (i+1) < Tokens.size())
+                {
+                    if (Tokens[i + 1].getType() == TokenType.TYPE_OTHER)
+                    {
+                        Runtime.Dependencies.push_back(Tokens[i + 1].getValue());
+                    }
+                    else
+                    {
+                        std::cout << "EXECUTOR: PUT_TOGETHER: DEPENDENCY " << Tokens[i + 1].getValue()
+                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        exit(1);
+                    }
+
+                    i++;
+                }
                 else
                 {
                     std::cout << "EXECUTOR: PUT_TOGETHER: ERROR: FATAL_ERROR: Syntax error!" << std::endl;

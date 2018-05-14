@@ -7,12 +7,16 @@ void help();
 
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.4";
+std::string _VERSION = "0.1.5";
 
 int main(int argc, char *argv[])
 {
     Secundo::Installer.init();
     Secundo::Runtime.initLV();
+    char s[1024];
+    getcwd(s, 1024);
+    Secundo::Runtime.cPath = s;
+
     chdir("/");
 
     for (int i = 1; i < argc; i++)

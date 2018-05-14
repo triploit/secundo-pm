@@ -24,9 +24,11 @@ namespace Secundo
         std::string M_Code;
         std::string quiet = "";
         std::string git_quiet = "";
+        std::string cPath;
 
         std::vector<Token> Tokens;
         std::vector<std::string> DeletingFiles;
+        std::vector<std::string> Dependencies;
         std::vector<std::string> trusted;
 
         std::string AppData = "";
