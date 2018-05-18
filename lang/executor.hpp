@@ -16,8 +16,15 @@ namespace Secundo
         std::vector<Token> Tokens;
         std::vector<Token> RealTokens;
 
-        void putTogether()
+        Package putTogether()
         {
+            Functions fs;
+            Version v;
+            Dependencies dp;
+
+            std::string name;
+            std::string user;
+
             for (int i = 0; i < Tokens.size(); i++)
             {
                 std::string value = Tokens[i].getValue();
@@ -37,11 +44,21 @@ namespace Secundo
                     }
                     i += 2;
                 }
-                else if (value == "dep" && (i+1) < Tokens.size())
+                else if (value == "dep" && (i+3) < Tokens.size())
                 {
-                    if (Tokens[i + 1].getType() == TokenType.TYPE_OTHER)
+                    std::cout << "AHA!" << std::endl;
+
+                    if (Tokens[i + 1].getType() == TokenType.TYPE_OTHER &&
+                        Tokens[i + 2].getType() == TokenType.TYPE_OTHER &&
+                        Tokens[i + 3].getType() == TokenType.TYPE_OTHER)
                     {
-                        Runtime.Dependencies.push_back(Tokens[i + 1].getValue());
+                        Dependency d;
+                        
+                        d.user = Tokens[i+1].getValue();
+                        d.name = Tokens[i+2].getValue();
+                        d.version = Version(Tokens[i+3].getValue());
+
+                        dp.addDependency(d);
                     }
                     else
                     {
@@ -50,7 +67,49 @@ namespace Secundo
                         exit(1);
                     }
 
-                    i++;
+                    i += 3;
+                }
+                else if (value == "name" && (i+1) < Tokens.size())
+                {
+                    if (Tokens[i+1].getType() == TokenType.TYPE_OTHER)
+                    {
+                        name = Tokens[i+1].getValue();
+                        i++;
+                    }
+                    else
+                    {
+                        std::cout << "EXECUTOR: PUT_TOGETHER: NAME " << Tokens[i + 1].getValue()
+                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        exit(1);
+                    }
+                }
+                else if (value == "user" && (i+1) < Tokens.size())
+                {
+                    if (Tokens[i+1].getType() == TokenType.TYPE_OTHER)
+                    {
+                        user = Tokens[i+1].getValue();
+                        i++;
+                    }
+                    else
+                    {
+                        std::cout << "EXECUTOR: PUT_TOGETHER: USER " << Tokens[i + 1].getValue()
+                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        exit(1);
+                    }
+                }
+                else if (value == "ver" && (i+1) < Tokens.size())
+                {
+                    if (Tokens[i+1].getType() == TokenType.TYPE_OTHER)
+                    {               
+                        v = Version(Tokens[i+1].getValue());
+                        i++;
+                    }
+                    else
+                    {
+                        std::cout << "EXECUTOR: PUT_TOGETHER: VERSION " << Tokens[i + 1].getValue()
+                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        exit(1);
+                    }
                 }
                 else
                 {
@@ -66,20 +125,30 @@ namespace Secundo
                     Function f(RealTokens[i].getValue());
                     f.setCode(Tokenizer.scopeTokenizingToString(RealTokens[i].getUValue()));
 
-                    Functions.addFunction(f);
+                    fs.addFunction(f);
                 }
             }
+
+            Package p;
+            p.version = v;
+            p.functions = fs;
+
+            p.name = name;
+            p.user = user;
+            
+            p.dependencies = dp;
+            return p;
         }
 
     public:
 
-        void execute(const std::vector<Token> &v)
+        Package execute(const std::vector<Token> &v)
         {
             Tokens.clear();
             RealTokens.clear();
 
             Tokens = v;
-            putTogether();
+            return putTogether();
         }
     } Executor;
 }

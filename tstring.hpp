@@ -36,7 +36,7 @@ namespace tri
         }
 
         template<typename Out>
-        void splitf(const std::string &s, char delim, Out result)
+        void splitf(const std::string &s, const char &delim, Out result)
         {
             std::stringstream ss;
             ss.str(s);
@@ -47,7 +47,6 @@ namespace tri
                 *(result++) = item;
             }
         }
-
 
         std::vector<std::string> splitf(char delim)
         {
@@ -67,11 +66,11 @@ namespace tri
         }
 
     public:
-        string(std::string r):str(r) {}
+        string(const std::string &r):str(r) {}
         string() {str="";}
-        string(const char c):str(&c) {}
+        string(const char *c):str(c) {}
         //string(const tri::string c):str(c.cxs()) {}
-        string(const char* r):str(r) {}
+        string(const char r):str(std::string(r+"")) {}
 
         bool find(string s)
         {
@@ -127,7 +126,7 @@ namespace tri
             std::reverse(str.begin(), str.end());
         }
 
-        std::vector<string> split(char delim)
+        std::vector<string> split(const char &delim)
         {
             std::vector<string> tstrs;
             std::vector<std::string> strs = splitf(delim);
@@ -153,7 +152,7 @@ namespace tri
             return tstrs;
         }
 
-        char at(int index)
+        char at(const int &index)
         {
             return str[index];
         }
@@ -163,17 +162,17 @@ namespace tri
             return str.size();
         }
 
-        tri::string operator+(tri::string s)
+        tri::string operator+(const tri::string &s)
         {
             return tri::string(str += s.str);
         }
 
-        tri::string operator=(tri::string s)
+        tri::string operator=(const tri::string &s)
         {
             return tri::string(str = s.str);
         }
 
-        tri::string operator=(std::string s)
+        tri::string operator=(const std::string &s)
         {
             return tri::string(str = s);
         }
@@ -181,6 +180,16 @@ namespace tri
         tri::string operator=(const char* s)
         {
             return tri::string(str = s);
+        }
+
+        bool operator==(const std::string &s)
+        {
+            return (cxs() == s);
+        }
+
+        bool operator==(tri::string s)
+        {
+            return (str == s.cxs());
         }
 
         string toUpper()
@@ -209,14 +218,7 @@ namespace tri
             return string(tmp);
         }
 
-        tri::string replace(string from, string to)
-        {
-            std::string s = str;
-            replace(s, from.cxs(), to.cxs());
-            return tri::string(s);
-        }
-
-        tri::string replaceAll(string from, string to)
+        tri::string replace(string &from, string &to)
         {
             for (int i = 0; i < str.size(); i++)
                 replace(str, from.cxs(), to.cxs());
@@ -228,7 +230,7 @@ namespace tri
             return (std::vector<char>(str.begin(), str.end()));
         }
 
-        bool endsWith(tri::string s)
+        bool endsWith(tri::string &s)
         {
             if (string(str.substr(str.size(), str.size()-s.length())).cxs() == s.cxs())
                 return true;
@@ -236,7 +238,7 @@ namespace tri
             return false;
         }
 
-        bool startsWith(tri::string s)
+        bool startsWith(tri::string &s)
         {
             // std::cout << "TRI::" << string(str.substr(0, s.length())).cxs() << std::endl;
 

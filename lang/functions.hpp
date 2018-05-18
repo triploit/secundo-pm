@@ -103,7 +103,7 @@ namespace Secundo
 
             return Function("[<NULL>]");
         }
-    } Functions;
+    };
 }
 
 #endif

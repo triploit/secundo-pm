@@ -169,15 +169,16 @@ namespace Secundo
             script_file = path+"\\pkg\\ins.sc";
 #endif
 
-            if (security(script_file, Package("", ""))) Secundo::Seclang.run(script_file, main_);
+            if (security(script_file, Package("", ""))) 
+                Secundo::Seclang.run(Secundo::Seclang.createPackage(script_file), main_);
             chdir("/");
         }
 
         void install(const Package &package)
         {
-            std::cout << ">> Checking if Secundo-Package." << std::endl;
+            /*std::cout << ">> Checking if Secundo-Package." << std::endl;
             check_secundo(package);
-            std::cout << ">> Finished. It is." << std::endl;
+            std::cout << ">> Finished. It is." << std::endl;*/
 
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
@@ -193,21 +194,37 @@ namespace Secundo
 
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
-            if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
+
+            Package p = Secundo::Seclang.createPackage(script_file);
+            Version v1 = p.version;
+            Version v2 = package.version;
+
+            if (v2 > Version("0.0.0.0") || v2 < Version("0.0.0.0"))
+            {
+                if (v2 < v1 || v2 > v1)
+                {
+                    std::cout << ">> Error at installing pakage! Package has the wrong version!\n>> Version " << package.version << " needed!" << std::endl;
+                    clean(o_dir, rem);
+                    exit(1);
+                }
+            }
+
+            if (security(script_file, package)) 
+                Secundo::Seclang.run(p, main_);
 
             std::cout << "\nSave installer file to ... "
-                      << Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc" << std::endl;
-            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc");
+                      << Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc" << std::endl;
+
+            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+            
             std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
         }
 
         void update_all()
         {
-            std::vector<Package> packages;
-            std::string user;
-            std::string name;
             std::string path = Secundo::Runtime.PackageFileDirectory;
+            std::vector<Package> packages;
 
             DIR *dir;
             struct dirent *ent;
@@ -217,15 +234,17 @@ namespace Secundo
                 while ((ent = readdir(dir)) != NULL)
                 {
                     tri::string s = ent->d_name;
+                    s = s.trim();
 
                     if (s.at(0) == '.')
                         continue;
 
-                    user = s.split('_')[0].cxs();
-                    name = s.cxs().substr(user.size() + 1, s.cxs().size());
-                    name = name.substr(0, name.size() - 3);
+                    if (s.cxs().substr(s.length()-3, s.length()) != ".sc")
+                    {
+                        continue;
+                    }
 
-                    packages.push_back(Package(user, name));
+                    packages.push_back(Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory+s.cxs()));
                 }
 
                 closedir(dir);
@@ -251,9 +270,9 @@ namespace Secundo
 
         void update(const Package &package)
         {
-            std::cout << ">> Checking if Secundo-Package." << std::endl;
+            /*std::cout << ">> Checking if Secundo-Package." << std::endl;
             check_secundo(package);
-            std::cout << ">> Finished. It is." << std::endl;
+            std::cout << ">> Finished. It is." << std::endl;*/
 
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
@@ -269,20 +288,32 @@ namespace Secundo
 
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
-            if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
+
+            Package p = Secundo::Seclang.createPackage(script_file);
+
+            if (p.version <= package.version)
+            {
+                std::cout << ">> Package Up-to-date. No update needed. Cancelling." << std::endl;
+                return;
+            }
+
+            if (security(script_file, package)) 
+                Secundo::Seclang.run(p, main_);
 
             std::cout << "\nSave installer file to ... "
-                      << Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc" << std::endl;
-            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc");
+                      << Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc" << std::endl;
+
+            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+
             std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
         }
 
         void remove(const Package &package)
         {
-            std::cout << ">> Checking if Secundo-Package." << std::endl;
+            /*std::cout << ">> Checking if Secundo-Package." << std::endl;
             check_secundo(package);
-            std::cout << ">> Finished. It is." << std::endl;
+            std::cout << ">> Finished. It is." << std::endl;*/
 
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
@@ -296,7 +327,7 @@ namespace Secundo
             script_file = Runtime.AppData+"\\"+package.name+"\\pkg\\ins.sc";
 #endif
 
-            std::string sc_script = Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc";
+            std::string sc_script = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
             std::ifstream f(sc_script, std::ios::in);
 
             std::cout << "\nSearch for existing package file ... " << sc_script << std::endl;
@@ -304,20 +335,16 @@ namespace Secundo
             if (f.is_open())
             {
                 std::cout << "Found ... running script." << std::endl << std::endl;
-                if (security(script_file, package)) Secundo::Seclang.run(sc_script, main_);
+                Runtime.DeletingFiles.push_back(sc_script);
+
+                if (security(sc_script, package))
+                    Secundo::Seclang.run(Secundo::Seclang.createPackage(sc_script), main_);
+                f.close();
+                return;
             }
             else
             {
-                std::cout << "Not found... cloning repository." << std::endl << std::endl;
-                clone(package, o_dir, false);
-                chdir(o_dir.c_str());
-                if (security(script_file, package)) Secundo::Seclang.run(script_file, main_);
-
-                std::cout << "\nSave installer file to ... "
-                          << Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc" << std::endl;
-                saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "_" + package.name + ".sc");
-                std::cout << "Finished" << std::endl;
-                clean(o_dir, rem);
+                std::cout << ">> This package is not installed!\n>> Skipping." << std::endl;
             }
         }
     } Installer;

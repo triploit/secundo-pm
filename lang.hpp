@@ -9,24 +9,26 @@
 #include "lang/syntax.hpp"
 #include "lang/executor.hpp"
 #include "lang/runtime.hpp"
+#include "lang/obj/dependency.hpp"
 
 namespace Secundo
 {
     class Seclang
     {
     private:
-        void fileRead(std::string __file)
+        std::string fileRead(std::string __file)
         {
-            Runtime.M_Code = "";
+            std::string code = "";
+            std::string line = "";
             std::ifstream _file(__file);
 
             if (_file.is_open())
             {
-                while (std::getline(_file, Runtime.M_Line))
+                while (std::getline(_file, line))
                 {
-                    tri::string s = Runtime.M_Line;
+                    tri::string s = line;
                     s = s.trim();
-                    Runtime.M_Code = Runtime.M_Code + s.cxs() + "\n";
+                    code = code + s.cxs() + "\n";
                 }
             }
             else
@@ -34,27 +36,30 @@ namespace Secundo
                 std::cout << "ERROR: FATAL_ERROR: INSTALL-FILE (" << __file << ") NOT FOUND!" << std::endl;
                 exit(1);
             }
+
+            return code;
         }
 
     public:
-        void run(const std::string &script, const std::string &main_function)
+        Package createPackage(const std::string &script)
         {
-            Functions.clearFunctions();
-            Secundo::Runtime.MainFunction = main_function;
-            fileRead(script);
-            bool found = false;
+            return Executor.execute(Tokenizer.tokenize(fileRead(script)));
+        }
 
-            Executor.execute(Secundo::Tokenizer.tokenize(Runtime.M_Code));
+        void run(Package p, const std::string &main_function)
+        {
+            Secundo::Runtime.MainFunction = main_function;
+            bool found = false;
 
             if (Runtime.MainFunction != "remove" || Runtime.MainFunction != "remove_win")
             {
-                for (std::string dep : Runtime.Dependencies)
+                for (Dependency d : p.dependencies.dependencies)
                 {
-                    std::string user = tri::string(dep).split(':')[0].cxs();
-                    std::string pkgn = tri::string(dep).split(':')[1].cxs();
-
                     DIR *dir;
                     struct dirent *ent;
+
+                    found = false;
+                    Package pack;
 
                     if ((dir = opendir(Secundo::Runtime.PackageFileDirectory.c_str())) != NULL)
                     {
@@ -65,10 +70,15 @@ namespace Secundo
                             if (s.at(0) == '.')
                                 continue;
 
-                            if ((user+"_"+pkgn+".sc") == s.cxs())
-                            {
+                            if (s.cxs().substr(s.length()-3, s.length()) == ".sc")
+                                continue;
+
+                            pack = createPackage(s.cxs());
+
+                            if (d.name == pack.name &&
+                                d.user == pack.user &&
+                                d.version == pack.version)
                                 found = true;
-                            }
                         }
 
                         closedir(dir);
@@ -81,20 +91,22 @@ namespace Secundo
 
                     if (!found)
                     {
-                        std::cout << ">>>>>>>>>>>>>>>>> Installing dependency: " << user << ":" << pkgn << std::endl;
-                        Secundo::Global.addInstallingPackage(Package(user, pkgn));
-                    }                    
+                        std::cout << ">> Added dependency to install list: " << d.user << ":" << d.name << std::endl;
+
+                        Package p = Package(d.user, d.name);
+                        p.version = d.version;
+
+                        Secundo::Global.addInstallingPackage(p);
+                    }
                 }
             }
 
-            Functions.runFunction(Runtime.MainFunction);
+            p.functions.runFunction(Runtime.MainFunction);
 
             for (int i = 0; i < Runtime.DeletingFiles.size(); i++)
             {
                 remove(Runtime.DeletingFiles[i].c_str());
             }
-
-            Functions.clearFunctions();
         }
     } Seclang;
 }

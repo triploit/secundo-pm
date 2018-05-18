@@ -7,7 +7,7 @@ void help();
 
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.5";
+std::string _VERSION = "0.1.6.0";
 
 int main(int argc, char *argv[])
 {
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
                     // Regex: ^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}:[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$
 
                     tri::string user = "";
-                    tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
+                    tri::string regex = "[a-z_\\d](?:[a-z_\\d]|-(?=[a-z_\\d])){0,38}:[a-z_\\d](?:[a-z_\\d]|-(?=[a-z_\\d])){0,38}"; // [a-z_\\d](?:[a-z_\\d]|-(?=[a-z_\\d])){0,38}
                     tri::string package = "";
 
                     if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
@@ -202,6 +202,45 @@ int main(int argc, char *argv[])
             {
                 std::cout << "Syntax error!\n" << std::endl;
                 help();
+            }
+        }
+        else if (arg == "list")
+        {
+            DIR *dir;
+            struct dirent *ent;
+            std::vector<Package> pkgs;
+
+            if ((dir = opendir(Secundo::Runtime.PackageFileDirectory.c_str())) != NULL)
+            {
+                while ((ent = readdir(dir)) != NULL)
+                {
+                    tri::string s = ent->d_name;
+                    s = s.trim();
+
+                    if (s.at(0) == '.')
+                        continue;
+
+                    if (s.cxs().substr(s.length()-3, s.length()) != ".sc")
+                    {
+                        continue;
+                    }
+
+                    pkgs.push_back(Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory+s.cxs()));
+                }
+
+                closedir(dir);
+            }
+            else
+            {
+                std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
+                exit(1);
+            }
+
+            std::cout << "Installed " << pkgs.size() << " packages:" << std::endl;
+
+            for (Package p : pkgs)
+            {
+                std::cout << "    - " << p.user << " -> " << p.name << " V" << p.version << std::endl;
             }
         }
         else if (arg == "showtrust")

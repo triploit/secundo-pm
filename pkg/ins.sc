@@ -1,3 +1,7 @@
+name secundo-pm
+user triploit
+ver 0.1.6.0
+
 func install {<[
     cmake .
     make

@@ -14,20 +14,20 @@ namespace Secundo
     {
     private:
         std::vector<std::vector<std::regex>> COMMANDS =
+            {
+                { // nothing
+                    std::regex("")
+                },
                 {
-                        { // nothing
-                                std::regex("")
-                        },
-                        {
-                                std::regex("[ \t]*func[ \t]*[a-zA-Z_]*[a-zA-Z0-9]*[\n\t ]*\\{[a-z A-Z\\w\\W]*\\}")
-                        }
-                };
+                    std::regex("[ \t]*func[ \t]*[a-zA-Z_]*[a-zA-Z0-9]*[\n\t ]*\\{[a-z A-Z\\w\\W]*\\}")
+                }
+            };
 
         std::vector<std::string> COMMAND_NAME =
-                {
-                        "NOTHING",
-                        "FUNCTION"
-                };
+            {
+                "NOTHING",
+                "FUNCTION"
+            };
 
     public:
         int isValidLine(tri::string command)
