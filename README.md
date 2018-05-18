@@ -124,16 +124,16 @@ func install {<[
 Außerdem ist es möglich Abhängikeiten zu definieren. Beispielsweise benötigt das Projekt aml_server das Paket aml, um zu funktionieren. Da aml und aml_server beides SecPM-Pakete sind, können wir einfach folgendes machen: Wir schreiben am Anfang der Installer-Datei folgendes:
 
 ```
-dep triploit:aml
+dep triploit aml 0.1.4.0
 ```
 
-`dep` steht für "Dependency", was "Abhängigkeit" bedeutet. Wie bei der Nutzung von SecPM gilt bei den Paketnamen: user:projekt. 
+`dep` steht für "Dependency", was "Abhängigkeit" bedeutet. Es git: `dep [user] [project] [version]`. 
 aml_server ist daher von aml Abhängig. Ist das Programm aml dann nicht installiert, installiert SecPM dieses. Wenn man mehrere Abhängigkeiten hat, kann man folgendes machen:
 
 ```
-dep user:projekt1
-dep user:projekt_abc
-dep user_b:projekt5e
+dep user projekt1 0.1.0.0
+dep user projekt_abc 0.0.3.0
+dep user_b projekt5e 0.0.2.1
 ...
 ```
 
@@ -329,16 +329,16 @@ func install {<[
 Also it's possible to define dependencies. For example: The project aml_server needs the package aml to work. Because both are SecPM packages, it's possible to add this at the top of the installer file:
 
 ```
-dep triploit:aml
+dep triploit aml 0.1.4.0
 ```
 
-`dep` means "dependency". Like down below, the rule is: user:project.
+`dep` means "dependency". Like down below, the rule is: `dep [user] [project] [version]`. .
 Is the program aml not installed, SecPM will install it. When you have more than one dependencies, you can write this:
 
 ```
-dep user:project1
-dep user:project_abc
-dep user_b:project5e
+dep user project1 0.1.2.0
+dep user project_abc 0.4.0.1
+dep user_b project5e 4.3.0.1
 ...
 ```
 
