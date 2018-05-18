@@ -46,8 +46,6 @@ namespace Secundo
                 }
                 else if (value == "dep" && (i+3) < Tokens.size())
                 {
-                    std::cout << "AHA!" << std::endl;
-
                     if (Tokens[i + 1].getType() == TokenType.TYPE_OTHER &&
                         Tokens[i + 2].getType() == TokenType.TYPE_OTHER &&
                         Tokens[i + 3].getType() == TokenType.TYPE_OTHER)

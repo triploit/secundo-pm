@@ -169,8 +169,17 @@ namespace Secundo
             script_file = path+"\\pkg\\ins.sc";
 #endif
 
+            Package package = Secundo::Seclang.createPackage(script_file);
+
             if (security(script_file, Package("", ""))) 
-                Secundo::Seclang.run(Secundo::Seclang.createPackage(script_file), main_);
+                Secundo::Seclang.run(package, main_);
+
+            std::cout << "\nSave installer file to ... "
+                      << Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc" << std::endl;
+
+            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+            
+            std::cout << "Finished" << std::endl;
             chdir("/");
         }
 
@@ -193,7 +202,17 @@ namespace Secundo
 #endif
 
             clone(package, o_dir, false);
+
+            /*
+            char s[1024];
+            getcwd(s, 1024);
+            std::cout << "INSTALLER: " << s << std::endl;
+
             chdir(o_dir.c_str());
+            
+            getcwd(s, 1024);
+            std::cout << "INSTALLER: " << s << std::endl;
+            */
 
             Package p = Secundo::Seclang.createPackage(script_file);
             Version v1 = p.version;
@@ -219,6 +238,7 @@ namespace Secundo
             
             std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
+            chdir("/");
         }
 
         void update_all()
@@ -307,6 +327,7 @@ namespace Secundo
 
             std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
+            chdir("/");
         }
 
         void remove(const Package &package)
@@ -346,6 +367,8 @@ namespace Secundo
             {
                 std::cout << ">> This package is not installed!\n>> Skipping." << std::endl;
             }
+
+            chdir("/");
         }
     } Installer;
 }

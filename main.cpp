@@ -287,6 +287,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "============================================\n>> Installing Local Directory "
                   << Secundo::Global.getInstallLocalPackages()[i] << "..." << std::endl;
+
         Secundo::Installer.install_local(Secundo::Global.getInstallLocalPackages()[i]);
         std::cout << ">> Finished!" << std::endl;
     }
@@ -296,6 +297,7 @@ int main(int argc, char *argv[])
         std::cout << "============================================\n>> Installing "
                   << Secundo::Global.getInstallingPackages()[i].user << "'s "
                   << Secundo::Global.getInstallingPackages()[i].name << "..." << std::endl;
+
         Secundo::Installer.install(Secundo::Global.getInstallingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
     }
@@ -305,6 +307,7 @@ int main(int argc, char *argv[])
         std::cout << "============================================\n>> Remove "
                   << Secundo::Global.getRemovingPackages()[i].user << "'s "
                   << Secundo::Global.getRemovingPackages()[i].name << "..." << std::endl;
+
         Secundo::Installer.remove(Secundo::Global.getRemovingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
     }
@@ -314,6 +317,7 @@ int main(int argc, char *argv[])
         std::cout << "============================================\n>> Updating "
                   << Secundo::Global.getUpdatingPackages()[i].user << "'s "
                   << Secundo::Global.getUpdatingPackages()[i].name << "..." << std::endl;
+                  
         Secundo::Installer.update(Secundo::Global.getUpdatingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
     }
