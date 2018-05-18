@@ -36,9 +36,25 @@ meinprojekt
     └── ins.sc
 ```
 
-In diese Datei kommen nun das Installer-Skript rein.
-Schreiben wir mal folgendes:
+In diese Datei kommen nun das Installer-Skript rein. Vorher müssen wir SecPM aber sagen, wie das Projekt heißt, wo es auf GitHub liegt und welche Version es hat. Das geht folgendermaßen: In der Installerdatei schreiben wir einfach
+
 ```
+name projektname
+user github_user
+ver 0.0.0.1
+```
+
+Dabei ist wichtig, dass Name und GitHub-Account klein geschrieben sind, sie müssen exakt so sein, wie auf GitHub. Bei der Version gilt folgendes Prinzip: `[Haupt-Version].[Unter-Version].[Überarbeitung].[Build]`
+
+Haben wir ein kleines Programm auf der Version `0.0.0.1` und es kommt ein riesiges Update, ändern wir je nach "stärke" des Updates die Zahlen nach oben ab. Nun ist das Projekt Beispielsweise bei Version `0.1.0.1`. Wurde ein kleiner Fehler gefunden und gefixt, ändert sich nur die Buildnummer: `0.1.0.2`.
+
+Schreiben wir mal folgendes:
+
+```
+name projektname
+user github_user
+ver 0.0.0.1
+
 func install {
     echo "Kompiliere  ..."
     g++ main.cpp -o programm
@@ -224,8 +240,26 @@ myproject
 └── pkg
     └── ins.sc
 ```
-In this file (`ins.sc`), you have to write something like this:
+In this file (`ins.sc`), you have to write something like the following.
+But first, we have to tell SecPM the name of the project, the name of the github account and the version of the project:
+
 ```
+name projectname
+user github_user
+ver 0.0.0.1
+```
+
+Important is, that the name of the project and the user have to be lowercase. The versions have to be something like this: `[major version].[[minor version].[revision].[build]`. 
+
+If we have a little programm that gets a update, the version goes higher. For a big update, the major/minor versions change. For bugfixes or just error fixing, use revision and build.
+
+And here's the installer file:
+
+```
+name projectname
+user github_user
+ver 0.0.0.1
+
 func install {
     echo "compiling  ..."
     g++ main.cpp -o programm

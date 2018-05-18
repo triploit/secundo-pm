@@ -355,6 +355,7 @@ void help()
 
     std::cout << "     remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
     std::cout << "     local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
+    std::cout << "     list                     - lists all installed packages." << std::endl;
 
     std::cout << "     trust <user>             - you will not get questions (like *1 or *2) about projects"
               << std::endl;
