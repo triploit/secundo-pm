@@ -89,7 +89,7 @@ namespace Secundo
                     std::cout << "\t- does the repository exist?" << std::endl;
                     std::cout << "\t- does the github-user exist?" << std::endl;
                     std::cout << "\t- are you root?" << std::endl;
-                    exit(1);
+                    _quit(1);
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace Secundo
                 std::cout << "\t- does the repository exist?" << std::endl;
                 std::cout << "\t- does the github-user exist?" << std::endl;
                 std::cout << "\t- are you root?" << std::endl;
-                exit(1);
+                _quit(1);
             }
         }
 
@@ -127,19 +127,19 @@ namespace Secundo
             if (system(std::string("curl --help"+_NULL).c_str()) != 0)
             {
                 std::cout << "error: curl wasn't found on the system.\ntake a look at https://curl.haxx.se/, install curl and add it to the system path." << std::endl;
-                exit(1);
+                _quit(1);
             }
 
             if (system(std::string("curl https://github.com/"+pkg.user+"/"+pkg.name+_NULL).c_str()) != 0)
             {
                 std::cout << "error: repository not found: " << "https://github.com/"+pkg.user+"/"+pkg.name << std::endl;
-                exit(1);
+                _quit(1);
             }
 
             if (system(std::string("curl https://github.com/"+pkg.user+"/"+pkg.name+"/raw/master/pkg/ins.sc"+_NULL).c_str()) != 0)
             {
                 std::cout << "============================================\nerror while installing packages: the package is not a secundo package.\n(pkg/ins.sc missing)" << std::endl;
-                exit(1);
+                _quit(1);
             }*/
         }
 
@@ -202,13 +202,13 @@ namespace Secundo
 #endif
 
             clone(package, o_dir, false);
+            chdir(o_dir.c_str());
 
             /*
             char s[1024];
             getcwd(s, 1024);
             std::cout << "INSTALLER: " << s << std::endl;
 
-            chdir(o_dir.c_str());
             
             getcwd(s, 1024);
             std::cout << "INSTALLER: " << s << std::endl;
@@ -224,7 +224,16 @@ namespace Secundo
                 {
                     std::cout << ">> Error at installing pakage! Package has the wrong version!\n>> Version " << package.version << " needed!" << std::endl;
                     clean(o_dir, rem);
-                    exit(1);
+                    _quit(1);
+                }
+            }
+            else
+            {
+                if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                {
+                    std::cout << ">> Package Up-To-Date. Skipping." << std::endl;
+                    clean(o_dir, rem);
+                    return;
                 }
             }
 

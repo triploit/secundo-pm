@@ -53,7 +53,7 @@ namespace Secundo
             if (user != "root")
             {
                 std::cout << "Error: You must be root to use this programm!" << std::endl;
-                exit(1);
+                _quit(1);
             }
 #endif
 

@@ -1,4 +1,18 @@
 #include <iostream>
+#include <fstream>
+
+#define LOCKF_ "/usr/share/secundo/lock.lck"
+
+void _quit(int i)
+{
+    if (std::ifstream(LOCKF_).is_open())
+    {
+        if (remove(LOCKF_) != 0)
+            std::cout << ">> Error deleting lock file " << LOCKF_ << "!" << std::endl;
+    }
+    exit(i);
+}
+
 #include "global.hpp"
 #include "installer.hpp"
 #include "lang/runtime.hpp"
@@ -7,17 +21,32 @@ void help();
 
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.0";
+std::string _VERSION = "0.1.6.1";
 
 int main(int argc, char *argv[])
 {
+
     Secundo::Installer.init();
     Secundo::Runtime.initLV();
+
     char s[1024];
     getcwd(s, 1024);
-    Secundo::Runtime.cPath = s;
 
+    Secundo::Runtime.cPath = s;
     chdir("/");
+
+    std::ifstream lock(LOCKF_);
+    
+    if (lock.is_open())
+    {
+        std::cout << ">> Error! Lock file /usr/share/secundo/lock.lck exists,\n   so an instance of secpm is already running!\n>> If this is a bug, delete this file, but BE SURE! Remove it at your own risk!" << std::endl;
+        exit(1);
+    }
+    else
+    {
+        std::ofstream(LOCKF_) << "LOCKED." << std::endl;
+        lock.close();
+    }
 
     for (int i = 1; i < argc; i++)
     {
@@ -47,7 +76,7 @@ int main(int argc, char *argv[])
                         std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
                         std::cout << "\nThis is a package name:  user:package" << std::endl;
                         std::cout << "                         triploit:secpundo-pm" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                 }
                 else
@@ -98,7 +127,7 @@ int main(int argc, char *argv[])
                         std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
                         std::cout << "This is a package name:  user:package" << std::endl;
                         std::cout << "                         triploit:secpundo-pm" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                 }
                 else
@@ -143,7 +172,7 @@ int main(int argc, char *argv[])
                         std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
                         std::cout << "This is a package name:  user:package" << std::endl;
                         std::cout << "                         triploit:secpundo-pm" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                 }
                 else
@@ -233,14 +262,22 @@ int main(int argc, char *argv[])
             else
             {
                 std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
-                exit(1);
+                _quit(1);
             }
 
-            std::cout << "Installed " << pkgs.size() << " packages:" << std::endl;
+            std::vector<std::string> msgs;
 
             for (Package p : pkgs)
             {
-                std::cout << "    - " << p.user << " -> " << p.name << " V" << p.version << std::endl;
+                msgs.push_back("    - " + p.user + "   ->   " + p.name + " v" + p.version.str);
+            }
+
+            std::sort(msgs.begin(), msgs.end());
+            std::cout << "Installed " << pkgs.size() << " packages:" << std::endl;
+
+            for (std::string s : msgs)
+            {
+                std::cout << s << std::endl;
             }
         }
         else if (arg == "showtrust")
@@ -250,6 +287,44 @@ int main(int argc, char *argv[])
             for (std::string s : Secundo::Runtime.trusted)
             {
                 std::cout << "  - " << s << std::endl;
+            }
+        }
+        else if (arg == "clean")
+        {
+            DIR *dir;
+            struct dirent *ent;
+            std::vector<Package> pkgs;
+            int c = 0;
+
+            if ((dir = opendir("/usr/share/secundo")) != NULL)
+            {
+                while ((ent = readdir(dir)) != NULL)
+                {
+                    tri::string s = ent->d_name;
+                    s = s.trim();
+
+                    if (s.at(0) == '.')
+                        continue;
+
+                    if (s.cxs() != "pkg_files" &&
+                        s.cxs() != "secpm_trustings.conf" &&
+                        s.cxs() != "lock.lck")
+                    {
+                        remove(std::string("/usr/share/secundo/"+s.cxs()).c_str());
+                        c++;
+                    }
+                }
+
+                closedir(dir);
+                if (c == 1)
+                    std::cout << ">> Cleaned " << c << " object." << std::endl;
+                else
+                    std::cout << ">> Cleaned " << c << " objects." << std::endl;
+            }
+            else
+            {
+                std::cout << ">> There was an error! Directory /usr/share/secundo not found!" << std::endl;
+                _quit(1);
             }
         }
         else if (arg == "local")
@@ -317,12 +392,13 @@ int main(int argc, char *argv[])
         std::cout << "============================================\n>> Updating "
                   << Secundo::Global.getUpdatingPackages()[i].user << "'s "
                   << Secundo::Global.getUpdatingPackages()[i].name << "..." << std::endl;
-                  
+
         Secundo::Installer.update(Secundo::Global.getUpdatingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
     }
 
     Secundo::Runtime.saveTrusters();
+    _quit(0);
 }
 
 bool is_argument(const std::string &arg)
@@ -339,7 +415,9 @@ bool is_argument(const std::string &arg)
         std::string(arg) == "trust" ||
         std::string(arg) == "untrust" ||
         std::string(arg) == "showtrust" ||
-        std::string(arg) == "quiet")
+        std::string(arg) == "quiet" ||
+        std::string(arg) == "list" ||
+        std::string(arg) == "clean")
         return true;
 
     return false;
@@ -360,6 +438,8 @@ void help()
     std::cout << "     remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
     std::cout << "     local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
     std::cout << "     list                     - lists all installed packages." << std::endl;
+    std::cout << "     clean                    - cleans packages that had errors at installing and were\n" 
+              << "                                not cleaned or just unnecessary files and directories." << std::endl;
 
     std::cout << "     trust <user>             - you will not get questions (like *1 or *2) about projects"
               << std::endl;
@@ -373,5 +453,5 @@ void help()
     std::cout << std::endl;
     std::cout << " *1 - Are you really sure?" << std::endl;
     std::cout << " *2 - Do you want to see the build file?" << std::endl;
-    exit(1);
+    _quit(1);
 }

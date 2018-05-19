@@ -39,7 +39,7 @@ namespace Secundo
             if (!existsFunction(func))
             {
                 std::cout << "ERROR: FATAL_ERROR: Function " << func << " not found!" << std::endl;
-                exit(1);
+                _quit(1);
             }
 
             std::vector<std::string> v = getFunction(func).getCode();
@@ -90,7 +90,7 @@ namespace Secundo
             {
                 std::cout << "ERROR: LINE " << Secundo::Runtime.LineNumber << ": FATAL_ERROR: Function " << func
                           << " not found!" << std::endl;
-                exit(1);
+                _quit(1);
             }
 
             for (int i = 0; i < functions.size(); i++)

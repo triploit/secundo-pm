@@ -40,7 +40,7 @@ namespace Secundo
                     {
                         std::cout << "EXECUTOR: PUT_TOGETHER: FUNC " << Tokens[i + 1].getValue()
                                   << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                     i += 2;
                 }
@@ -62,7 +62,7 @@ namespace Secundo
                     {
                         std::cout << "EXECUTOR: PUT_TOGETHER: DEPENDENCY " << Tokens[i + 1].getValue()
                                   << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
 
                     i += 3;
@@ -78,7 +78,7 @@ namespace Secundo
                     {
                         std::cout << "EXECUTOR: PUT_TOGETHER: NAME " << Tokens[i + 1].getValue()
                                   << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                 }
                 else if (value == "user" && (i+1) < Tokens.size())
@@ -92,7 +92,7 @@ namespace Secundo
                     {
                         std::cout << "EXECUTOR: PUT_TOGETHER: USER " << Tokens[i + 1].getValue()
                                   << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                 }
                 else if (value == "ver" && (i+1) < Tokens.size())
@@ -106,13 +106,13 @@ namespace Secundo
                     {
                         std::cout << "EXECUTOR: PUT_TOGETHER: VERSION " << Tokens[i + 1].getValue()
                                   << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
                 }
                 else
                 {
                     std::cout << "EXECUTOR: PUT_TOGETHER: ERROR: FATAL_ERROR: Syntax error!" << std::endl;
-                    exit(1);
+                    _quit(1);
                 }
             }
 

@@ -34,7 +34,7 @@ namespace Secundo
             else
             {
                 std::cout << "ERROR: FATAL_ERROR: INSTALL-FILE (" << __file << ") NOT FOUND!" << std::endl;
-                exit(1);
+                _quit(1);
             }
 
             return code;
@@ -86,7 +86,7 @@ namespace Secundo
                     else
                     {
                         std::cout << ">> There was an error! Directory for the package-files (/usr/share/secundo/pkg_files) not found!" << std::endl;
-                        exit(1);
+                        _quit(1);
                     }
 
                     if (!found)

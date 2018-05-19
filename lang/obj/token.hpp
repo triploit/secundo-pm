@@ -35,7 +35,7 @@ namespace Secundo
                 typ != TYPE_FUNCTION)
             {
                 std::cout << "TOKEN: ERROR: FALSE_TYPE_ERROR: " << typ << std::endl;
-                exit(1);
+                _quit(1);
             }
             else
             {

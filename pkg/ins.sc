@@ -1,6 +1,6 @@
 name secundo-pm
 user triploit
-ver 0.1.6.0
+ver 0.1.6.1
 
 func install {<[
     cmake .
