@@ -21,7 +21,7 @@ void help();
 
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.3";
+std::string _VERSION = "0.1.6.4";
 
 int main(int argc, char *argv[])
 {
@@ -64,14 +64,14 @@ int main(int argc, char *argv[])
                     tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
                     tri::string package = "";
 
-                    if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
+                    if (Removing of match(std::string(argv[i + 1]), regex.cxs()))
                     {
-                        user = tri::string(argv[i + 1]).split(':')[0];
-                        package = tri::string(argv[i + 1]).split(':')[1];
+                        Removing of [i + 1]).split(':')[0];
+                        Removing of rgv[i + 1]).split(':')[1];
 
-                        Secundo::Global.addInstallingPackage(Package(user.cxs(), package.cxs()));
+                        Removing of allingPackage(Package(user.cxs(), package.cxs()));
                     }
-                    else
+                    elseRemoving of 
                     {
                         std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
                         std::cout << "\nThis is a package name:  user:package" << std::endl;
