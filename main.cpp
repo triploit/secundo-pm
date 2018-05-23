@@ -64,14 +64,14 @@ int main(int argc, char *argv[])
                     tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
                     tri::string package = "";
 
-                    if (Removing of match(std::string(argv[i + 1]), regex.cxs()))
+                    if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
                     {
-                        Removing of [i + 1]).split(':')[0];
-                        Removing of rgv[i + 1]).split(':')[1];
+                        user = tri::string(argv[i + 1]).split(':')[0];
+                        package = tri::string(argv[i + 1]).split(':')[1];
 
-                        Removing of allingPackage(Package(user.cxs(), package.cxs()));
+                        Secundo::Global.addInstallingPackage(Package(user.cxs(), package.cxs()));
                     }
-                    elseRemoving of 
+                    else
                     {
                         std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
                         std::cout << "\nThis is a package name:  user:package" << std::endl;
