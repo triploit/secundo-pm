@@ -78,11 +78,11 @@ namespace Secundo
             if (!local)
             {
                 if (system(std::string(
-                        "git clone https://github.com/" + package.user + "/" + package.name + ".git " + o_dir + " " +
+                        "git clone https://"+Secundo::Runtime.repoServer+"/" + package.user + "/" + package.name + ".git " + o_dir + " " +
                         Secundo::Runtime.git_quiet).c_str()) != 0)
                 {
                     std::cout
-                            << "ERROR AT: git clone https://github.com/" + package.user + "/" + package.name + ".git " +
+                            << "ERROR AT: git clone https://"+Secundo::Runtime.repoServer+"/" + package.user + "/" + package.name + ".git " +
                                o_dir <<
                             std::endl << std::endl << "Error! Check this out:" << std::endl;
                     std::cout << "\t- is git installed?" << std::endl;
@@ -96,15 +96,18 @@ namespace Secundo
 
         void clean(const std::string &o_dir, const std::string &rem)
         {
-            std::cout << ">> Cleaning " << o_dir << "..." << std::endl;
-            if (system(std::string(rem + " " + o_dir).c_str()) != 0)
+            if (!Runtime.keepFolders)
             {
-                std::cout << "Error! Check this out:" << std::endl;
-                std::cout << "\t- is git installed?" << std::endl;
-                std::cout << "\t- does the repository exist?" << std::endl;
-                std::cout << "\t- does the github-user exist?" << std::endl;
-                std::cout << "\t- are you root?" << std::endl;
-                _quit(1);
+                std::cout << ">> Cleaning " << o_dir << "..." << std::endl;
+                if (system(std::string(rem + " " + o_dir).c_str()) != 0)
+                {
+                    std::cout << "Error! Check this out:" << std::endl;
+                    std::cout << "\t- is git installed?" << std::endl;
+                    std::cout << "\t- does the repository exist?" << std::endl;
+                    std::cout << "\t- does the github-user exist?" << std::endl;
+                    std::cout << "\t- are you root?" << std::endl;
+                    _quit(1);
+                }
             }
         }
 
@@ -130,13 +133,13 @@ namespace Secundo
                 _quit(1);
             }
 
-            if (system(std::string("curl https://github.com/"+pkg.user+"/"+pkg.name+_NULL).c_str()) != 0)
+            if (system(std::string("curl https://"+Secundo::Runtime.repoServer+"/"+pkg.user+"/"+pkg.name+_NULL).c_str()) != 0)
             {
-                std::cout << "error: repository not found: " << "https://github.com/"+pkg.user+"/"+pkg.name << std::endl;
+                std::cout << "error: repository not found: " << "https://"+Secundo::Runtime.repoServer+"/"+pkg.user+"/"+pkg.name << std::endl;
                 _quit(1);
             }
 
-            if (system(std::string("curl https://github.com/"+pkg.user+"/"+pkg.name+"/raw/master/pkg/ins.sc"+_NULL).c_str()) != 0)
+            if (system(std::string("curl https://"+Secundo::Runtime.repoServer+"/"+pkg.user+"/"+pkg.name+"/raw/master/pkg/ins.sc"+_NULL).c_str()) != 0)
             {
                 std::cout << "============================================\nerror while installing packages: the package is not a secundo package.\n(pkg/ins.sc missing)" << std::endl;
                 _quit(1);
@@ -229,11 +232,19 @@ namespace Secundo
             }
             else
             {
-                if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
-                    std::cout << ">> Package Up-To-Date. Skipping." << std::endl;
-                    clean(o_dir, rem);
-                    return;
+                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    {
+                        if (!Runtime.ignoreUTD)
+                        {
+                            std::cout << ">> Package Up-to-date. Skipping." << std::endl;
+                            clean(o_dir, rem);
+                            return;
+                        }
+                        else
+                            std::cout << ">> Package Up-to-date. Reinstalling." << std::endl;
+                    }
                 }
             }
 
@@ -281,7 +292,7 @@ namespace Secundo
             else
             {
                 std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
-                return;
+                _quit(1);
             }
 
             for (Package package : packages)
@@ -322,8 +333,14 @@ namespace Secundo
 
             if (p.version <= package.version)
             {
-                std::cout << ">> Package Up-to-date. No update needed. Cancelling." << std::endl;
-                return;
+                if (!Runtime.ignoreUTD)
+                {
+                    std::cout << ">> Package Up-to-date. No update needed. Cancelling." << std::endl;
+                    clean(o_dir, rem);
+                    return;
+                }
+                else
+                    std::cout << ">> Package Up-to-date. Reinstalling." << std::endl;
             }
 
             if (security(script_file, package)) 
@@ -366,6 +383,61 @@ namespace Secundo
             {
                 std::cout << "Found ... running script." << std::endl << std::endl;
                 Runtime.DeletingFiles.push_back(sc_script);
+
+                std::vector<Dependency> deps;
+
+                if (!Runtime.noDepsCheck)
+                {
+                    DIR *dir;
+                    struct dirent *ent;
+
+                    if ((dir = opendir(Secundo::Runtime.PackageFileDirectory.c_str())) != NULL)
+                    {
+                        while ((ent = readdir(dir)) != NULL)
+                        {
+                            tri::string s = ent->d_name;
+                            s = s.trim();
+
+                            if (s.at(0) == '.')
+                                continue;
+
+                            if (s.cxs().substr(s.length()-3, s.length()) != ".sc")
+                            {
+                                continue;
+                            }
+
+                            if (s.cxs() == (package.user+"+"+package.name+".sc"))
+                                continue;
+
+                            Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory+s.cxs());
+
+                            for (Dependency d : p.dependencies.dependencies)
+                            {
+                                d.parent_user = p.user;
+                                d.parent_name = p.name;
+
+                                deps.push_back(d);
+                            }
+                        }
+
+                        closedir(dir);
+                    }
+                    else
+                    {
+                        std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
+                        _quit(1);
+                    }
+
+                    for (Dependency d : deps)
+                    {
+                        if (package.name == d.name &&
+                            package.user == d.user)
+                        {
+                            std::cout << ">> Error: Removing of " << package.user << ":" << package.name << " is a dependency of " << d.parent_user << ":" << d.parent_name << std::endl;
+                            return;
+                        }
+                    }
+                }
 
                 if (security(sc_script, package))
                     Secundo::Seclang.run(Secundo::Seclang.createPackage(sc_script), main_);
