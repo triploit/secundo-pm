@@ -21,7 +21,7 @@ void help();
 
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.1";
+std::string _VERSION = "0.1.6.3";
 
 int main(int argc, char *argv[])
 {
@@ -99,6 +99,10 @@ int main(int argc, char *argv[])
             Secundo::Runtime.quiet = " > /dev/null";
             Secundo::Runtime.git_quiet = " --quiet";
         }
+        else if (arg == "help" || arg == "-h" || arg == "--help")
+        {
+            help();
+        }
         else if (arg == "version" || arg == "-v" || arg == "--version" || arg == "ver")
         {
             std::cout << _VERSION << std::endl;
@@ -174,6 +178,36 @@ int main(int argc, char *argv[])
                         std::cout << "                         triploit:secpundo-pm" << std::endl;
                         _quit(1);
                     }
+                }
+                else
+                {
+                    std::cout << "Syntax error!\n" << std::endl;
+                    help();
+                }
+
+                i++;
+            }
+            else
+            {
+                std::cout << "Syntax error!\n" << std::endl;
+                help();
+            }
+        }
+        else if (arg == "-ndc" || arg == "--no-dependency-checking")
+        {
+            Secundo::Runtime.noDepsCheck = true;
+        }
+        else if (arg == "-kf" || arg == "--keep-folders")
+        {
+            Secundo::Runtime.keepFolders = true;
+        }
+        else if (arg == "-s" || arg == "--server")
+        {
+            if ((i + 1) < argc)
+            {
+                if (!is_argument(argv[i + 1]))
+                {
+                    Secundo::Runtime.repoServer = argv[i + 1];
                 }
                 else
                 {
@@ -310,7 +344,13 @@ int main(int argc, char *argv[])
                         s.cxs() != "secpm_trustings.conf" &&
                         s.cxs() != "lock.lck")
                     {
-                        remove(std::string("/usr/share/secundo/"+s.cxs()).c_str());
+                        std::string rem = "rm -rf";
+
+#ifdef _WIN32 || _WIN64
+                        rem = "rmdir /s";
+#endif
+
+                        system(std::string(rem+" /usr/share/secundo/"+s.cxs()).c_str());
                         c++;
                     }
                 }
@@ -348,6 +388,10 @@ int main(int argc, char *argv[])
                 std::cout << "Syntax error!\n" << std::endl;
                 help();
             }
+        }
+        else if (arg == "-iu" || arg == "--ignore-up-to-date")
+        {
+            Secundo::Runtime.ignoreUTD = true;
         }
         else
         {
@@ -417,7 +461,16 @@ bool is_argument(const std::string &arg)
         std::string(arg) == "showtrust" ||
         std::string(arg) == "quiet" ||
         std::string(arg) == "list" ||
-        std::string(arg) == "clean")
+        std::string(arg) == "clean" ||
+        std::string(arg) == "-s" ||
+        std::string(arg) == "--server" ||
+        std::string(arg) == "-kf" ||
+        std::string(arg) == "--keep-folders" ||
+        std::string(arg) == "-ndc" ||
+        std::string(arg) == "--no-dependency-checking" ||
+        std::string(arg) == "--help" ||
+        std::string(arg) == "-h" ||
+        std::string(arg) == "help")
         return true;
 
     return false;
@@ -428,30 +481,42 @@ void help()
     std::cout << "Secundo Package Manager - v" << _VERSION << std::endl;
 
     std::cout << "\nOptions:" << std::endl;
-    std::cout << "     install <user>:<package> - installs a package from the choosed repository of a user"
+    std::cout << "     install <user>:<package>        - installs a package from the choosed repository of a user"
               << std::endl;
-    std::cout << "     update <user>:<package>  - updates a package from the choosed repository of a user" << std::endl;
+    std::cout << "     update <user>:<package>         - updates a package from the choosed repository of a user" << std::endl;
 
-    std::cout << "     update all               - updates all installed packages (only works for packages,\n"
-              << "                                installed with version 0.1.4 or above)" << std::endl;
+    std::cout << "     update all                      - updates all installed packages (only works for packages,\n"
+              << "                                       installed with version 0.1.4 or above)" << std::endl;
 
-    std::cout << "     remove <user>:<package>  - removes a package from the choosed repository of a user" << std::endl;
-    std::cout << "     local <path>             - install directory with installer script (pkg/ins.sc)" << std::endl;
-    std::cout << "     list                     - lists all installed packages." << std::endl;
-    std::cout << "     clean                    - cleans packages that had errors at installing and were\n" 
-              << "                                not cleaned or just unnecessary files and directories." << std::endl;
+    std::cout << "     remove <user>:<package>         - removes a package from the choosed repository of a user" << std::endl;
+    std::cout << "     local <path>                    - install directory with installer script (pkg/ins.sc)" << std::endl;
+    std::cout << "     list                            - lists all installed packages." << std::endl;
+    std::cout << "     clean                           - cleans packages that had errors at installing and were\n" 
+              << "                                       not cleaned or just unnecessary files and directories." << std::endl;
 
-    std::cout << "     trust <user>             - you will not get questions (like *1 or *2) about projects"
+    std::cout << "     trust <user>                    - you will not get questions (like *1 or *2) about projects"
               << std::endl;
-    std::cout << "                                from this user, only do it if you are really sure!" << std::endl;
+    std::cout << "                                       from this user, only do it if you are really sure!" << std::endl;
 
-    std::cout << "     untrust <user>           - remove user from trusted users" << std::endl;
+    std::cout << "     untrust <user>                  - remove user from trusted users" << std::endl;
     std::cout << std::endl;
 
-    std::cout << "     > sudo secpm quiet [...] - there will be no output from the installer scripts" << std::endl;
+    std::cout << "     -ndc, --no-dependency-checking  - (NOT RECOMMENDED) ignore dependencies at removing packages" << std::endl;
+    std::cout << "     -kf, --keep-folders             - keep cloned project-folders, clean with \"sudo secpm clean\"" << std::endl;
+    std::cout << "     -s, --server                    - setting the git server (default is github.com)" << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "     > sudo secpm quiet [...]        - there will be no output from the installer scripts" << std::endl;
 
     std::cout << std::endl;
     std::cout << " *1 - Are you really sure?" << std::endl;
     std::cout << " *2 - Do you want to see the build file?" << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Examples:" << std::endl;
+    std::cout << "     sudo secpm install user:project               - installs user's project" << std::endl;
+    std::cout << "     sudo secpm remove user:project -ndc           - removes user's project, without checking if" << std:: endl;
+    std::cout << "                                                     it's a dependency of other packages or not" << std::endl;
+    std::cout << "     sudo secpm -s bitbucket.org ins user:project  - installs user's project from bitbucket.org" << std::endl;
     _quit(1);
 }
