@@ -409,6 +409,7 @@ int main(int argc, char *argv[])
 
         Secundo::Installer.install_local(Secundo::Global.getInstallLocalPackages()[i]);
         std::cout << ">> Finished!" << std::endl;
+        chdir("/");
     }
 
     for (int i = 0; i < Secundo::Global.getInstallingPackages().size(); i++)
@@ -419,6 +420,7 @@ int main(int argc, char *argv[])
 
         Secundo::Installer.install(Secundo::Global.getInstallingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
+        chdir("/");
     }
 
     for (int i = 0; i < Secundo::Global.getRemovingPackages().size(); i++)
@@ -429,6 +431,7 @@ int main(int argc, char *argv[])
 
         Secundo::Installer.remove(Secundo::Global.getRemovingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
+        chdir("/");
     }
 
     for (int i = 0; i < Secundo::Global.getUpdatingPackages().size(); i++)
@@ -439,6 +442,7 @@ int main(int argc, char *argv[])
 
         Secundo::Installer.update(Secundo::Global.getUpdatingPackages()[i]);
         std::cout << ">> Finished!" << std::endl << std::endl;
+        chdir("/");
     }
 
     Secundo::Runtime.saveTrusters();
