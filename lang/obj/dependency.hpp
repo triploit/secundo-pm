@@ -11,6 +11,8 @@ namespace Secundo
     public:
         std::string name;
         std::string user;
+        std::string parent_name;
+        std::string parent_user;
         Version version;
 
         Dependency() {}

@@ -16,6 +16,9 @@ namespace Secundo
         int Index = 1;
         bool Main = false;
         bool Verbose = true;
+        bool noDepsCheck = false;
+        bool keepFolders = false;
+        bool ignoreUTD = false;
 
         std::string Scope;
         std::string CommandType;
@@ -25,6 +28,7 @@ namespace Secundo
         std::string quiet = "";
         std::string git_quiet = "";
         std::string cPath;
+        std::string repoServer = "github.com";
 
         std::vector<Token> Tokens;
         std::vector<std::string> DeletingFiles;
