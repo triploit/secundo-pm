@@ -19,6 +19,7 @@ namespace Secundo
         bool noDepsCheck = false;
         bool keepFolders = false;
         bool ignoreUTD = false;
+        bool updateAll = false;
 
         std::string Scope;
         std::string CommandType;

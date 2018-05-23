@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
                     }
                     else if (std::string(argv[i + 1]) == "all")
                     {
-                        Secundo::Installer.update_all();
+                        Secundo::Runtime.updateAll = true;
                     }
                     else
                     {
@@ -401,6 +401,11 @@ int main(int argc, char *argv[])
     }
 
     Secundo::Installer.init();
+
+    if (Secundo::Runtime.updateAll)
+    {
+        Secundo::Installer.update_all();
+    }
 
     for (int i = 0; i < Secundo::Global.getInstallLocalPackages().size(); i++)
     {

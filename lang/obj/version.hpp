@@ -34,6 +34,13 @@ namespace Secundo
 			return false;
 		}
 
+		bool operator != (const Version& other) // operator!= added by survari
+		{
+			return major != other.major
+				|| minor != other.minor
+				|| revision != other.revision
+				|| build != other.build;
+		}
 		bool operator <= (const Version& other) // operator<= added by survari
 		{
 			if (major <= other.major)

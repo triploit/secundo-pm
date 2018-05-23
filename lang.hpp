@@ -51,7 +51,7 @@ namespace Secundo
             Secundo::Runtime.MainFunction = main_function;
             bool found = false;
 
-            if (Runtime.MainFunction != "remove" || Runtime.MainFunction != "remove_win")
+            if (main_function != "remove" && main_function != "remove_win")
             {
                 for (Dependency d : p.dependencies.dependencies)
                 {
@@ -91,12 +91,27 @@ namespace Secundo
 
                     if (!found)
                     {
-                        std::cout << ">> Added dependency to install list: " << d.user << ":" << d.name << std::endl;
 
                         Package p = Package(d.user, d.name);
                         p.version = d.version;
 
-                        Secundo::Global.addInstallingPackage(p);
+                        found = false;
+
+                        for (Package pkg : Secundo::Global.getInstallingPackages())
+                        {
+                            // std::cout << pkg.name << " " << pkg.user << " " << pkg.version << std::endl;
+                            // std::cout << p.name << " " << p.user << " " << p.version << std::endl;
+
+                            if (pkg.name == p.name &&
+                                pkg.user == p.user)
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            Secundo::Global.addInstallingPackage(p);
+                            std::cout << ">> Added dependency to install list: " << d.user << ":" << d.name << " v" << d.version << std::endl;
+                        }
                     }
                 }
             }

@@ -229,6 +229,20 @@ namespace Secundo
                     clean(o_dir, rem);
                     _quit(1);
                 }
+                else if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
+                {
+                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    {
+                        if (!Runtime.ignoreUTD)
+                        {
+                            std::cout << ">> Package Up-to-date. Skipping." << std::endl;
+                            clean(o_dir, rem);
+                            return;
+                        }
+                        else
+                            std::cout << ">> Package Up-to-date. Reinstalling." << std::endl;
+                    }
+                }
             }
             else
             {
@@ -263,8 +277,14 @@ namespace Secundo
 
         void update_all()
         {
+            std::string rem = "rm ";
+#ifdef _WIN32 || _WIN64
+            rem = "del ";
+#endif
+
             std::string path = Secundo::Runtime.PackageFileDirectory;
             std::vector<Package> packages;
+            std::string o_f = "/usr/share/secundo/tmp_ins.sc";
 
             DIR *dir;
             struct dirent *ent;
@@ -284,7 +304,42 @@ namespace Secundo
                         continue;
                     }
 
-                    packages.push_back(Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory+s.cxs()));
+                    Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory+s.cxs());
+
+                    // https://raw.githubusercontent.com/user/name/master/pkg/ins.sc
+                    std::string command = "wget -q https://raw.githubusercontent.com/"+p.user+"/"+p.name+"/master/pkg/ins.sc -O "+o_f;
+
+                    if (system(std::string(command + Secundo::Runtime.quiet).c_str()) != 0)
+                    {
+                        std::cout << ">> Error at " << command << std::endl;
+                        std::cout << "\nCheck out if:" << std::endl;
+                        std::cout << " - is wget installed?" << std::endl;
+                        std::cout << " - do you have an internet connection?" << std::endl;
+                        std::cout << " - does the repository exists?" << std::endl;
+
+                        _quit(1);
+                    }
+                    else
+                    {
+                        Package up = Secundo::Seclang.createPackage(o_f);
+                        
+                        if (!Runtime.ignoreUTD)
+                        {
+                            if (up.version != p.version)
+                            {
+                                packages.push_back(p);
+                            }
+                            else
+                                std::cout << ">> Package " << p.user << ":" << p.name << " is Up-to-date. Skipping." << std::endl;
+                        }
+                        else
+                        {
+                            std::cout << ">> Package " << p.user << ":" << p.name << " is Up-to-date. Added to be reinstalled..." << std::endl;
+                            packages.push_back(p);
+                        }
+
+                        system(std::string(rem+" /usr/share/secundo/tmp_ins.sc").c_str());
+                    }
                 }
 
                 closedir(dir);
@@ -304,6 +359,8 @@ namespace Secundo
                 chdir("/");
 
                 update(package);
+
+                chdir("/");
                 std::cout << ">> Finished!" << std::endl << std::endl;
             }
         }
@@ -434,6 +491,7 @@ namespace Secundo
                             package.user == d.user)
                         {
                             std::cout << ">> Error: Removing of " << package.user << ":" << package.name << " is a dependency of " << d.parent_user << ":" << d.parent_name << std::endl;
+                            std::cout << ">> Cancelled, finishing proces..." << std::endl;
                             return;
                         }
                     }
