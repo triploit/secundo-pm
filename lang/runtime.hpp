@@ -4,8 +4,11 @@
 #include <iostream>
 #include <vector>
 #include <regex>
+#include <yaml-cpp/yaml.h>
 #include "obj/token.hpp"
 #include "../exec.hpp"
+#include "../translation.hpp"
+#include "../tstring.hpp"
 
 namespace Secundo
 {
@@ -29,6 +32,7 @@ namespace Secundo
         std::string quiet = "";
         std::string git_quiet = "";
         std::string cPath;
+        std::string ConfigPath = "";
         std::string repoServer = "github.com";
 
         std::vector<Token> Tokens;
@@ -40,29 +44,44 @@ namespace Secundo
         std::string PackageFileDirectory = "";
         std::string TrustFile = "";
 
+        YAML::Node Config;
+
         void initLV()
         {
-            TrustFile = "/usr/share/secundo/secpm_trustings.conf";
+            TrustFile = "/usr/share/secundo/conf/trustings.conf";
             PackageFileDirectory = "/usr/share/secundo/pkg_files/";
+            ConfigPath = "/usr/share/secundo/conf/config.yml";
             std::string user = exec("whoami");
 
 
 #ifdef _WIN32 || _WIN64
-            user = "none"
-            TrustFile = AppData+"\\secpm_trustings.conf";
-            PackageFileDirectory = AppData+"\\pkg_files\\";
             AppData = std::string(getenv("AppData"));
+            user = "none"
+            TrustFile = AppData+"\\conf\\trustings.conf";
+            PackageFileDirectory = AppData+"\\pkg_files\\";
+            ConfigPath = AppData+"\\conf\\config.yml";
 #else
             user = exec("whoami");
             user = user.substr(0, user.length() - 1);
+
             if (user != "root")
             {
-                std::cout << "Error: You must be root to use this programm!" << std::endl;
+                std::cout << Secundo::Translation.get("52") << std::endl;
                 _quit(1);
             }
 #endif
 
             loadTrust();
+        }
+
+        bool wgetLinkisNice(std::string link)
+        {   
+            if (tri::string(exec(std::string("wget --server-response --spider "+link+" 2>&1 | awk '/^  HTTP/{print $2}'").c_str())).trim().cxs() == "404")
+            {
+                return false;
+            }
+
+            return true;
         }
 
         bool isTruster(const std::string &user)
@@ -88,6 +107,20 @@ namespace Secundo
             }
         }
 
+        void initConfig()
+        {
+            if (std::ifstream(ConfigPath).is_open())
+            {
+                Config = YAML::LoadFile(ConfigPath);
+            }
+            else
+            {
+                std::ofstream(ConfigPath) << "trustcfg: /usr/share/secundo/trustings.conf\nlangcfg: /usr/share/secundo/lang/en.yml" << std::endl;
+                Config = YAML::LoadFile(ConfigPath);
+            }
+
+            Translation.loadConfig(Config["langcfg"].as<std::string>());
+        }
 
         bool regex_match(const std::string &str, const std::string &pattern)
         {
@@ -121,7 +154,7 @@ namespace Secundo
             }
             else
             {
-                std::cout << "Warning: Unable to open trust-file.\n";
+                std::cout << Secundo::Translation.get("51") << std::endl;
             }
         }
     } Runtime;

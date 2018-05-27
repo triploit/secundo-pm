@@ -3,31 +3,23 @@
 
 #define LOCKF_ "/usr/share/secundo/lock.lck"
 
-void _quit(int i)
-{
-    if (std::ifstream(LOCKF_).is_open())
-    {
-        if (remove(LOCKF_) != 0)
-            std::cout << ">> Error deleting lock file " << LOCKF_ << "!" << std::endl;
-    }
-    exit(i);
-}
+void _quit(int);
 
+#include "translation.hpp"
 #include "global.hpp"
 #include "installer.hpp"
 #include "lang/runtime.hpp"
 
 void help();
-
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.4";
+std::string _VERSION = "0.1.6.5";
 
 int main(int argc, char *argv[])
 {
-
     Secundo::Installer.init();
     Secundo::Runtime.initLV();
+    Secundo::Runtime.initConfig();
 
     char s[1024];
     getcwd(s, 1024);
@@ -39,7 +31,7 @@ int main(int argc, char *argv[])
     
     if (lock.is_open())
     {
-        std::cout << ">> Error! Lock file /usr/share/secundo/lock.lck exists,\n   so an instance of secpm is already running!\n>> If this is a bug, delete this file, but BE SURE! Remove it at your own risk!" << std::endl;
+        std::cout << ">> " << Secundo::Translation.get("12") << std::endl;
         exit(1);
     }
     else
@@ -73,15 +65,13 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
-                        std::cout << "\nThis is a package name:  user:package" << std::endl;
-                        std::cout << "                         triploit:secpundo-pm" << std::endl;
+                        printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
                         _quit(1);
                     }
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -89,13 +79,13 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
         else if (arg == "quiet")
         {
-            std::cout << ">> Quiet mode activated." << std::endl;
+            std::cout << ">> " << Secundo::Translation.get("9") << std::endl;
             Secundo::Runtime.quiet = " > /dev/null";
             Secundo::Runtime.git_quiet = " --quiet";
         }
@@ -128,15 +118,13 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
-                        std::cout << "This is a package name:  user:package" << std::endl;
-                        std::cout << "                         triploit:secpundo-pm" << std::endl;
+                        printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
                         _quit(1);
                     }
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -144,7 +132,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
@@ -173,15 +161,13 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        std::cout << "Wrong package name: " << argv[i + 1] << std::endl;
-                        std::cout << "This is a package name:  user:package" << std::endl;
-                        std::cout << "                         triploit:secpundo-pm" << std::endl;
+                        printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
                         _quit(1);
                     }
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -189,7 +175,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
@@ -211,7 +197,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -219,7 +205,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
@@ -233,7 +219,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -241,7 +227,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
@@ -255,7 +241,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -263,7 +249,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
@@ -295,7 +281,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("13") << std::endl;
                 _quit(1);
             }
 
@@ -307,7 +293,8 @@ int main(int argc, char *argv[])
             }
 
             std::sort(msgs.begin(), msgs.end());
-            std::cout << "Installed " << pkgs.size() << " packages:" << std::endl;
+
+            printf(Secundo::Translation.get("11").c_str(), pkgs.size());
 
             for (std::string s : msgs)
             {
@@ -341,8 +328,8 @@ int main(int argc, char *argv[])
                         continue;
 
                     if (s.cxs() != "pkg_files" &&
-                        s.cxs() != "secpm_trustings.conf" &&
-                        s.cxs() != "lock.lck")
+                        s.cxs() != "lang" &&
+                        s.cxs() != "conf")
                     {
                         std::string rem = "rm -rf";
 
@@ -356,14 +343,15 @@ int main(int argc, char *argv[])
                 }
 
                 closedir(dir);
+
                 if (c == 1)
-                    std::cout << ">> Cleaned " << c << " object." << std::endl;
+                    printf(std::string(">> "+Secundo::Translation.get("17")).c_str(), c);
                 else
-                    std::cout << ">> Cleaned " << c << " objects." << std::endl;
+                    printf(std::string(">> "+Secundo::Translation.get("17")).c_str(), c);
             }
             else
             {
-                std::cout << ">> There was an error! Directory /usr/share/secundo not found!" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("16") << std::endl;
                 _quit(1);
             }
         }
@@ -377,7 +365,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    std::cout << "Syntax error!\n" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                     help();
                 }
 
@@ -385,7 +373,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Syntax error!\n" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
                 help();
             }
         }
@@ -395,7 +383,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            std::cout << "Option \"" << arg << "\" not found!" << std::endl;
+            printf(Secundo::Translation.get("7").c_str(), arg.c_str());
             help();
         }
     }
@@ -409,44 +397,44 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < Secundo::Global.getInstallLocalPackages().size(); i++)
     {
-        std::cout << "============================================\n>> Installing Local Directory "
-                  << Secundo::Global.getInstallLocalPackages()[i] << "..." << std::endl;
+        printf(std::string("============================================\n>> "+Secundo::Translation.get("6")+"\n").c_str(),
+                Secundo::Global.getInstallLocalPackages()[i].c_str());
 
         Secundo::Installer.install_local(Secundo::Global.getInstallLocalPackages()[i]);
-        std::cout << ">> Finished!" << std::endl;
+        std::cout << ">> " << Secundo::Translation.get("2") << std::endl << std::endl;
         chdir("/");
     }
 
     for (int i = 0; i < Secundo::Global.getInstallingPackages().size(); i++)
     {
-        std::cout << "============================================\n>> Installing "
-                  << Secundo::Global.getInstallingPackages()[i].user << "'s "
-                  << Secundo::Global.getInstallingPackages()[i].name << "..." << std::endl;
+        printf(std::string("============================================\n>> "+Secundo::Translation.get("5")+"\n").c_str(),
+                Secundo::Global.getInstallingPackages()[i].user.c_str(),
+                Secundo::Global.getInstallingPackages()[i].name.c_str());
 
         Secundo::Installer.install(Secundo::Global.getInstallingPackages()[i]);
-        std::cout << ">> Finished!" << std::endl << std::endl;
+        std::cout << ">> " << Secundo::Translation.get("2") << std::endl << std::endl;
         chdir("/");
     }
 
     for (int i = 0; i < Secundo::Global.getRemovingPackages().size(); i++)
     {
-        std::cout << "============================================\n>> Remove "
-                  << Secundo::Global.getRemovingPackages()[i].user << "'s "
-                  << Secundo::Global.getRemovingPackages()[i].name << "..." << std::endl;
+        printf(std::string("============================================\n>> "+Secundo::Translation.get("4")+"\n").c_str(),
+                Secundo::Global.getRemovingPackages()[i].user.c_str(),
+                Secundo::Global.getRemovingPackages()[i].name.c_str());
 
         Secundo::Installer.remove(Secundo::Global.getRemovingPackages()[i]);
-        std::cout << ">> Finished!" << std::endl << std::endl;
+        std::cout << ">> " << Secundo::Translation.get("2") << std::endl << std::endl;
         chdir("/");
     }
 
     for (int i = 0; i < Secundo::Global.getUpdatingPackages().size(); i++)
     {
-        std::cout << "============================================\n>> Updating "
-                  << Secundo::Global.getUpdatingPackages()[i].user << "'s "
-                  << Secundo::Global.getUpdatingPackages()[i].name << "..." << std::endl;
+        printf(std::string("============================================\n>> "+Secundo::Translation.get("3")+"\n").c_str(),
+                Secundo::Global.getUpdatingPackages()[i].user.c_str(),
+                Secundo::Global.getUpdatingPackages()[i].name.c_str());
 
         Secundo::Installer.update(Secundo::Global.getUpdatingPackages()[i]);
-        std::cout << ">> Finished!" << std::endl << std::endl;
+        std::cout << ">> " << Secundo::Translation.get("2") << std::endl << std::endl;
         chdir("/");
     }
 
@@ -487,45 +475,16 @@ bool is_argument(const std::string &arg)
 
 void help()
 {
-    std::cout << "Secundo Package Manager - v" << _VERSION << std::endl;
-
-    std::cout << "\nOptions:" << std::endl;
-    std::cout << "     install <user>:<package>        - installs a package from the choosed repository of a user"
-              << std::endl;
-    std::cout << "     update <user>:<package>         - updates a package from the choosed repository of a user" << std::endl;
-
-    std::cout << "     update all                      - updates all installed packages (only works for packages,\n"
-              << "                                       installed with version 0.1.4 or above)" << std::endl;
-
-    std::cout << "     remove <user>:<package>         - removes a package from the choosed repository of a user" << std::endl;
-    std::cout << "     local <path>                    - install directory with installer script (pkg/ins.sc)" << std::endl;
-    std::cout << "     list                            - lists all installed packages." << std::endl;
-    std::cout << "     clean                           - cleans packages that had errors at installing and were\n" 
-              << "                                       not cleaned or just unnecessary files and directories." << std::endl;
-
-    std::cout << "     trust <user>                    - you will not get questions (like *1 or *2) about projects"
-              << std::endl;
-    std::cout << "                                       from this user, only do it if you are really sure!" << std::endl;
-
-    std::cout << "     untrust <user>                  - remove user from trusted users" << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "     -ndc, --no-dependency-checking  - (NOT RECOMMENDED) ignore dependencies at removing packages" << std::endl;
-    std::cout << "     -kf, --keep-folders             - keep cloned project-folders, clean with \"sudo secpm clean\"" << std::endl;
-    std::cout << "     -s, --server                    - setting the git server (default is github.com)" << std::endl;
-
-    std::cout << std::endl;
-    std::cout << "     > sudo secpm quiet [...]        - there will be no output from the installer scripts" << std::endl;
-
-    std::cout << std::endl;
-    std::cout << " *1 - Are you really sure?" << std::endl;
-    std::cout << " *2 - Do you want to see the build file?" << std::endl;
-
-    std::cout << std::endl;
-    std::cout << "Examples:" << std::endl;
-    std::cout << "     sudo secpm install user:project               - installs user's project" << std::endl;
-    std::cout << "     sudo secpm remove user:project -ndc           - removes user's project, without checking if" << std:: endl;
-    std::cout << "                                                     it's a dependency of other packages or not" << std::endl;
-    std::cout << "     sudo secpm -s bitbucket.org ins user:project  - installs user's project from bitbucket.org" << std::endl;
+    printf(std::string(Secundo::Translation.sentences["1"].as<std::string>()).c_str(), _VERSION.c_str());
     _quit(1);
+}
+
+void _quit(int i)
+{
+    if (std::ifstream(LOCKF_).is_open())
+    {
+        if (remove(LOCKF_) != 0)
+            printf(std::string(">> "+Secundo::Translation.get("14")).c_str(), LOCKF_);
+    }
+    exit(i);
 }

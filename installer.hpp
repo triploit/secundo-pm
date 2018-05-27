@@ -15,6 +15,7 @@
 #include "global.hpp"
 #include "lang.hpp"
 #include "package.hpp"
+#include "translation.hpp"
 
 namespace Secundo
 {
@@ -29,17 +30,17 @@ namespace Secundo
                 return true;
 
             std::string ans = "";
-            std::cout << "Do you want to see the build file? [y/n] ";
+            std::cout << Secundo::Translation.get("18") << " [y/n] ";
 
             while (ans != "y" && ans != "Y" && ans != "n" && ans != "N")
             {
                 if (ans != "")
-                    std::cout << "Pleasye type 'y' or 'n'!";
+                    std::cout << Secundo::Translation.get("19");
                 std::getline(std::cin, ans);
 
                 if (ans == "n" || ans == "N")
                 {
-                    std::cout << "Ok." << std::endl;
+                    std::cout << Secundo::Translation.get("20") << std::endl;
                     break;
                 }
             }
@@ -55,17 +56,17 @@ namespace Secundo
             }
 
             ans = "";
-            std::cout << "Are you really sure? [y/n] ";
+            std::cout << Secundo::Translation.get("21") << " [y/n] ";
 
             while (ans != "y" && ans != "Y")
             {
                 if (ans != "")
-                    std::cout << "Pleasye type 'y' or 'n'!";
+                    std::cout << Secundo::Translation.get("19");
                 std::getline(std::cin, ans);
 
                 if (ans == "n" || ans == "N")
                 {
-                    std::cout << "Ok. Abort." << std::endl;
+                    std::cout << Secundo::Translation.get("22") << std::endl;
                     return false;
                 }
             }
@@ -81,14 +82,12 @@ namespace Secundo
                         "git clone https://"+Secundo::Runtime.repoServer+"/" + package.user + "/" + package.name + ".git " + o_dir + " " +
                         Secundo::Runtime.git_quiet).c_str()) != 0)
                 {
-                    std::cout
-                            << "ERROR AT: git clone https://"+Secundo::Runtime.repoServer+"/" + package.user + "/" + package.name + ".git " +
-                               o_dir <<
-                            std::endl << std::endl << "Error! Check this out:" << std::endl;
-                    std::cout << "\t- is git installed?" << std::endl;
-                    std::cout << "\t- does the repository exist?" << std::endl;
-                    std::cout << "\t- does the github-user exist?" << std::endl;
-                    std::cout << "\t- are you root?" << std::endl;
+                    printf(Secundo::Translation.get("15").c_str(), 
+                        Secundo::Runtime.repoServer.c_str(), 
+                        package.user.c_str(), 
+                        package.name.c_str(), 
+                        o_dir.c_str());
+
                     _quit(1);
                 }
             }
@@ -101,11 +100,7 @@ namespace Secundo
                 std::cout << ">> Cleaning " << o_dir << "..." << std::endl;
                 if (system(std::string(rem + " " + o_dir).c_str()) != 0)
                 {
-                    std::cout << "Error! Check this out:" << std::endl;
-                    std::cout << "\t- is git installed?" << std::endl;
-                    std::cout << "\t- does the repository exist?" << std::endl;
-                    std::cout << "\t- does the github-user exist?" << std::endl;
-                    std::cout << "\t- are you root?" << std::endl;
+                    printf(std::string(">> "+Secundo::Translation.get("22")).c_str(), rem.c_str(), o_dir.c_str());
                     _quit(1);
                 }
             }
@@ -121,29 +116,17 @@ namespace Secundo
 
         void check_secundo(const Package &pkg)
         {
-           /* std::string _NULL = " > /dev/null";
-
-#ifdef _WIN32 || _WIN64
-            _NULL = "> NUL";
-#endif
-
-            if (system(std::string("curl --help"+_NULL).c_str()) != 0)
+            if (system("wget --help > /dev/null") != 0)
             {
-                std::cout << "error: curl wasn't found on the system.\ntake a look at https://curl.haxx.se/, install curl and add it to the system path." << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("24") << std::endl;
                 _quit(1);
             }
 
-            if (system(std::string("curl https://"+Secundo::Runtime.repoServer+"/"+pkg.user+"/"+pkg.name+_NULL).c_str()) != 0)
+            if (!Runtime.wgetLinkisNice("https://raw.githubusercontent.com/"+pkg.user+"/"+pkg.name+"/master/pkg/ins.sc"))
             {
-                std::cout << "error: repository not found: " << "https://"+Secundo::Runtime.repoServer+"/"+pkg.user+"/"+pkg.name << std::endl;
+                printf(std::string(">> "+Secundo::Translation.get("25")).c_str(), pkg.user.c_str(), pkg.name.c_str());
                 _quit(1);
             }
-
-            if (system(std::string("curl https://"+Secundo::Runtime.repoServer+"/"+pkg.user+"/"+pkg.name+"/raw/master/pkg/ins.sc"+_NULL).c_str()) != 0)
-            {
-                std::cout << "============================================\nerror while installing packages: the package is not a secundo package.\n(pkg/ins.sc missing)" << std::endl;
-                _quit(1);
-            }*/
         }
 
     public:
@@ -177,20 +160,19 @@ namespace Secundo
             if (security(script_file, Package("", ""))) 
                 Secundo::Seclang.run(package, main_);
 
-            std::cout << "\nSave installer file to ... "
-                      << Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc" << std::endl;
+            std::string pt = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+            printf(Secundo::Translation.get("26", true, true).c_str(), pt.c_str());
 
             saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
-            
-            std::cout << "Finished" << std::endl;
+            std::cout << Secundo::Translation.get("2") << std::endl;
             chdir("/");
         }
 
         void install(const Package &package)
         {
             /*std::cout << ">> Checking if Secundo-Package." << std::endl;
-            check_secundo(package);
             std::cout << ">> Finished. It is." << std::endl;*/
+            check_secundo(package);
 
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
@@ -225,7 +207,9 @@ namespace Secundo
             {
                 if (v2 < v1 || v2 > v1)
                 {
-                    std::cout << ">> Error at installing pakage! Package has the wrong version!\n>> Version " << package.version << " needed!" << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("27") << std::endl;
+                    printf(std::string(">> "+Secundo::Translation.get("28")).c_str(), package.version.str.c_str());
+
                     clean(o_dir, rem);
                     _quit(1);
                 }
@@ -235,12 +219,12 @@ namespace Secundo
                     {
                         if (!Runtime.ignoreUTD)
                         {
-                            std::cout << ">> Package Up-to-date. Skipping." << std::endl;
+                            std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
                             clean(o_dir, rem);
                             return;
                         }
                         else
-                            std::cout << ">> Package Up-to-date. Reinstalling." << std::endl;
+                            std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
                     }
                 }
             }
@@ -252,12 +236,12 @@ namespace Secundo
                     {
                         if (!Runtime.ignoreUTD)
                         {
-                            std::cout << ">> Package Up-to-date. Skipping." << std::endl;
+                            std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
                             clean(o_dir, rem);
                             return;
                         }
                         else
-                            std::cout << ">> Package Up-to-date. Reinstalling." << std::endl;
+                            std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
                     }
                 }
             }
@@ -265,12 +249,12 @@ namespace Secundo
             if (security(script_file, package)) 
                 Secundo::Seclang.run(p, main_);
 
-            std::cout << "\nSave installer file to ... "
-                      << Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc" << std::endl;
+            std::string path = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+            printf(Secundo::Translation.get("26", true, true).c_str(), path.c_str());
 
             saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
-            
-            std::cout << "Finished" << std::endl;
+            std::cout << Secundo::Translation.get("2") << std::endl;
+
             clean(o_dir, rem);
             chdir("/");
         }
@@ -307,16 +291,18 @@ namespace Secundo
                     Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory+s.cxs());
 
                     // https://raw.githubusercontent.com/user/name/master/pkg/ins.sc
+
+                    if (!Runtime.wgetLinkisNice("https://raw.githubusercontent.com/"+p.user+"/"+p.name+"/master/pkg/ins.sc"))
+                    {
+                        printf(std::string(">> "+Secundo::Translation.get("25")).c_str(), p.user.c_str(), p.name.c_str());
+                        return;
+                    }
+
                     std::string command = "wget -q https://raw.githubusercontent.com/"+p.user+"/"+p.name+"/master/pkg/ins.sc -O "+o_f;
 
                     if (system(std::string(command + Secundo::Runtime.quiet).c_str()) != 0)
                     {
-                        std::cout << ">> Error at " << command << std::endl;
-                        std::cout << "\nCheck out if:" << std::endl;
-                        std::cout << " - is wget installed?" << std::endl;
-                        std::cout << " - do you have an internet connection?" << std::endl;
-                        std::cout << " - does the repository exists?" << std::endl;
-
+                        printf(std::string(">> "+Secundo::Translation.get("31")).c_str(), command.c_str());
                         _quit(1);
                     }
                     else
@@ -325,16 +311,16 @@ namespace Secundo
                         
                         if (!Runtime.ignoreUTD)
                         {
-                            if (up.version != p.version)
+                            if (up.version > p.version)
                             {
                                 packages.push_back(p);
                             }
                             else
-                                std::cout << ">> Package " << p.user << ":" << p.name << " is Up-to-date. Skipping." << std::endl;
+                                printf(std::string(">> "+Secundo::Translation.get("32", true)).c_str(), p.user.c_str(), p.name.c_str());                                
                         }
                         else
                         {
-                            std::cout << ">> Package " << p.user << ":" << p.name << " is Up-to-date. Added to be reinstalled..." << std::endl;
+                            printf(std::string(">> "+Secundo::Translation.get("33", true)).c_str(), p.user.c_str(), p.name.c_str());
                             packages.push_back(p);
                         }
 
@@ -346,14 +332,16 @@ namespace Secundo
             }
             else
             {
-                std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("34") << std::endl;
                 _quit(1);
             }
 
             for (Package package : packages)
-            {
-                std::cout << "============================================\n>> Updating " << package.user << "'s "
-                          << package.name << "..." << std::endl;
+            {                
+                printf(std::string("============================================\n>> "+Secundo::Translation.get("3")).c_str(),
+                    package.user.c_str(),
+                    package.name.c_str());
+
                 init();
                 Secundo::Runtime.initLV();
                 chdir("/");
@@ -392,23 +380,23 @@ namespace Secundo
             {
                 if (!Runtime.ignoreUTD)
                 {
-                    std::cout << ">> Package Up-to-date. No update needed. Cancelling." << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
                     clean(o_dir, rem);
                     return;
                 }
                 else
-                    std::cout << ">> Package Up-to-date. Reinstalling." << std::endl;
+                    std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
             }
 
             if (security(script_file, package)) 
                 Secundo::Seclang.run(p, main_);
 
-            std::cout << "\nSave installer file to ... "
-                      << Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc" << std::endl;
+            std::string path = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+            printf(Secundo::Translation.get("26", true, true).c_str(), path.c_str());
 
             saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+            std::cout << Secundo::Translation.get("2") << std::endl;
 
-            std::cout << "Finished" << std::endl;
             clean(o_dir, rem);
             chdir("/");
         }
@@ -434,11 +422,11 @@ namespace Secundo
             std::string sc_script = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
             std::ifstream f(sc_script, std::ios::in);
 
-            std::cout << "\nSearch for existing package file ... " << sc_script << std::endl;
+            printf(std::string("\n"+Secundo::Translation.get("35")).c_str(), sc_script.c_str());
 
             if (f.is_open())
             {
-                std::cout << "Found ... running script." << std::endl << std::endl;
+                std::cout << Secundo::Translation.get("36") << std::endl << std::endl;
                 Runtime.DeletingFiles.push_back(sc_script);
 
                 std::vector<Dependency> deps;
@@ -481,7 +469,7 @@ namespace Secundo
                     }
                     else
                     {
-                        std::cout << ">> There was an error! Directory for the package-files not found!" << std::endl;
+                        std::cout << ">> " << Secundo::Translation.get("34") << std::endl;
                         _quit(1);
                     }
 
@@ -490,8 +478,13 @@ namespace Secundo
                         if (package.name == d.name &&
                             package.user == d.user)
                         {
-                            std::cout << ">> Error: Removing of " << package.user << ":" << package.name << " is a dependency of " << d.parent_user << ":" << d.parent_name << std::endl;
-                            std::cout << ">> Cancelled, finishing proces..." << std::endl;
+                            printf(std::string(">> "+Translation.get("38")).c_str(),
+                                package.user.c_str(),
+                                package.name.c_str(),
+                                d.parent_user.c_str(),
+                                d.parent_name.c_str());
+
+                            std::cout << ">> " << Secundo::Translation.get("37") << std::endl;
                             return;
                         }
                     }
@@ -504,7 +497,7 @@ namespace Secundo
             }
             else
             {
-                std::cout << ">> This package is not installed!\n>> Skipping." << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("39") << std::endl;
             }
 
             chdir("/");

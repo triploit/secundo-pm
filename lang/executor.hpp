@@ -38,8 +38,7 @@ namespace Secundo
                                 Token(Tokens[i + 1].getValue(), TokenType.TYPE_FUNCTION, Tokens[i + 2].getValue()));
                     else
                     {
-                        std::cout << "EXECUTOR: PUT_TOGETHER: FUNC " << Tokens[i + 1].getValue()
-                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        printf(Translation.get("45").c_str(), Tokens[i + 1].getValue().c_str());
                         _quit(1);
                     }
                     i += 2;
@@ -60,8 +59,7 @@ namespace Secundo
                     }
                     else
                     {
-                        std::cout << "EXECUTOR: PUT_TOGETHER: DEPENDENCY " << Tokens[i + 1].getValue()
-                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        printf(Translation.get("44").c_str(), Tokens[i + 1].getValue().c_str());
                         _quit(1);
                     }
 
@@ -76,8 +74,7 @@ namespace Secundo
                     }
                     else
                     {
-                        std::cout << "EXECUTOR: PUT_TOGETHER: NAME " << Tokens[i + 1].getValue()
-                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        printf(Translation.get("49").c_str(), Tokens[i + 1].getValue().c_str());
                         _quit(1);
                     }
                 }
@@ -90,8 +87,7 @@ namespace Secundo
                     }
                     else
                     {
-                        std::cout << "EXECUTOR: PUT_TOGETHER: USER " << Tokens[i + 1].getValue()
-                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        printf(Translation.get("48").c_str(), Tokens[i + 1].getValue().c_str());
                         _quit(1);
                     }
                 }
@@ -104,14 +100,13 @@ namespace Secundo
                     }
                     else
                     {
-                        std::cout << "EXECUTOR: PUT_TOGETHER: VERSION " << Tokens[i + 1].getValue()
-                                  << ": ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                        printf(Translation.get("47").c_str(), Tokens[i + 1].getValue().c_str());
                         _quit(1);
                     }
                 }
                 else
                 {
-                    std::cout << "EXECUTOR: PUT_TOGETHER: ERROR: FATAL_ERROR: Syntax error!" << std::endl;
+                    printf(Translation.get("46").c_str());
                     _quit(1);
                 }
             }

@@ -33,7 +33,7 @@ namespace Secundo
             }
             else
             {
-                std::cout << "ERROR: FATAL_ERROR: INSTALL-FILE (" << __file << ") NOT FOUND!" << std::endl;
+                printf(Secundo::Translation.get("40").c_str(), __file.c_str());
                 _quit(1);
             }
 
@@ -85,7 +85,7 @@ namespace Secundo
                     }
                     else
                     {
-                        std::cout << ">> There was an error! Directory for the package-files (/usr/share/secundo/pkg_files) not found!" << std::endl;
+                        std::cout << ">> " << Secundo::Translation.get("41") << std::endl;
                         _quit(1);
                     }
 
@@ -110,7 +110,10 @@ namespace Secundo
                         if (!found)
                         {
                             Secundo::Global.addInstallingPackage(p);
-                            std::cout << ">> Added dependency to install list: " << d.user << ":" << d.name << " v" << d.version << std::endl;
+                            printf(std::string(">> "+Secundo::Translation.get("42", true)).c_str(),
+                                d.user.c_str(),
+                                d.name.c_str(),
+                                d.version.str.c_str());
                         }
                     }
                 }

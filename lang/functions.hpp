@@ -88,8 +88,7 @@ namespace Secundo
         {
             if (!existsFunction(func))
             {
-                std::cout << "ERROR: LINE " << Secundo::Runtime.LineNumber << ": FATAL_ERROR: Function " << func
-                          << " not found!" << std::endl;
+                printf(Secundo::Translation.get("50").c_str(), Runtime.LineNumber, func.c_str());
                 _quit(1);
             }
 
