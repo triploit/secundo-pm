@@ -1,16 +1,47 @@
 name secundo-pm
 user triploit
-ver 0.1.6.4
+ver 0.1.6.5
 
 func install {<[
+	if [ ! -d "/usr/local/include/yaml-cpp" ]; then
+		if [ ! -d "/usr/share/include/yaml-cpp" ]; then
+			echo ">> INFO: Installing yaml-cpp library..."
+
+			git clone https://github.com/jbeder/yaml-cpp
+			cd yaml-cpp
+			
+			cmake .
+			make
+			sudo make install
+
+			cd ..
+			rm -rf yaml-cpp
+		fi
+	fi
+
     cmake .
     make
 	chmod +x secpm
 
 	if [ ! -d "/usr/share/secundo" ]; then
 		mkdir /usr/share/secundo
+	fi	
+	
+	if [ ! -d "/usr/share/secundo/conf" ]; then
+		mkdir /usr/share/secundo/conf
+	fi
+
+	if [ ! -d "/usr/share/secundo/pkg_files" ]; then
 		mkdir /usr/share/secundo/pkg_files
 	fi
+
+	if [ ! -d "/usr/share/secundo/lang" ]; then
+		mkdir /usr/share/secundo/lang
+	fi
+
+	cp pkg/config.yml /usr/share/secundo/conf/config.yml
+	cp pkg/en.yml /usr/share/secundo/lang/en.yml
+	cp pkg/trustings.conf /usr/share/secundo/conf/trustings.conf
 
 	sudo mv secpm /usr/bin/secpm
 ]>}
