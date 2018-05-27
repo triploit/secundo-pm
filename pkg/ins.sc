@@ -39,8 +39,7 @@ func install {<[
 		mkdir /usr/share/secundo/lang
 	fi
 
-	cp pkg/config.yml /usr/share/secundo/conf/config.yml
-	cp pkg/en.yml /usr/share/secundo/lang/en.yml
+	cp pkg/*.yml /usr/share/secundo/conf/
 	cp pkg/trustings.conf /usr/share/secundo/conf/trustings.conf
 
 	sudo mv secpm /usr/bin/secpm
