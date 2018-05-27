@@ -34,7 +34,7 @@ namespace Secundo
                 typ != TYPE_OTHER &&
                 typ != TYPE_FUNCTION)
             {
-                std::cout << "TOKEN: ERROR: FALSE_TYPE_ERROR: " << typ << std::endl;
+                printf(Translation.get("43").c_str(), typ.c_str());
                 _quit(1);
             }
             else
