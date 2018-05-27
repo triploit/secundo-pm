@@ -1,0 +1,2 @@
+trustcfg: /usr/share/secundo/trustings.conf
+langcfg: /usr/share/secundo/lang/en.yml

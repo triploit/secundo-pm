@@ -1,0 +1,116 @@
+1: |
+  Secundo Package Manager - v%s 
+
+  Optionen: 
+      install <nutzer>:<paket>        - installiert ein das gewählte packet des nutzers
+      update <nutzer>:<paket>         - das paket von nutzer aktualisieren
+
+      update all                      - alle installierten pakete aktualisieren (nur mit
+                                        paketen die ab version 0.1.4.0 installiert sind
+                                        möglich)
+
+      remove <nutzer>:<paket>         - das paket von nutzer entfernen
+      local <pfad>                    - ein verzeichnis auf dem computer installieren (pkg/ins.sc) 
+      list                            - alle installierten pakete auflisten
+
+      clean                           - alle pakete die beim installieren fehler hatten, oder
+                                        bei denen der vorgang vom nuter abgebrochen wurde
+                                        säubern
+
+      trust <nutzer>                  - du wirst keine sicherheitsfragen (wie *1 oder *2) bei den
+                                        paketen des angegebenen nutzers bekommen
+
+      untrust <nutzer>                - vertrauenswürdigen nutzer löschen
+
+      -ndc, --no-dependency-checking  - (NICHT EMPFOHLEN) ignorieren der abhängigkeiten
+      -kf, --keep-folders             - heruntergeladene repository-ordner nicht löschen, säubern
+                                        mit \"sudo secpm clean\" 
+      -s, --server                    - den git-server setzen (standard ist github.com)
+
+      > sudo secpm quiet [...]        - die ausgaben der skripte werden nicht im terminal angezeigt
+
+    *1 - Bist du dir wirklich sicher?
+    *2 - Möchtest du das Installationsskript sehen?
+
+  Examples: 
+      sudo secpm install nutzer:projekt               - installiert nutzers projekt
+      sudo secpm remove nutzer:projekt -ndc           - entfernt nutzers paket, egal ob es eine
+                                                        ahängigkeit ist oder nicht
+      sudo secpm -s bitbucket.org ins nutzer:projekt  - installiert nutzers paket von bitbucket.org
+2: "Fertig!"
+3: "Aktualisiere %ss %s..."
+4: "Entferne %s's %s..."
+5: "Installiere %s's %s..."
+6: "Installiere lokalen Ordner %s..."
+7: "Option \"%s\" nicht gefunden!"
+8: "Syntax error!"
+9: "Stiller Modus aktiviert."
+10: |
+  Falscher Paketname: %s
+  
+  So sieht ein Paketname aus:  nutzer:paket
+  oder:                        triploit:secpundo-pm
+11: "%d Pakete installiert:"
+12: |
+  Error! Die Sperrungsdatei /usr/share/secundo/lock.lck existiert,
+     eine SecPM instanz läuft bereits!
+  >> Wenn du dir GANZ SICHER bist, lösche diese Datei. Sei dir der Gefahr bewusst.
+13: "Ein Error! Der Ordner für die Installationsskripte wurde nicht gefunden!"
+14: "Fehler beim Löschen von \"%s\"!"
+15: |
+  FEHLER BEI: git clone https://%s/%s/%s.git %s
+                
+  Fehler!! Frag dich folgendes:
+    - ist git installiert?
+    - existiert das projekt?
+    - existiert der nutzer?
+    - bist du root (sollte zutreffen)?
+16: "Fataler Fehler! Der Ordner /usr/share/secundo wurde nicht gefunden!"
+17: "%d Objekte bereinigt."
+18: "Möchtest du das Installationsskript sehen?"
+19: "Bitte gib 'y' oder 'n' ein! > "
+20: "Ok."
+21: "Bist du dir wirklich sicher?"
+22: "Ok. Abbruch."
+23: "Fehler beim säubern von: %s %s"
+24: "Fataler Fehler: wget wurde nicht gefunden! Installiere wget!"
+25: |
+  Error: Installationsskript von %s's %s wurde nicht auf dem
+         Server gefunden!
+
+  Sei dir sicher:
+  ... dass dies wirklich ein SecPM-Paket ist!
+  ... dass die Repository wirklich existiert!
+26: "Sichere Installationsskript... %s"
+27: "Fehler beim Installieren des Paketes! Es hat die falsche Version!"
+28: "Version %s benötigt!"
+29: "Paket ist aktuell. Überspringe."
+30: "Paket ist aktuell. Installiere erneut."
+31: |
+  Fehler bei %s
+
+  Überprüfe folgendes:
+  ... ist wget installiert?
+  ... hast du eine Internetverbindung?
+  ... existiert das Projekt wirklich?
+32: "Paket %s:%s ist aktuell. Überspringe."
+33: "Paket %s:%s ist aktuell. Füge zur Neuinstallation hinzu..."
+34: "Fataler Fehler! Der Ordner /usr/share/secundo/pkg_files wurde nicht gefunden!"
+35: "Suche nach Installationsskript ... %s"
+36: "Gefunden ... führe das Skript aus."
+37: "Abgebrochen, beende Prozess..."
+38: "Fehler: Entfernen von %s:%s : Ist eine Abhängigkeit von %s:%s!"
+39: "Dieses Paket ist nicht installiert. Überspringe."
+40: "FEHLER: FATALER_FEHLER: INSTALLATIONSSKRIPT (\"%s\") NOT FOUND!"
+41: "Fataler Fehler! Der Ordner für die Installationsskripte (/usr/share/secundo/pkg_files) wurde nicht gefunden!"
+42: "Abhängigkeit zur Installationsliste hinzugefügt: %s:%s v%s"
+43: "TOKEN: ERROR: FALSCHER_WERT_FEHLER: %s"
+44: "EXECUTOR: PUT_TOGETHER: ABHÄNGIGKEIT %s: FEHLER: FATALER_FEHLER: Syntax error!"
+45: "EXECUTOR: PUT_TOGETHER: FUNC %s: FEHLER: FATAL_ERROR: Syntax error!"
+46: "EXECUTOR: PUT_TOGETHER: FEHLER: FATAL_ERROR: Syntax error!"
+47: "EXECUTOR: PUT_TOGETHER: VERSION %s: FEHLER: FATALER_FEHLER: Syntax error!"
+48: "EXECUTOR: PUT_TOGETHER: USER %s: FEHLER: FATALER_FEHLER: Syntax error!"
+49: "EXECUTOR: PUT_TOGETHER: NAME %s: FEHLER: FATALER_FEHLER: Syntax error!"
+50: "ERROR: ZEILE %d: FATALER_FEHLER: Funktion %s nicht gefunden!"
+51: "Warnung: trust-Datei nicht gefunden!"
+52: "Fehler: Du musst root sein um das Programm zu benutzen!"
