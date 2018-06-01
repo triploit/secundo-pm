@@ -66,7 +66,7 @@ namespace Secundo
 
             if (user != "root")
             {
-                std::cout << Secundo::Translation.get("52") << std::endl;
+                std::cout << "You have to be root to run this program!" << std::endl;
                 _quit(1);
             }
 #endif

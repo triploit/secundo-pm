@@ -13,7 +13,7 @@ void _quit(int);
 void help();
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.5";
+std::string _VERSION = "0.1.6.7";
 
 int main(int argc, char *argv[])
 {
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         }
         else if (arg == "quiet")
         {
-            std::cout << ">> " << Secundo::Translation.get("9") << std::endl;
+            std::cout << ">> " << Secundo::Translation.get("9", true) << std::endl;
             Secundo::Runtime.quiet = " > /dev/null";
             Secundo::Runtime.git_quiet = " --quiet";
         }
@@ -348,11 +348,11 @@ int main(int argc, char *argv[])
                 }
 
                 closedir(dir);
-                printf(std::string("\n>> "+Secundo::Translation.get("17")).c_str(), c);
+                printf(std::string("\n>> "+Secundo::Translation.get("17", true)).c_str(), c);
             }
             else
             {
-                std::cout << ">> " << Secundo::Translation.get("16") << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("16", true) << std::endl;
                 _quit(1);
             }
         }
@@ -384,7 +384,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            printf(Secundo::Translation.get("7").c_str(), arg.c_str());
+            printf(Secundo::Translation.get("7", true).c_str(), arg.c_str());
             help();
         }
     }

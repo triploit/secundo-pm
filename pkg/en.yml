@@ -108,5 +108,4 @@
 49: "EXECUTOR: PUT_TOGETHER: NAME %s: ERROR: FATAL_ERROR: Syntax error!"
 50: "ERROR: LINE %d: FATAL_ERROR: Function %s not found!"
 51: "Warning: Unable to open trust-file."
-52: "Error: You must be root to use this programm!"
 53: "Cleaning %s ..."
