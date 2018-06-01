@@ -208,9 +208,9 @@ sudo secpm showtrust
 
 ## EN - English
 
-**Disclaimer:** I assume no liability for damaged data or their loss. As well I dissociate myself from all projects, which use SecundoPM as a package manager and aren't properity of https://github.com/triploit/ or https://github.com/survari/. Everyone, who uses this package manager **does it on own risk.** 
+**Disclaimer:** I assume no liability for damaged data or its loss. As well I dissociate myself from all projects, which use SecundoPM as a package manager and aren't properity of https://github.com/triploit/ or https://github.com/survari/. Everyone, who uses this package manager **does it on own risk.** 
 
-So you created a nice tool for users but don't know how you should easily let them install it? To prevent the tricky compiling and moving of programs, i build an package manager for GitHub projects.
+Did you create a nice tool for users but don't know how you should easily let them install it? To prevent the tricky compiling and moving of programs, I built an package manager for GitHub projects.
 
 Let's install it. This is the hardest part:
 ```bash
@@ -227,10 +227,10 @@ rm -rf secundo-pm
 
 ## How to create a package
 
-And here's, why I had written a disclaimer:
+And here's why I had written a disclaimer:
 
-If you want to add SecundoPM support to your GitHub project, you have to create a directory with the nam "pkg" in the root-directory of the project. In this directory, you must create a file called `ins.sc`.
-The directory tree have to look like this:
+If you want to add SecundoPM support to your GitHub project, you have to create a directory with the nam "pkg" in the root-directory of the project. In this directory, you have to create a file called `ins.sc`.
+The directory tree should look like this:
 ```
 myproject
 ├── main.cpp
@@ -249,9 +249,9 @@ user github_user
 ver 0.0.0.1
 ```
 
-Important is, that the name of the project and the user have to be lowercase. The versions have to be something like this: `[major version].[[minor version].[revision].[build]`. 
+It's important, that the name of the project and the one of the user are lowercase. The versions have to be something like this: `[major version].[minor version].[revision].[build]`. 
 
-If we have a little programm that gets a update, the version goes higher. For a big update, the major/minor versions change. For bugfixes or just error fixing, use revision and build.
+If we have a little programm that gets an update, the version needs to be higher. For a big update, the major/minor versions change. For bugfixes or just error fixing, use revision and build.
 
 And here's the installer file:
 
@@ -289,26 +289,26 @@ func werror {
     @echo "There's no Windows support in this project."
 }
 ```
-So, what you're seeing is an easy kind of the installer script. We define some functions. But functions in **S**e**C**undo (**`ins.sc`**) script can't have arguments or parameters. It's possible to call functions with `&functionname`.
+So, what you're seeing is an easier kind of the installer script. We will define some functions. But functions in **S**e**C**undo (**`ins.sc`**) script can't have arguments or parameters. It's possible to call functions with `&functionname`.
 
 Functions, expectet as standard (on Linux):
 * `install`    - To install a package to your computer
 * `update`    - To update a package on your computer
 * `remove`    - To uninstall/remove a package from your computer
 
-(On Windows functions are the same but they end with `_win` (eg. `install_win`) (like in the example).)
+(On Windows, functions are the same but they end with `_win` (eg. `install_win`) (like in the example).)
 
-If you look throug the installer script, there's something special: shell commands.
-In are shell commands. In `_win` functions you have to write CMD commands and in Linux functions (the 3 standard functions without `_win`) you have to write shell commands. And therefor: the disclaimer. SecPM asks if you want to see the installer script and if you really want to install this package, but you are installing packages  **at own risk**.
+If you look through the installer script, there's something special: shell commands.
+In functions are shell commands. In `_win` functions you have to write CMD commands and in Linux functions (the 3 standard functions without `_win`) you have to write linux shell commands. And therefor: the disclaimer. SecPM asks if you want to see the installer script and if you really want to install this package, but you are installing packages  **at own risk**.
 
-Important is: The functions aren't a complete shellscript. The script will be runned line by line. The commands are independent.
+Watch out: The functions aren't a complete shellscript. The script will be runned line by line. The commands are independent.
 
 If you want to use a shell script and variables, you have to do this:
 
 ```
 func install {
     <[
-        echo "Dies ist ein vollwertiges Shellscript!";
+        echo "This is a real shell script!";
         i="Hallo Welt!";
         echo $i;
     ]>
@@ -320,7 +320,7 @@ This is also possible:
 
 ```
 func install {<[
-    echo "Dies ist ein vollwertiges Shellscript!";
+    echo "This is a real shell script!";
     i="Hallo Welt!";
     echo $i;
 ]>}
@@ -333,7 +333,7 @@ dep triploit aml 0.1.4.0
 ```
 
 `dep` means "dependency". Like down below, the rule is: `dep [user] [project] [version]`. .
-Is the program aml not installed, SecPM will install it. When you have more than one dependencies, you can write this:
+If the program aml is not installed, SecPM will install it. If you have more than one dependency, you can write this:
 
 ```
 dep user project1 0.1.2.0
@@ -382,10 +382,10 @@ The package https://github.com/mustermax/project will be removed.
 ```
 sudo secpm local /path/to/project/
 ```
-The package directory `/path/to/project/` wird installiert. Das Skript `/pfad/zum/projekt/pkg/ins.sc` wird ausgeführt.
+The package directory `/path/to/project/` will be installed. The script `/pfad/zum/projekt/pkg/ins.sc` will be runned.
 
 ### Trust people
-Since every package is a potential hazard, SecPM asks some questions before installing the package (like: `Do you want to see the script file?` or `Are you really sure?`). But theres a possibility to trust GitHub accounts (eg. from friends or your own). But you have to be **really sure**, because if the package contains dangerous code, SecPM won't ask.
+Since every package is a potential hazard, SecPM asks some questions before installing the package (like: `Do you want to see the script file?` or `Are you really sure?`). But theres a possibility to trust GitHub accounts (eg. from friends or yourself). But you have to be **really sure**, because if the package contains dangerous code, SecPM won't ask.
 ```
 sudo secpm trust user
 ```
