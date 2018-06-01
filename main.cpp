@@ -97,6 +97,10 @@ int main(int argc, char *argv[])
         {
             std::cout << _VERSION << std::endl;
         }
+        else if (arg == "-l")
+        {
+            tri::_a42 = true;
+        }
         else if (arg == "remove" || arg == "rem")
         {
             if ((i + 1) < argc)
@@ -281,7 +285,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << ">> " << Secundo::Translation.get("13") << std::endl;
+                std::cout << ">> " << Secundo::Translation.get("13", true) << std::endl;
                 _quit(1);
             }
 
@@ -294,7 +298,7 @@ int main(int argc, char *argv[])
 
             std::sort(msgs.begin(), msgs.end());
 
-            printf(Secundo::Translation.get("11").c_str(), pkgs.size());
+            printf(Secundo::Translation.get("11", true).c_str(), pkgs.size());
 
             for (std::string s : msgs)
             {
@@ -338,16 +342,13 @@ int main(int argc, char *argv[])
 #endif
 
                         system(std::string(rem+" /usr/share/secundo/"+s.cxs()).c_str());
+                        std::cout << "-> " << s.cxs() << std::endl;
                         c++;
                     }
                 }
 
                 closedir(dir);
-
-                if (c == 1)
-                    printf(std::string(">> "+Secundo::Translation.get("17")).c_str(), c);
-                else
-                    printf(std::string(">> "+Secundo::Translation.get("17")).c_str(), c);
+                printf(std::string("\n>> "+Secundo::Translation.get("17")).c_str(), c);
             }
             else
             {

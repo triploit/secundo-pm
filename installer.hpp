@@ -97,7 +97,8 @@ namespace Secundo
         {
             if (!Runtime.keepFolders)
             {
-                std::cout << ">> Cleaning " << o_dir << "..." << std::endl;
+                printf(std::string(">> " + Translation.get("53", true)).c_str(), o_dir.c_str());
+                
                 if (system(std::string(rem + " " + o_dir).c_str()) != 0)
                 {
                     printf(std::string(">> "+Secundo::Translation.get("22")).c_str(), rem.c_str(), o_dir.c_str());

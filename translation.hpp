@@ -1,6 +1,7 @@
 #ifndef TRANSLATION_HPP
 #define TRANSLATION_HPP
 
+#include "tstring.hpp"
 #include <yaml-cpp/yaml.h>
 
 namespace Secundo
@@ -23,11 +24,14 @@ namespace Secundo
                 if (bnl)
                     str = "\n" + str;
                     
+                if (tri::_a42)
+                    str = tri::string("")._a1337(str);
+
                 return str;
             }
             else
             {
-                std::cout << ">> Fatal error in language file: Sentences 2 doesn't exists!" << std::endl;
+                std::cout << ">> Fatal error in language file: Sentences \"" << s << "\" doesn't exists!" << std::endl;
                 _quit(1);
             }
         }

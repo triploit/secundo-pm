@@ -11,6 +11,8 @@
 
 namespace tri
 {
+    bool _a42 = false;
+
     class string
     {
     private:
@@ -187,6 +189,32 @@ namespace tri
             return (cxs() == s);
         }
 
+        std::string _a1337(std::string s)
+        {
+            for (char c : s)
+            {
+                replace(s, "%s", "%<!>");
+            }
+
+            for (char c : s)
+            {
+                replace(s, "a", "4");
+                replace(s, "e", "3");
+                replace(s, "i", "1");
+                replace(s, "o", "0");
+                replace(s, "s", "5");
+                replace(s, "B", "8");
+                replace(s, "T", "7");
+            }
+
+            for (char c : s)
+            {
+                replace(s, "%<!>", "%s");
+            }
+
+            return s;
+        }
+
         bool operator==(tri::string s)
         {
             return (str == s.cxs());
@@ -222,6 +250,13 @@ namespace tri
         {
             for (int i = 0; i < str.size(); i++)
                 replace(str, from.cxs(), to.cxs());
+            return tri::string(str);
+        }
+
+        tri::string replace(std::string &from, std::string &to)
+        {
+            for (int i = 0; i < str.size(); i++)
+                replace(str, from, to);
             return tri::string(str);
         }
 

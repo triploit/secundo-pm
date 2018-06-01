@@ -114,3 +114,4 @@
 50: "ERROR: ZEILE %d: FATALER_FEHLER: Funktion %s nicht gefunden!"
 51: "Warnung: trust-Datei nicht gefunden!"
 52: "Fehler: Du musst root sein um das Programm zu benutzen!"
+53: "Säubere %s ..."
