@@ -139,7 +139,11 @@ int main(int argc, char *argv[])
                 help();
             }
         }
-        else if (arg == "update" || arg == "up" || arg == "-Ua" || arg == "-U")
+        else if (arg == "-Ua")
+        {
+            Secundo::Runtime.updateAll = true;
+        }
+        else if (arg == "update" || arg == "up" ||  arg == "-U")
         {
             if ((i + 1) < argc)
             {
@@ -151,28 +155,21 @@ int main(int argc, char *argv[])
                     tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
                     tri::string package = "";
 
-                    if (arg == "-Ua")
+                    if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
+                    {
+                        user = tri::string(argv[i + 1]).split(':')[0];
+                        package = tri::string(argv[i + 1]).split(':')[1];
+
+                        Secundo::Global.addUpdatingPackage(Package(user.cxs(), package.cxs()));
+                    }
+                    else if (std::string(argv[i + 1]) == "all")
                     {
                         Secundo::Runtime.updateAll = true;
                     }
                     else
                     {
-                        if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
-                        {
-                            user = tri::string(argv[i + 1]).split(':')[0];
-                            package = tri::string(argv[i + 1]).split(':')[1];
-
-                            Secundo::Global.addUpdatingPackage(Package(user.cxs(), package.cxs()));
-                        }
-                        else if (std::string(argv[i + 1]) == "all")
-                        {
-                            Secundo::Runtime.updateAll = true;
-                        }
-                        else
-                        {
-                            printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
-                            _quit(1);
-                        }
+                        printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
+                        _quit(1);
                     }
                 }
                 else
