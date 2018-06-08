@@ -29,6 +29,9 @@ func install {<[
 	
 	if [ ! -d "/usr/share/secundo/conf" ]; then
 		mkdir /usr/share/secundo/conf
+
+		cp pkg/config.yml /usr/share/secundo/conf/
+		cp pkg/trustings.conf /usr/share/secundo/conf/
 	fi
 
 	if [ ! -d "/usr/share/secundo/pkg_files" ]; then
@@ -38,10 +41,11 @@ func install {<[
 	if [ ! -d "/usr/share/secundo/lang" ]; then
 		mkdir /usr/share/secundo/lang
 	fi
-
-	cp pkg/*.yml /usr/share/secundo/conf/
-	cp pkg/trustings.conf /usr/share/secundo/conf/trustings.conf
-
+	
+	mv pkg/de.yml /usr/share/secundo/lang/
+	mv pkg/en.yml /usr/share/secundo/lang/
+	mv pkg/lat.yml /usr/share/secundo/lang/
+	
 	sudo mv secpm /usr/bin/secpm
 ]>}
 
