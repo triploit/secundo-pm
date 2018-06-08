@@ -1,9 +1,0 @@
-[90m[main 15:34:16][0m update#setState idle
-bash: Kann die Prozessgruppe des Terminals nicht setzen (-1).: Das Argument ist ungültig
-bash: Keine Job Steuerung in dieser Shell.
-[90m[main 15:34:24][0m update#setState idle
-bash: Kann die Prozessgruppe des Terminals nicht setzen (-1).: Das Argument ist ungültig
-bash: Keine Job Steuerung in dieser Shell.
-[90m[main 15:34:54][0m update#setState checking for updates
-[90m[main 15:34:55][0m update#setState available for download
-[91m[main 18:36:14][0m [VS Code]: render process crashed!
