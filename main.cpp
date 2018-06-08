@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     {
         std::string arg = argv[i];
 
-        if (arg == "install" || arg == "ins")
+        if (arg == "install" || arg == "ins" || arg == "-I")
         {
             if ((i + 1) < argc)
             {
@@ -90,8 +90,7 @@ int main(int argc, char *argv[])
             Secundo::Runtime.git_quiet = " --quiet";
         }
         else if (arg == "help" || arg == "-h" || arg == "--help")
-        {
-            help();
+        {help();
         }
         else if (arg == "version" || arg == "-v" || arg == "--version" || arg == "ver")
         {
@@ -101,7 +100,7 @@ int main(int argc, char *argv[])
         {
             tri::_a42 = true;
         }
-        else if (arg == "remove" || arg == "rem")
+        else if (arg == "remove" || arg == "rem" || arg == "-R")
         {
             if ((i + 1) < argc)
             {
@@ -140,7 +139,7 @@ int main(int argc, char *argv[])
                 help();
             }
         }
-        else if (arg == "update" || arg == "up")
+        else if (arg == "update" || arg == "up" || arg == "-Ua" || arg == "-U")
         {
             if ((i + 1) < argc)
             {
@@ -152,21 +151,28 @@ int main(int argc, char *argv[])
                     tri::string regex = "[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}:[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}";
                     tri::string package = "";
 
-                    if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
-                    {
-                        user = tri::string(argv[i + 1]).split(':')[0];
-                        package = tri::string(argv[i + 1]).split(':')[1];
-
-                        Secundo::Global.addUpdatingPackage(Package(user.cxs(), package.cxs()));
-                    }
-                    else if (std::string(argv[i + 1]) == "all")
+                    if (arg == "-Ua")
                     {
                         Secundo::Runtime.updateAll = true;
                     }
                     else
                     {
-                        printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
-                        _quit(1);
+                        if (Secundo::Runtime.regex_match(std::string(argv[i + 1]), regex.cxs()))
+                        {
+                            user = tri::string(argv[i + 1]).split(':')[0];
+                            package = tri::string(argv[i + 1]).split(':')[1];
+
+                            Secundo::Global.addUpdatingPackage(Package(user.cxs(), package.cxs()));
+                        }
+                        else if (std::string(argv[i + 1]) == "all")
+                        {
+                            Secundo::Runtime.updateAll = true;
+                        }
+                        else
+                        {
+                            printf(Secundo::Translation.get("10").c_str(), argv[i + 1]);
+                            _quit(1);
+                        }
                     }
                 }
                 else
@@ -180,7 +186,7 @@ int main(int argc, char *argv[])
             else
             {
                 std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
-                help();
+                    help();
             }
         }
         else if (arg == "-ndc" || arg == "--no-dependency-checking")
@@ -384,8 +390,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            printf(Secundo::Translation.get("7", true).c_str(), arg.c_str());
-            help();
+            printf(Secundo::Translation.get("7", true).c_str(), arg.c_str());help();
         }
     }
 
@@ -468,7 +473,11 @@ bool is_argument(const std::string &arg)
         std::string(arg) == "--no-dependency-checking" ||
         std::string(arg) == "--help" ||
         std::string(arg) == "-h" ||
-        std::string(arg) == "help")
+        std::string(arg) == "help" ||
+        std::string(arg) == "-I" ||
+        std::string(arg) == "-U" ||
+        std::string(arg) == "-Ua" ||
+        std::string(arg) == "-R")
         return true;
 
     return false;
