@@ -22,6 +22,12 @@
       -kf, --keep-folders             - actum incepti, cuius addebatur, non removat; purga cum 
                                         \"sudo secpm clean\"
       -s, --server                    - git-server proponit (github.com norma est)
+      -iu, --ignore-up-to-date        - actualitas neglegetur
+      
+      -I                              = install
+      -U                              = update
+      -Ua                             = update all
+      -R                              = remove
 
       > sudo secpm quiet [...]        - verba SC-libris non significat
 

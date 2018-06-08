@@ -22,6 +22,12 @@
       -ndc, --no-dependency-checking  - (NOT RECOMMENDED) ignore dependencies at removing packages 
       -kf, --keep-folders             - keep cloned project-folders, clean with \"sudo secpm clean\" 
       -s, --server                    - setting the git server (default is github.com) 
+      -iu, --ignore-up-to-date        - install/update even if package is up to date
+      
+      -I                              = install
+      -U                              = update
+      -Ua                             = update all
+      -R                              = remove
 
       > sudo secpm quiet [...]        - there will be no output from the installer scripts 
 

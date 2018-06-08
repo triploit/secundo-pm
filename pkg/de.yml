@@ -26,6 +26,12 @@
       -kf, --keep-folders             - heruntergeladene repository-ordner nicht löschen, säubern
                                         mit \"sudo secpm clean\" 
       -s, --server                    - den git-server setzen (standard ist github.com)
+      -iu, --ignore-up-to-date        - trotzdem aktion ausführen, wenn pakete akuell sind
+      
+      -I                              = install
+      -U                              = update
+      -Ua                             = update all
+      -R                              = remove
 
       > sudo secpm quiet [...]        - die ausgaben der skripte werden nicht im terminal angezeigt
 
