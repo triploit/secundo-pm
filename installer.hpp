@@ -339,7 +339,7 @@ namespace Secundo
 
             for (Package package : packages)
             {                
-                printf(std::string("============================================\n>> "+Secundo::Translation.get("3")).c_str(),
+                printf(std::string("============================================\n>> "+Secundo::Translation.get("3", true)).c_str(),
                     package.user.c_str(),
                     package.name.c_str());
 
@@ -376,8 +376,10 @@ namespace Secundo
             chdir(o_dir.c_str());
 
             Package p = Secundo::Seclang.createPackage(script_file);
+            Version pkgv = package.version;
 
-            if (p.version <= package.version)
+            if (p.version < pkgv ||
+                p.version == pkgv)
             {
                 if (!Runtime.ignoreUTD)
                 {
