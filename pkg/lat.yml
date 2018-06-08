@@ -1,0 +1,111 @@
+1: |
+  Secundo Moderator Fascis - v%s 
+
+  Optionen: 
+      install <utens>:<fascis>        - fascis utentis addet
+      update <utens>:<fascis>         - fascis utentis renovat
+
+      update all                      - cuncti fasces renovat (modo cum structurae 0.1.4.0 potest)
+
+      remove <utens>:<fascis>         - fascis utentis removet
+      local <via>                     - fascis via addet (pkg/ins.sc)
+      list                            - cuncti fasces, qui addebantur, indicat
+
+      clean                           - cuncti fasces mundebat, quae error ad aduinctioni.
+
+      trust <utens>                   - nulli interrogatio securitatis (ut *1 aut *2) fascibus 
+                                        editicii utentis accipibit
+
+      untrust <utens>                 - securum utentem removet
+
+      -ndc, --no-dependency-checking  - (NON COMMENDATUR) dependentiam neglegit
+      -kf, --keep-folders             - actum incepti, cuius addebatur, non removat; purga cum 
+                                        \"sudo secpm clean\"
+      -s, --server                    - git-server proponit (github.com norma est)
+
+      > sudo secpm quiet [...]        - verba SC-libris non significat
+
+    *1 - Num ille permittes?
+    *2 - SC-libri videre cupes?
+
+  Examples: 
+      sudo secpm install utens:fascis               - fascis utentis addet
+      sudo secpm remove utens:fascis -ndc           - fascis utentis removat, sine dependentia 
+                                                      utrum est at non est
+      sudo secpm -s bitbucket.org ins utens:fascis  - fascis utentis ab bitbucket.org addet
+2: "Finibatur!"
+3: "%s %s renovatur..."
+4: "%s %s removatur..."
+5: "%s %s addetur..."
+6: "Viae %s addetur..."
+7: "Facultatam \"%s\" non reperibatur!"
+8: "Error sententiae!"
+9: "Quietus ratio excitatur."
+10: |
+  Falsus nomen: %s
+  Scribe      : utens:fascis
+  aut         : triploit:secpundo-pm
+11: "%d fasces adsunt:"
+12: |
+  Error! Liber vetiti /usr/share/secundo/lock.lck adest,
+     SecPM iam fluet!
+
+  >> Si lates, remova tabularium. Periculum est!
+13: "Error! Loculamenturm pro SC-libres non reperibatur!"
+14: "Error ad removatum ab \"%s\"!"
+15: |
+  Error ad: git clone https://%s/%s/%s.git %s
+                
+  Error! Examin:
+    - git addetur?
+    - inceptum est?
+    - utens est?
+    - num root non es (revera... root es)?
+16: "Acer error! Liber /usr/share/secundo non reperibatur!"
+17: "%d res purgabatur."
+18: "SC-libri videre cupes?"
+19: "Dicet 'y' aut 'n'! > "
+20: "Ok."
+21: "Num ille permittes?"
+22: "Ok. Destruit."
+23: "Error ad purgationi: %s %s"
+24: "Acer error: wget non reperibatur! Addete wget!"
+25: |
+  Error: SC-libri ab %s's %s Serverem non reperibatur!
+
+   Examin:
+  ... fascis fascem moderatoris est!
+  ... Repository est!
+26: "Firmatur SC-libri... %s"
+27: "Error ad adiuntio fascis! Fascis falsum versionem habet!"
+28: "Version %s egetur!"
+29: "Fascis praesens est. Transilitur."
+30: "Fascis praesens est. Adiunctio iteratur."
+31: |
+  Error ad %s
+
+  Examin:
+  ... Nonne wget addebatur?
+  ... Nonne coniunctio habes?
+  ... Nonne fascis est?
+32: "Fascis %s:%s praesens est. Transilitur."
+33: "Fascis %s:%s praesens est. Adiunctio iteratur."
+34: "Acer error! Loculamentum /usr/share/secundo/pkg_files non reperibatur!"
+35: "SC-libri quaeretur... %s"
+36: "Quaerebatur... SC-libri incitatur."
+37: "Destruebatur, causa destruetur..."
+38: "Error: ad removato ab %s:%s : Dependentiam ab %s:%s est!"
+39: "Fascis reperibatur. Transilitur."
+40: "ERROR: ACER_ERROR: SC-LIBER (\"%s\") NON REPERIBATUR!"
+41: "Acer error! pro SC-libres (/usr/share/secundo/pkg_files) non reperibatur!"
+42: "Dependentia ab index adiunctionis addebatur: %s:%s v%s"
+43: "TOKEN: ERROR: FALSUS_PRETIUM_ERROR: %s"
+44: "EXECUTOR: PUT_TOGETHER: DEPENDENTIA %s: ERROR: ACER_ERROR: Syntax error!"
+45: "EXECUTOR: PUT_TOGETHER: FUNC %s: ERROR: FATAL_ERROR: Syntax error!"
+46: "EXECUTOR: PUT_TOGETHER: ERRPR: FATAL_ERROR: Syntax error!"
+47: "EXECUTOR: PUT_TOGETHER: VERSIONEM %s: ERROR: ACER_ERROR: Syntax error!"
+48: "EXECUTOR: PUT_TOGETHER: UTENS %s: ERROR: ACER_ERROR: Syntax error!"
+49: "EXECUTOR: PUT_TOGETHER: NOMEN %s: ERROR: ACER_ERROR: Syntax error!"
+50: "ERROR: VERSUS %d: ACER_ERROR: Functio %s non reperibatur!"
+51: "Monitio: trust-Tabula non reperibatur!"
+53: "Purgatur %s ..."

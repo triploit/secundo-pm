@@ -38,7 +38,7 @@
                                                         ahängigkeit ist oder nicht
       sudo secpm -s bitbucket.org ins nutzer:projekt  - installiert nutzers paket von bitbucket.org
 2: "Fertig!"
-3: "Aktualisiere %ss %s..."
+3: "Aktualisiere %s's %s..."
 4: "Entferne %s's %s..."
 5: "Installiere %s's %s..."
 6: "Installiere lokalen Ordner %s..."
