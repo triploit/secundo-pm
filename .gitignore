@@ -9,6 +9,7 @@ secpm
 .nohup
 .fuse*
 .vscode
+nohup.out
 
 
 cmake_install.cmake
