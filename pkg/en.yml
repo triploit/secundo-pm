@@ -13,6 +13,9 @@
 
       clean                           - cleans packages that had errors at installing and were
                                         not cleaned or just unnecessary files and directories. 
+      config                          - edit the configuration file (by default with vi, you can
+                                        change the editor in /usr/share/secundo/conf/config.yml)
+      lang                            - add a language file
                                         
       trust <user>                    - you will not get questions (like *1 or *2) about projects
                                         from this user, only do it if you are really sure! 

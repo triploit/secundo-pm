@@ -16,6 +16,10 @@
       clean                           - alle pakete die beim installieren fehler hatten, oder
                                         bei denen der vorgang vom nuter abgebrochen wurde
                                         säubern
+      config                          - die konfigurationsdatei öffnen (standardmäßig mit vi, kann
+                                        in der Konfig /usr/share/secundo/conf/config.yml geändert
+                                        werden)
+      lang                            - ein sprachpaket hinzufügen
 
       trust <nutzer>                  - du wirst keine sicherheitsfragen (wie *1 oder *2) bei den
                                         paketen des angegebenen nutzers bekommen
