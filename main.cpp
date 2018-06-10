@@ -319,7 +319,18 @@ int main(int argc, char *argv[])
         }
         else if (arg == "config")
         {
-            system(std::string(Secundo::Runtime.Config["editor"].as<std::string>() + " /usr/share/secundo/conf/config.yml").c_str());
+            std::string editor = "vi";
+
+            if (Secundo::Runtime.Config["editor"])
+                editor = Secundo::Runtime.Config["editor"].as<std::string>();
+
+            if ((i+1) < argc && !is_argument(argv[i+1]))
+            {
+                editor = argv[i+1];
+                i++;
+            }    
+
+            system(std::string(editor + " /usr/share/secundo/conf/config.yml").c_str());
         }
         else if (arg == "clean")
         {
