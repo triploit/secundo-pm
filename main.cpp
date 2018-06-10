@@ -13,7 +13,7 @@ void _quit(int);
 void help();
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.9";
+std::string _VERSION = "0.1.7.0";
 
 int main(int argc, char *argv[])
 {
@@ -372,6 +372,59 @@ int main(int argc, char *argv[])
             {
                 std::cout << ">> " << Secundo::Translation.get("16", true) << std::endl;
                 _quit(1);
+            }
+        }
+        else if (arg == "lang")
+        {
+            if ((i + 1) < argc)
+            {
+                if (!is_argument(argv[i + 1]))
+                {
+                    chdir(Secundo::Runtime.cPath.c_str());
+
+                    std::string fname = argv[i+1];
+                    std::ifstream lfile(fname);
+
+                    if (lfile.is_open())
+                    {
+                        std::vector<tri::string> path = tri::string(fname).split('/');
+                        std::string oname = path[path.size()-1].cxs();
+
+                        std::string line;
+                        std::ofstream ofile("/usr/share/secundo/lang/"+oname);
+
+                        while (std::getline(lfile, line))
+                        {
+                            ofile << line << std::endl;
+                        }
+
+                        ofile.close();
+                    }
+                    else
+                    {
+                        printf(std::string(">> "+Secundo::Translation.get("54", true)).c_str(), fname.c_str());
+                    }
+
+                    lfile.close();
+
+                    if (Secundo::Translation.sentences["55"])
+                        printf(std::string(">> "+Secundo::Translation.get("55", true)).c_str(), fname.c_str());
+                    else
+                        std::cout << ">> Language file was installed!" << std::endl;
+                }
+                else
+                {
+                    std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
+                    help();
+                }
+
+                chdir("/");
+                i++;
+            }
+            else
+            {
+                std::cout << ">> " << Secundo::Translation.get("8") << std::endl;
+                help();
             }
         }
         else if (arg == "local")

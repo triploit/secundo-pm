@@ -120,3 +120,5 @@
 50: "ERROR: ZEILE %d: FATALER_FEHLER: Funktion %s nicht gefunden!"
 51: "Warnung: trust-Datei nicht gefunden!"
 53: "Säubere %s ..."
+54: "Sprachdatei \"%s\" nicht gefunden!"
+55: "Sprachdatei wurde installiert!"

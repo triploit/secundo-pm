@@ -1,6 +1,6 @@
 name secundo-pm
 user triploit
-ver 0.1.6.9
+ver 0.1.7.0
 
 func install {<[
 	if [ ! -d "/usr/local/include/yaml-cpp" ]; then
@@ -42,9 +42,9 @@ func install {<[
 		mkdir /usr/share/secundo/lang
 	fi
 	
-	mv pkg/de.yml /usr/share/secundo/lang/
-	mv pkg/en.yml /usr/share/secundo/lang/
-	mv pkg/lat.yml /usr/share/secundo/lang/
+	cp pkg/de.yml /usr/share/secundo/lang/
+	cp pkg/en.yml /usr/share/secundo/lang/
+	cp pkg/lat.yml /usr/share/secundo/lang/
 	
 	sudo mv secpm /usr/bin/secpm
 ]>}

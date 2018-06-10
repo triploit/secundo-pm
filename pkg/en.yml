@@ -115,3 +115,5 @@
 50: "ERROR: LINE %d: FATAL_ERROR: Function %s not found!"
 51: "Warning: Unable to open trust-file."
 53: "Cleaning %s ..."
+54: "Language file \"%s\" not found!"
+55: "Language file was installed!"
