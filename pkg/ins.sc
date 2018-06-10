@@ -1,6 +1,6 @@
 name secundo-pm
 user triploit
-ver 0.1.6.8
+ver 0.1.6.9
 
 func install {<[
 	if [ ! -d "/usr/local/include/yaml-cpp" ]; then

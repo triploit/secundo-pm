@@ -13,7 +13,7 @@ void _quit(int);
 void help();
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.6.8";
+std::string _VERSION = "0.1.6.9";
 
 int main(int argc, char *argv[])
 {
@@ -317,6 +317,10 @@ int main(int argc, char *argv[])
                 std::cout << "  - " << s << std::endl;
             }
         }
+        else if (arg == "config")
+        {
+            system(std::string(Secundo::Runtime.Config["editor"].as<std::string>() + " /usr/share/secundo/conf/config.yml").c_str());
+        }
         else if (arg == "clean")
         {
             DIR *dir;
@@ -462,6 +466,7 @@ bool is_argument(const std::string &arg)
         std::string(arg) == "quiet" ||
         std::string(arg) == "list" ||
         std::string(arg) == "clean" ||
+        std::string(arg) == "config" ||
         std::string(arg) == "-s" ||
         std::string(arg) == "--server" ||
         std::string(arg) == "-kf" ||
