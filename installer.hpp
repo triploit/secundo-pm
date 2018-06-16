@@ -130,6 +130,54 @@ namespace Secundo
             }
         }
 
+        bool check_update_package(Version v1, Version v2, Package package, std::string o_dir, std::string rem)
+        {
+            if (v2 > Version("0.0.0.0") || v2 < Version("0.0.0.0"))
+            {
+                if (v2 < v1 || v2 > v1)
+                {
+                    std::cout << ">> " << Secundo::Translation.get("27") << std::endl;
+                    printf(std::string(">> "+Secundo::Translation.get("28")).c_str(), package.version.str.c_str());
+
+                    clean(o_dir, rem);
+                    _quit(1);
+                }
+                else if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
+                {
+                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    {
+                        if (!Runtime.ignoreUTD)
+                        {
+                            std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
+                            clean(o_dir, rem);
+                            return false;
+                        }
+                        else
+                            std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
+                    }
+                }
+            }
+            else
+            {
+                if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
+                {
+                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    {
+                        if (!Runtime.ignoreUTD)
+                        {
+                            std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
+                            clean(o_dir, rem);
+                            return false;
+                        }
+                        else
+                            std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
+                    }
+                }
+            }
+
+            return true;
+        }
+
     public:
         void init()
         {
@@ -171,9 +219,9 @@ namespace Secundo
 
         void install(const Package &package)
         {
-            /*std::cout << ">> Checking if Secundo-Package." << std::endl;
-            std::cout << ">> Finished. It is." << std::endl;*/
+            std::cout << ">> " << Translation.get("56") << std::endl;
             check_secundo(package);
+            std::cout << ">> " << Translation.get("57") << std::endl;
 
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
@@ -187,6 +235,12 @@ namespace Secundo
             script_file = Runtime.AppData+"\\"+package.name+"\\pkg\\ins.sc";
 #endif
 
+            Package p = Secundo::Seclang.createPackageFromLink(package);
+            Version v1 = p.version;
+            Version v2 = package.version;
+
+            if (!check_update_package(v1, v2, package, o_dir, rem))
+                return;
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
 
@@ -199,53 +253,6 @@ namespace Secundo
             getcwd(s, 1024);
             std::cout << "INSTALLER: " << s << std::endl;
             */
-
-            Package p = Secundo::Seclang.createPackage(script_file);
-            Version v1 = p.version;
-            Version v2 = package.version;
-
-            if (v2 > Version("0.0.0.0") || v2 < Version("0.0.0.0"))
-            {
-                if (v2 < v1 || v2 > v1)
-                {
-                    std::cout << ">> " << Secundo::Translation.get("27") << std::endl;
-                    printf(std::string(">> "+Secundo::Translation.get("28")).c_str(), package.version.str.c_str());
-
-                    clean(o_dir, rem);
-                    _quit(1);
-                }
-                else if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
-                {
-                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
-                    {
-                        if (!Runtime.ignoreUTD)
-                        {
-                            std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
-                            clean(o_dir, rem);
-                            return;
-                        }
-                        else
-                            std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
-                    }
-                }
-            }
-            else
-            {
-                if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
-                {
-                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
-                    {
-                        if (!Runtime.ignoreUTD)
-                        {
-                            std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
-                            clean(o_dir, rem);
-                            return;
-                        }
-                        else
-                            std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
-                    }
-                }
-            }
 
             if (security(script_file, package)) 
                 Secundo::Seclang.run(p, main_);
@@ -356,9 +363,9 @@ namespace Secundo
 
         void update(const Package &package)
         {
-            /*std::cout << ">> Checking if Secundo-Package." << std::endl;
+            std::cout << ">> " << Translation.get("56") << std::endl;
             check_secundo(package);
-            std::cout << ">> Finished. It is." << std::endl;*/
+            std::cout << ">> " << Translation.get("57") << std::endl;
 
             std::string o_dir = "/usr/share/secundo/" + package.name;
             std::string rem = "rm -rf";
@@ -372,24 +379,15 @@ namespace Secundo
             script_file = Runtime.AppData+"\\"+package.name+"\\pkg\\ins.sc";
 #endif
 
+            Package p = Secundo::Seclang.createPackageFromLink(package);
+            Version v1 = p.version;
+            Version v2 = package.version;
+
+
+            if (!check_update_package(v1, v2, package, o_dir, rem))
+                return;
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
-
-            Package p = Secundo::Seclang.createPackage(script_file);
-            Version pkgv = package.version;
-
-            if (p.version < pkgv ||
-                p.version == pkgv)
-            {
-                if (!Runtime.ignoreUTD)
-                {
-                    std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
-                    clean(o_dir, rem);
-                    return;
-                }
-                else
-                    std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
-            }
 
             if (security(script_file, package)) 
                 Secundo::Seclang.run(p, main_);

@@ -46,6 +46,34 @@ namespace Secundo
             return Executor.execute(Tokenizer.tokenize(fileRead(script)));
         }
 
+        Package createPackageFromLink(const Package &p)
+        {
+            std::string o_f = "/usr/share/secundo/tmp_ins.sc";
+            // https://raw.githubusercontent.com/user/name/master/pkg/ins.sc
+
+            if (!Runtime.wgetLinkisNice("https://raw.githubusercontent.com/"+p.user+"/"+p.name+"/master/pkg/ins.sc"))
+            {
+                printf(std::string(">> "+Secundo::Translation.get("25")).c_str(), p.user.c_str(), p.name.c_str());
+                _quit(1);
+            }
+
+            std::string command = "wget -q https://raw.githubusercontent.com/"+p.user+"/"+p.name+"/master/pkg/ins.sc -O "+o_f;
+            Package package;
+
+            if (system(std::string(command + Secundo::Runtime.quiet).c_str()) != 0)
+            {
+                printf(std::string(">> "+Secundo::Translation.get("31")).c_str(), command.c_str());
+                _quit(1);
+            }
+            else
+            {
+                package = createPackage(o_f);
+                system(std::string("rm "+o_f).c_str());
+            }
+
+            return package;
+        }
+
         void run(Package p, const std::string &main_function)
         {
             Secundo::Runtime.MainFunction = main_function;

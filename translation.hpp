@@ -157,6 +157,7 @@ namespace Secundo
   ... is wget installed?
   ... do you have an internet connection?
   ... does the repository exists?
+  ... is the project a SecPM package?
 32: "Package %s:%s is Up-to-date. Skipping."
 33: "Package %s:%s is Up-to-date. Added to be reinstalled..."
 34: "There was an error! Directory for the package-files not found!"
@@ -180,6 +181,8 @@ namespace Secundo
 53: "Cleaning %s ..."
 54: "Language file \"%s\" not found!"
 55: "Language file was installed!"
+56: "Check if it is a SecPM package..."
+57: "Finished! It is."
 )V0G0N");
 
             if (std::ifstream(path).is_open())
