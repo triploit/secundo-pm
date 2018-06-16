@@ -24,6 +24,21 @@ namespace Secundo
     private:
         std::string user;
 
+        void set_variables(Version v1, std::string method, Version v2=Version())
+        {
+            setenv("method", method.c_str(), true);
+
+            setenv("this_major", std::to_string(v1.major).c_str(), true);
+            setenv("this_minor", std::to_string(v1.minor).c_str(), true);
+            setenv("this_revision", std::to_string(v1.revision).c_str(), true);
+            setenv("this_build", std::to_string(v1.build).c_str(), true);
+
+            setenv("a_major", std::to_string(v2.major).c_str(), true);
+            setenv("a_minor", std::to_string(v2.minor).c_str(), true);
+            setenv("a_revision", std::to_string(v2.revision).c_str(), true);
+            setenv("a_build", std::to_string(v2.build).c_str(), true);
+        }
+
         bool security(std::string script_file, const Package &p)
         {
             if (Runtime.isTruster(p.user))
@@ -144,7 +159,8 @@ namespace Secundo
                 }
                 else if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
-                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version > v1 ||
+                        Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
                     {
                         if (!Runtime.ignoreUTD)
                         {
@@ -161,7 +177,8 @@ namespace Secundo
             {
                 if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
-                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version > v1 ||
+                        Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
                     {
                         if (!Runtime.ignoreUTD)
                         {
@@ -205,6 +222,7 @@ namespace Secundo
 #endif
 
             Package package = Secundo::Seclang.createPackage(script_file);
+            set_variables(package.version, "local");
 
             if (security(script_file, Package("", ""))) 
                 Secundo::Seclang.run(package, main_);
@@ -238,6 +256,7 @@ namespace Secundo
             Package p = Secundo::Seclang.createPackageFromLink(package);
             Version v1 = p.version;
             Version v2 = package.version;
+            set_variables(v1, "install", v2);
 
             if (!check_update_package(v1, v2, package, o_dir, rem))
                 return;
@@ -382,10 +401,11 @@ namespace Secundo
             Package p = Secundo::Seclang.createPackageFromLink(package);
             Version v1 = p.version;
             Version v2 = package.version;
-
+            set_variables(v1, "update", v2);
 
             if (!check_update_package(v1, v2, package, o_dir, rem))
                 return;
+
             clone(package, o_dir, false);
             chdir(o_dir.c_str());
 
@@ -423,7 +443,7 @@ namespace Secundo
             std::string sc_script = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
             std::ifstream f(sc_script, std::ios::in);
 
-            printf(std::string("\n"+Secundo::Translation.get("35")).c_str(), sc_script.c_str());
+            printf(std::string("\n"+Secundo::Translation.get("35", true)).c_str(), sc_script.c_str());
 
             if (f.is_open())
             {
@@ -479,7 +499,7 @@ namespace Secundo
                         if (package.name == d.name &&
                             package.user == d.user)
                         {
-                            printf(std::string(">> "+Translation.get("38")).c_str(),
+                            printf(std::string(">> "+Translation.get("38", true)).c_str(),
                                 package.user.c_str(),
                                 package.name.c_str(),
                                 d.parent_user.c_str(),
@@ -491,8 +511,11 @@ namespace Secundo
                     }
                 }
 
+                Package p = Secundo::Seclang.createPackage(sc_script);
+                set_variables(p.version, "remove");
+
                 if (security(sc_script, package))
-                    Secundo::Seclang.run(Secundo::Seclang.createPackage(sc_script), main_);
+                    Secundo::Seclang.run(p, main_);
                 f.close();
                 return;
             }

@@ -351,7 +351,8 @@ int main(int argc, char *argv[])
 
                     if (s.cxs() != "pkg_files" &&
                         s.cxs() != "lang" &&
-                        s.cxs() != "conf")
+                        s.cxs() != "conf" &&
+                        s.cxs() != "lock.lck")
                     {
                         std::string rem = "rm -rf";
 

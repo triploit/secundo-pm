@@ -29,21 +29,26 @@ namespace Secundo
             for (int i = 0; i < code.size(); i++)
             {
                 // std::cout << ">> " << code[i] << std::endl;
-                if (code[i] == '\"' && !scope)
+                if (code[i] == '\"')
                 {
                     if (str)
                     {
                         str = false;
 
-                        if (tmp != "")
-                            Tokens.push_back(Token(tmp, type));
+                        if (!scope)
+                        {
+                            if (tmp != "")
+                                Tokens.push_back(Token(tmp, type));
 
-                        tmp = "";
-                        type = "oth";
+                            tmp = "";
+                            type = "oth";
+                        }
                     }
                     else
                     {
-                        type = TokenType.TYPE_STRING;
+                        if (!scope)
+                            type = TokenType.TYPE_STRING;
+                            
                         str = true;
                     }
                 }
@@ -54,7 +59,7 @@ namespace Secundo
                     scope = true;
                     continue;
                 }
-                else if (code[i] == '}')
+                else if (code[i] == '}' && !str)
                 {
                     // std::cout << "FUNCTIONEND" << std::endl;
                     scope = false;
