@@ -85,6 +85,7 @@
   Make sure:
   ... that it is a secundo package.
   ... that the repository exists.
+  ... is the project a SecPM package?
 26: "Save installer file to... %s"
 27: "Error at installing pakage! Package has the wrong version!"
 28: "Version %s needed!"
@@ -120,3 +121,5 @@
 53: "Cleaning %s ..."
 54: "Language file \"%s\" not found!"
 55: "Language file was installed!"
+56: "Check if it is a SecPM package..."
+57: "Finished! It is."

@@ -103,6 +103,7 @@
   ... ist wget installiert?
   ... hast du eine Internetverbindung?
   ... existiert das Projekt wirklich?
+  ... ist das Projekt ein SecPM Paket?
 32: "Paket %s:%s ist aktuell. Überspringe."
 33: "Paket %s:%s ist aktuell. Füge zur Neuinstallation hinzu..."
 34: "Fataler Fehler! Der Ordner /usr/share/secundo/pkg_files wurde nicht gefunden!"
@@ -126,3 +127,5 @@
 53: "Säubere %s ..."
 54: "Sprachdatei \"%s\" nicht gefunden!"
 55: "Sprachdatei wurde installiert!"
+56: "Prüfe ob es ein SecPM-Paket ist..."
+57: "Fertig! Es ist eins."
