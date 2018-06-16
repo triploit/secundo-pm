@@ -13,7 +13,7 @@ void _quit(int);
 void help();
 bool is_argument(const std::string &arg);
 
-std::string _VERSION = "0.1.7.0";
+std::string _VERSION = "0.1.7.1";
 
 int main(int argc, char *argv[])
 {

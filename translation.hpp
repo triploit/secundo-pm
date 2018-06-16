@@ -27,6 +27,7 @@ namespace Secundo
                     
                 if (tri::_a42)
                     str = tri::string("")._a1337(str);
+                
 
                 return str;
             }
@@ -34,12 +35,12 @@ namespace Secundo
             {
                 if (!fallback[s])
                 {
-                    std::cout << ">> Fatal error in language file: Sentences \"" << s << "\" doesn't exists!" << std::endl;
+                    std::cout << ">> Fatal error in SecPM: Sentences \"" << s << "\" doesn't even in fallback exist!" << std::endl;
                     _quit(1);
                 }
                 else
                 {
-                    std::string str = std::string(sentences[s].as<std::string>());
+                    std::string str = std::string(fallback[s].as<std::string>());
 
                     if (nl)
                         str = str + "\n";
@@ -56,10 +57,7 @@ namespace Secundo
 
         void loadConfig(std::string path)
         {
-            if (std::ifstream(path).is_open())
-            {
-                sentences = YAML::LoadFile(path);
-                fallback = YAML::Load(R"V0G0N(
+            fallback = YAML::Load(R"V0G0N(
 1: |
   Secundo Package Manager - v%s 
 
@@ -183,12 +181,16 @@ namespace Secundo
 54: "Language file \"%s\" not found!"
 55: "Language file was installed!"
 )V0G0N");
+
+            if (std::ifstream(path).is_open())
+            {
+                sentences = YAML::LoadFile(path);
             }
             else
             {
-                std::cout << ">> Error: language file " << path << " not found!" << std::endl;
-                _quit(1);
-            }
+                std::cout << ">> Warning: language file " << path << " not found!" << std::endl;
+                std::cout << ">> Using fallback..." << std::endl;
+            } 
         }
     } Translation;
 }
