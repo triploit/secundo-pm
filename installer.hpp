@@ -160,11 +160,11 @@ namespace Secundo
                 else if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
                     Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc");
+                    set_variables(v1, "install", p.version);
+
                     if (p.version > v1 ||
                         p.version == v1)
                     {
-                        set_variables(v1, "install", p.version);
-
                         if (!Runtime.ignoreUTD)
                         {
                             std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
@@ -181,12 +181,11 @@ namespace Secundo
                 if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
                     Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc");
+                    set_variables(v1, "install", p.version);
 
                     if (p.version > v1 ||
                         p.version == v1)
                     {
-                        set_variables(v1, "install", p.version);
-
                         if (!Runtime.ignoreUTD)
                         {
                             std::cout << ">> " << Secundo::Translation.get("29") << std::endl;

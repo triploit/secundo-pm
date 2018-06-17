@@ -20,6 +20,8 @@ func install {<[
 	elif [ $old_version = $this_version ]; then
 		echo ">> Okay... Let's install the same version (old is ${old_version}, this is ${this_version}) of the same package ...?"
 	else
+		dwg="false"
+
 		if [ "$this_major" -lt "$a_major" ]; then
 			dwg="true"
 		elif [ "$this_minor" -lt "$a_minor" ]; then
