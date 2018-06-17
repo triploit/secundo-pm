@@ -1,6 +1,6 @@
 name secundo-pm
 user triploit
-ver 0.1.7.2
+ver 0.1.7.3
 
 func install {<[
 	# this = this package installer file
