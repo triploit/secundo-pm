@@ -127,5 +127,6 @@
 53: "Säubere %s ..."
 54: "Sprachdatei \"%s\" nicht gefunden!"
 55: "Sprachdatei wurde installiert!"
-56: "Prüfe ob es ein SecPM-Paket ist..."
-57: "Fertig! Es ist eins."
+56: "Info: Prüfe ob es ein SecPM-Paket ist..."
+57: "Info: Fertig! Es ist eins."
+58: "Info: Werde Installationsskript nicht sichern."

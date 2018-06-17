@@ -181,8 +181,9 @@ namespace Secundo
 53: "Cleaning %s ..."
 54: "Language file \"%s\" not found!"
 55: "Language file was installed!"
-56: "Check if it is a SecPM package..."
-57: "Finished! It is."
+56: "Info: Check if it is a SecPM package..."
+57: "Info: Finished! It is."
+58: "Info: Won't save installation file..."
 )V0G0N");
 
             if (std::ifstream(path).is_open())
