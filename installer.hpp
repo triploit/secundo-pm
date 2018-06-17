@@ -159,9 +159,12 @@ namespace Secundo
                 }
                 else if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
-                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version > v1 ||
-                        Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc");
+                    if (p.version > v1 ||
+                        p.version == v1)
                     {
+                        set_variables(v1, "install", p.version);
+
                         if (!Runtime.ignoreUTD)
                         {
                             std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
@@ -177,9 +180,13 @@ namespace Secundo
             {
                 if (std::ifstream(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").is_open())
                 {
-                    if (Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version > v1 ||
-                        Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc").version == v1)
+                    Package p = Secundo::Seclang.createPackage(Secundo::Runtime.PackageFileDirectory + package.user + "+" + package.name +".sc");
+
+                    if (p.version > v1 ||
+                        p.version == v1)
                     {
+                        set_variables(v1, "install", p.version);
+
                         if (!Runtime.ignoreUTD)
                         {
                             std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
@@ -224,14 +231,43 @@ namespace Secundo
             Package package = Secundo::Seclang.createPackage(script_file);
             set_variables(package.version, "local");
 
+            std::string file = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+
+            if (std::ifstream(file).is_open())
+            {
+                Package alins = Secundo::Seclang.createPackage(file);
+                
+                if (alins.version == package.version)
+                {
+                    if (!Runtime.ignoreUTD)
+                    {
+                        std::cout << ">> " << Secundo::Translation.get("29") << std::endl;
+                        return;
+                    }
+                    else
+                        std::cout << ">> " << Secundo::Translation.get("30") << std::endl;
+                }
+
+                set_variables(package.version, "local", alins.version);
+            }
+
             if (security(script_file, Package("", ""))) 
                 Secundo::Seclang.run(package, main_);
 
-            std::string pt = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
-            printf(Secundo::Translation.get("26", true, true).c_str(), pt.c_str());
+            if (!std::ifstream(Runtime.cPath+"/"+path+"/dont_save_sc.tmp").is_open())
+            {
+                std::string pt = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+                printf(Secundo::Translation.get("26", true, true).c_str(), pt.c_str());
 
-            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
-            std::cout << Secundo::Translation.get("2") << std::endl;
+                saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+                std::cout << Secundo::Translation.get("2") << std::endl;
+            }
+            else 
+            {
+                system(std::string("rm "+Runtime.cPath+"/"+path+"/dont_save_sc.tmp").c_str());
+                std::cout << ">> " << Translation.get("58") << std::endl;
+            }
+
             chdir("/");
         }
 
@@ -276,11 +312,19 @@ namespace Secundo
             if (security(script_file, package)) 
                 Secundo::Seclang.run(p, main_);
 
-            std::string path = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
-            printf(Secundo::Translation.get("26", true, true).c_str(), path.c_str());
+            if (!std::ifstream(o_dir+"/dont_save_sc.tmp").is_open())
+            {                
+                std::string path = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+                printf(Secundo::Translation.get("26", true, true).c_str(), path.c_str());
 
-            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
-            std::cout << Secundo::Translation.get("2") << std::endl;
+                saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+                std::cout << Secundo::Translation.get("2") << std::endl;
+            }
+            else 
+            {
+                system(std::string("rm "+Runtime.cPath+"/"+o_dir+"/dont_save_sc.tmp").c_str());
+                std::cout << ">> " << Translation.get("58") << std::endl;
+            }
 
             clean(o_dir, rem);
             chdir("/");
@@ -401,7 +445,7 @@ namespace Secundo
             Package p = Secundo::Seclang.createPackageFromLink(package);
             Version v1 = p.version;
             Version v2 = package.version;
-            set_variables(v1, "update", v2);
+            set_variables(v1, "install", v2);
 
             if (!check_update_package(v1, v2, package, o_dir, rem))
                 return;
@@ -412,11 +456,19 @@ namespace Secundo
             if (security(script_file, package)) 
                 Secundo::Seclang.run(p, main_);
 
-            std::string path = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
-            printf(Secundo::Translation.get("26", true, true).c_str(), path.c_str());
+            if (!std::ifstream(o_dir+"/dont_save_sc.tmp").is_open())
+            {
+                std::string path = Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc";
+                printf(Secundo::Translation.get("26", true, true).c_str(), path.c_str());
 
-            saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
-            std::cout << Secundo::Translation.get("2") << std::endl;
+                saveInstallFile(script_file, Runtime.PackageFileDirectory + package.user + "+" + package.name + ".sc");
+                std::cout << Secundo::Translation.get("2") << std::endl;
+            }
+            else 
+            {
+                system(std::string("rm "+Runtime.cPath+"/"+o_dir+"/dont_save_sc.tmp").c_str());
+                std::cout << ">> " << Translation.get("58") << std::endl;
+            }
 
             clean(o_dir, rem);
             chdir("/");

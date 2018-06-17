@@ -9,7 +9,7 @@ func install {<[
 	this_version="${this_major}.${this_minor}.${this_revision}.${this_build}"
 	old_version="${a_major}.${a_minor}.${a_revision}.${a_build}"
 
-	echo ">> Installing SecPM version ${this_version} ..."
+	echo ">> [${method}] Installing SecPM version ${this_version} ..."
 
 	if [ $old_version = "0.0.0.0" ]; then
 		if [ $method = "local" ]; then
@@ -20,26 +20,27 @@ func install {<[
 	elif [ $old_version = $this_version ]; then
 		echo ">> Okay... Let's install the same version (old is ${old_version}, this is ${this_version}) of the same package ...?"
 	else
-		if [ $this_major < $a_major ]; then
+		if [ "$this_major" -lt "$a_major" ]; then
 			dwg="true"
-		elif [ $this_minor < $a_minor ]; then
+		elif [ "$this_minor" -lt "$a_minor" ]; then
 			dwg="true"
-		elif [ $this_revision < $a_revision ]; then
+		elif [ "$this_revision" -lt "$a_revision" ]; then
 			dwg="true"
-		elif [ $this_build < $a_build ]; then
+		elif [ "$this_build" -lt "$a_build" ]; then
 			dwg="true"
 		fi
 
 		if [ $dwg = "true" ]; then
 			echo ">> This is impossible! That would be a downgrade!"
 
-			while [ $yn != "y" ] || [ $yn != "n" ]; do
+			while [ ! "$yn" = "y" ] && [ ! "$yn" = "n" ]; do
 				read -p "Do you want that? [y/n] > " yn
 			done
 
-			if [ $yn = "y" ]; then
+			if [ "$yn" = "y" ]; then
 				echo ">> Okay."
 			else
+				echo "Pleasy, Mr. SecPM! Pleasy don't save the SC-Script!" > dont_save_sc.tmp
 				exit
 			fi
 		else
