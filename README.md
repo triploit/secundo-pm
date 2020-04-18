@@ -1,4 +1,7 @@
-# Secundo Package Manager
+**INFO:** This project was archived. The idea was continued in [Tridymite](https://github.com/triploit/tridymite). Consider taking a look at Tridymite.
+
+# (Archived) Secundo Package Manager
+
 There's an english translation at the end of the page.
 
 # DE - Deutsch
@@ -10,6 +13,7 @@ Ihr habt ein supertolles Tool entwickelt, das Usern helfen soll, aber keine Ahnu
 Hier ist die Lösung! Um aufwendiges Kompilieren und verschieben von Dateien nicht dem User zu überlassen, habe ich einen einfachen Paketmanager gebaut.
 
 Lasst uns ihn folgendermaßen auf Linux installieren:
+
 ```bash
 git clone https://github.com/triploit/secundo-pm
 cd secundo-pm
@@ -28,6 +32,7 @@ Und hier wird man auch gleich sehen, warum der Disclaimer oben existiert.
 
 Möchte man nun sein GitHub-Projekt in ein SecundoPM Paket umwandeln, muss ein Ordner mit dem Namen "pkg" im Wurzelverzeichnis des Projektes angelegt werden. In diesem Ordner wird nun eine Datei angelegt, mit dem Namen "ins.sc".
 Das muss dann so aussehen:
+
 ```
 meinprojekt
 ├── main.cpp
@@ -84,9 +89,11 @@ func werror {
     @echo "Leider gibt es keinen Windows-Support."
 }
 ```
+
 So, was wir hier sehen ist also eine einfache Form des Skriptes. Wir haben verschiedene Funktionen definiert. Funktionen in SC (SeCundo Script, ja eigentlich SCS,  aber jetzt egal :smile: ) können keine Argumente oder Parameter entgegennehmen. Weiterhin ist es möglich Funktionen aufzurufen, indem man in einer leeren Zeile `&funktionsname` schreibt.
 
 Funktionen, die als Standart erwartet werden, sind (auf Linux):
+
 * `install`    - Zum Installieren von Paketen
 * `update`    - Zum Aktualisieren von Paketen
 * `remove`    - Zum Löschen von Paketen
@@ -144,16 +151,19 @@ dep user_b projekt5e 0.0.2.1
 ```
 sudo secpm install triploit:aml
 ```
+
 Das Paket https://gitub.com/triploit/aml wird installiert.
 
 ```
 sudo secpm ins triploit:aml ins triploit:tsmi
 ```
+
 Abkürzung für "install" ist "ins". Die Pakete https://github.com/triploit/aml und https://github.com/triploit/tsmi  werden installiert.
 
 ```
 sudo secpm install mustermax:projekt
 ```
+
 Das Paket https://github.com/mustermax/projekt wird installliert.
 
 ### Entfernen
@@ -161,16 +171,19 @@ Das Paket https://github.com/mustermax/projekt wird installliert.
 ```
 sudo secpm remove triploit:aml
 ```
+
 Das Paket https://gitub.com/triploit/aml wird entfernt.
 
 ```
 sudo secpm rem triploit:aml rem triploit:tsmi
 ```
+
 Abkürzung für "remove" ist "rem". Die Pakete https://github.com/triploit/aml und https://github.com/triploit/tsmi werden entfernt.
 
 ```
 sudo secpm rem mustermax:projekt
 ```
+
 Das Paket https://github.com/mustermax/projekt wird entfernt.
 
 ### Installieren von lokalen Paketen
@@ -178,6 +191,7 @@ Das Paket https://github.com/mustermax/projekt wird entfernt.
 ```
 sudo secpm local /pfad/zum/projekt/
 ```
+
 Der Ordner `/pfad/zum/projekt/` wird installiert. Das Skript `/pfad/zum/projekt/pkg/ins.sc` wird ausgeführt.
 
 ### Leuten vertrauen
@@ -213,6 +227,7 @@ sudo secpm showtrust
 Did you create a nice tool for users but don't know how you should easily let them install it? To prevent the tricky compiling and moving of programs, I built an package manager for GitHub projects.
 
 Let's install it. This is the hardest part:
+
 ```bash
 git clone https://github.com/triploit/secundo-pm
 cd secundo-pm
@@ -231,6 +246,7 @@ And here's why I had written a disclaimer:
 
 If you want to add SecundoPM support to your GitHub project, you have to create a directory with the nam "pkg" in the root-directory of the project. In this directory, you have to create a file called `ins.sc`.
 The directory tree should look like this:
+
 ```
 myproject
 ├── main.cpp
@@ -240,6 +256,7 @@ myproject
 └── pkg
     └── ins.sc
 ```
+
 In this file (`ins.sc`), you have to write something like the following.
 But first, we have to tell SecPM the name of the project, the name of the github account and the version of the project:
 
@@ -289,9 +306,11 @@ func werror {
     @echo "There's no Windows support in this project."
 }
 ```
+
 So, what you're seeing is an easier kind of the installer script. We will define some functions. But functions in **S**e**C**undo (**`ins.sc`**) script can't have arguments or parameters. It's possible to call functions with `&functionname`.
 
 Functions, expectet as standard (on Linux):
+
 * `install`    - To install a package to your computer
 * `update`    - To update a package on your computer
 * `remove`    - To uninstall/remove a package from your computer
@@ -349,16 +368,19 @@ dep user_b project5e 4.3.0.1
 ```
 sudo secpm install triploit:aml
 ```
+
 The package https://gitub.com/triploit/aml will be installed.
 
 ```
 sudo secpm ins triploit:aml ins triploit:tsmi
 ```
+
 Shortcut for "install" is "ins". The packages https://github.com/triploit/aml and https://github.com/triploit/tsmi  will be installed.
 
 ```
 sudo secpm install mustermax:project
 ```
+
 The package https://github.com/mustermax/project will be installed.
 
 ### Removing
@@ -366,15 +388,19 @@ The package https://github.com/mustermax/project will be installed.
 ```
 sudo secpm remove triploit:aml
 ```
+
 The package https://gitub.com/triploit/aml will be removed.
 
 ```
 sudo secpm rem triploit:aml rem triploit:tsmi
 ```
+
 Shortcut of "remove" is "rem". The packages https://github.com/triploit/aml and https://github.com/triploit/tsmi will be removed.
+
 ```
 sudo secpm rem mustermax:projekt
 ```
+
 The package https://github.com/mustermax/project will be removed.
 
 ### Installing of local directories
@@ -382,10 +408,13 @@ The package https://github.com/mustermax/project will be removed.
 ```
 sudo secpm local /path/to/project/
 ```
+
 The package directory `/path/to/project/` will be installed. The script `/pfad/zum/projekt/pkg/ins.sc` will be runned.
 
 ### Trust people
+
 Since every package is a potential hazard, SecPM asks some questions before installing the package (like: `Do you want to see the script file?` or `Are you really sure?`). But theres a possibility to trust GitHub accounts (eg. from friends or yourself). But you have to be **really sure**, because if the package contains dangerous code, SecPM won't ask.
+
 ```
 sudo secpm trust user
 ```
